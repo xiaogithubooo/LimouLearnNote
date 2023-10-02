@@ -936,4 +936,158 @@ void myperror(const char* msg)
 
 3. 那么查看文件，系统做了什么呢？`ls`、`cat`等指令的时候，`ls`首先找到目录以及目录的`inode`编号，找到所有的文件名和对应的文件`inode`编号，然后感觉对应的`inode`位图找到所有的属性然后和文件名字拼接输出即可，而`cat`也是类似的只不过是根据文件属性找到对应块的文件内容...
 
+>   补充：虽然很少，但是由于`inode`和块的数量是固定的，因此有可能出现一方不够用的情况
+>
+>   1.   `inode`不够用了，创建不了文件
+>   2.   块不够用了，创建得了文件但是无法写入内容
+
 # 7.软硬链接
+
+经过上述的铺垫，我们可以来理解软硬链接了，首先我们先来尝试创建链接：
+
+1.   `ln -s <链接文件> <链接名词>`可以创建软链接
+2.   `ln <链接文件> <链接名词>`可以创建硬链接
+
+两者有什么差别呢？软链接有自己独立的`inode`，并且不会增加文件的硬链接数。而硬链接`inode`和对应的文件`inode`是一样的（这意味着硬链接不是一个独立的文件），并且会增加硬链接数。
+
+```bash
+$ ls -li
+total 4
+1840738 drwxrwxr-x 2 limou limou 4096 Oct  1 22:42 dir
+1840740 -rw-rw-r-- 4 limou limou    0 Oct  1 22:42 hard-link-1
+1840740 -rw-rw-r-- 4 limou limou    0 Oct  1 22:42 hard-link-2
+1840740 -rw-rw-r-- 4 limou limou    0 Oct  1 22:42 hard-link-3
+1840850 lrwxrwxrwx 1 limou limou    4 Oct  1 22:44 soft-link -> text
+1840739 -rw-rw-r-- 1 limou limou    0 Oct  1 22:42 text
+1840740 -rw-rw-r-- 4 limou limou    0 Oct  1 22:42 text_1
+1840747 -rw-rw-r-- 1 limou limou    0 Oct  1 22:42 text_2
+1840849 -rw-rw-r-- 1 limou limou    0 Oct  1 22:42 text_3
+```
+
+软链接类似于`Windows`下的快捷方式，可以更加快捷使用某些程序和工具（软链接内部文件内容实际上就是存储了指向目标的路径）。
+
+硬链接只是在指定的目录下，建立了文件名和`inode`的映射而已，也就是给文件重命名。实际上硬链接数就是引用计数的应用。
+
+当我们删除文件的时候，引用计数减`1`，只有引用计数为`0`的时候，该文件才会被彻底删除，而硬链接可以增加引用计数。
+
+我们可以尝试使用`unlink <文件名>`指令来减少某个文件的引用计数，达到`rm`的效果（系统调用也有一个加`unlink()`的函数）。
+
+并且文件自己就是自己的硬链接。对于刚刚被创建出来的目录，其硬链接数默认为`2`，一个是自己本身，另外一个是目录内部的`.`，这个`.`用于使用相对路径，其实际上是目录的一个硬链接。因此使用`.`就是使用目录。而`..`就是目录的父目录的硬链接。
+
+# 8.动静态库
+
+## 8.1.静态库制作和使用
+
+### 8.1.1.静态库制作
+
+实际上，我们可以把`function.h`文件和经过`gcc -c function.c -o function.o`的文件给别人，就可以给别人使用您编写的函数，如果将多个`.o`文件打包起来，就是“形成静态库”的过程，使用`ar`命令即可完成打包。
+
+```bash
+ar -rc <目标静态库名，lib开头的一个库名，后缀就是.a> <.o文件列表># r替换 c创建
+```
+
+```bash
+$ cat function1.c function1.h function2.c function2.h test.c
+#include "function1.h"
+extern void Print(const char* str)
+{
+    printf("%s[%d]\n", str, (int)time(NULL));
+}
+
+
+#pragma once
+#include <stdio.h>
+#include <time.h>
+extern void Print(const char* str);
+
+
+#include "function2.h"
+int Add(int i)
+{
+    printf("%d\n", i * i);
+    return i * i;
+}
+
+
+#pragma once
+#include <stdio.h>
+extern int Add(int i);
+
+
+#include "function1.h"
+#include "function2.h"
+int main()
+{
+    Print("I am limou.");
+    printf("%d\n", Add(50));
+    return 0;
+}
+$ gcc -c function1.c -o function1.o
+$ gcc -c function2.c -o function2.o
+$ ls
+function1.c function1.h function1.o
+function2.c function2.h function2.o
+test.c
+
+$ ar -rc libfunction.a function1.o function2.o
+$ ls
+function1.c function1.h function1.o
+function2.c function2.h function2.o
+test.c libfunction.a
+
+$ rm function1.c function2.c function1.o function2.o
+$ ll
+total 16
+function1.h function2.h
+libfunction.a test.c
+
+$ mkdir include
+$ mv function1.h function2.h include
+$ mkdir lib
+$ mv libfunction.a lib
+$ mkidr mylib
+$ mv include lib mylib
+$ ls
+mylib  test.c
+```
+
+### 8.1.2.静态库使用
+
+一般制作库后，有一个目录为`include`专门放头文件，还有一个目录为`lib`专门放静态库文件。打包好两个文件后就可以发布了，因此可以有三种使用方法：
+
+1.   直接修改系统文件：`gcc`头文件的默认搜索路径是`/usr/include`，而`gcc`库文件的默认搜索路径是`/lib64`或者`/usr/lib64`，我们直接将我们做的头文件和库拷贝进去即可。在使用我们的库时，可以在`main()`所在文件使用`<>`引用头文件，也可以使用`""`，然后使用`gcc <使用静态库的源文件> -l <静态库去掉lib和.a>`即可（整个过程实际上就是安装库的过程，但是这个做法不推荐，容易污染别人的头文件和库文件）
+
+2.   交给用户自己链接：将打包好的`include`和`lib`文件放在包含`main()`源文件的同级目录下，然后使用`gcc main.c -I <指定头文件的所在路径> -L <静态库文件的所在地>  -l <指明目标静态库文件，去掉lib和.a>`
+
+     ```bash
+     $ gcc test.c -I ./mylib/include -L ./mylib/lib -l function
+     $ ls
+     a.out  mylib  test.c
+     ```
+
+## 8.2.动态库的制作和使用
+
+### 8.2.1.动态库制作
+
+使用命令`gcc -fPIC -c <.c文件名> -o <.o文件名>`形成一个与目标位置无关的二进制文件，然后使用`gcc -shared <.o文件列表> -o <目标动态库名，前缀lib，后缀.so>`。发布动态库，也是分为`include`和`lib`，静态库和动态库可以放在一起。
+
+### 8.2.2.动态库使用
+
+动态库和可执行文件可以分批加载到内存，并且加载一次动态库就可以被系统内所有的进程使用（静态库有可能会出现多份相同的代码和数据）。
+
+先配置环境变量`export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<动态库的所在路径>`。
+
+然后使用命令`$ gcc <包含main.c的源代码> -I <头文件的所在路径> -L <库文件的所在路径> -l <使用的动态库名字，去掉lib和.so>`最后一个选项如果指定的动静态库同名，则默认使用动态库，如果只有静态库则会使用静态库。不过可以使用`-static`强制使用静态库。
+
+然后直接运行生成的可执行程序就可以了。
+
+但是这个环境变量是临时性的，如果关闭了终端就会清除，这是因为该环境变量是内存级别的环境变量。
+
+也有一劳永逸的方法，在`Linux`的`/etc/ld.so.conf.d/`，在这里创建一个`.conf`文件，在内部写入动态库的路径保存即可。这样就可以永久保存动态库的搜索路径，以后关闭终端也不会丢失该路径信息。
+
+>   补充：这里有一个有趣的现象，如果运行带有动态库的程序成功后，删除掉之前创建的`.conf`文件，还是可以运行程序，这是因为路径还在系统缓存中保存着。
+
+那还有没有更简单的办法呢？有的，建立一个动态库的软链接，存放在`/lib64`下，然后直接运行程序即可。
+
+最后推荐几个好玩的库`ncurses`字符界面库、`boost`准标准库
+
