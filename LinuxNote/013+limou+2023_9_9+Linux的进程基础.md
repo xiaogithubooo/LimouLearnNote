@@ -1,3 +1,5 @@
+[TOC]
+
 # 1.进程概念
 
 我们启动一个软件，本质就是启动了一个进程。在`Windows`下如果我们启动了某个应用程序，然后打开资源管理器（常见的快捷键是`[ctrl+alt+delete]`，或者直接打开系统的“搜索”输入“资源管理器”点击即可打开）就可以看到有一个对应的软件出现在进程列表中：
@@ -16,9 +18,13 @@
 
 那么`Linux`是怎么管理这些进程的呢？实际上也是“先描述再管理”。
 
+>   补充`1`：多个进程可以构成“作业”，一个作业至少由一个进程组成。
+>
+>   补充`2`：一个程序可以被多次运行，产生多个进程。
+
 # 2.进程描述
 
-操作系统会给每个加载进内存的程序申请一个结构体，也就是`PCB`数据结构（`Printed circuit board`进程控制块），这个结构体内部保存了所有代码和数据的属性。
+操作系统会给每个加载进内存的程序申请一个结构体，也就是`PCB`数据结构（全称`Printed circuit board`进程控制块），这个结构体内部保存了所有代码和数据的属性。
 
 有了这个结构体来描述进程，将来就可以定义出相应的进程对象，而我们可以把这些对象使用链表的方式连接起来（这种链表就是一个进程队列，但是实际上不一定呈现出链表的形式，也可能使用其他数据结构混杂起来，而这里只是为了好理解一种粗略说法。不过，`Linux`内核采用的是双链表实现），也就将进程组织起来了。
 
@@ -281,10 +287,11 @@ int main()
 可以使用以下`shell`命令来分别查看两个进程：
 
 ```bash
-while : do
-     ps axj | head -n 1
-     ps ajx | grep a.out | grep -v grep
-     sleep 1 
+while : 
+do
+ ps axj | head -n 1
+ ps ajx | grep a.out | grep -v grep
+ sleep 1 
 done
 ```
 
@@ -383,6 +390,8 @@ done
 
 那么是否可以创建一个恶意程序，让父进程不断创建出僵尸状态的进程来占取大量内存来“卡死”计算机呢？这种事情是有可能的，会发生严重的内存泄露！因此，我们在后续编写代码中必须要想办法回收僵尸进程。而关于僵尸进程的解决办法，我后续再提及。
 
+>   注意：僵尸进程已经处于进程退出的状态了，是无法使用`-9`信号杀死的！
+
 下面总结一下状态之间的动态变化：
 
 <img title="" src="./assets/fc9b2d4c-c721-4d60-a485-4ca8ece626a8.png" alt="fc9b2d4c-c721-4d60-a485-4ca8ece626a8" style="zoom:67%;">
@@ -398,7 +407,7 @@ done
 >   1.   如果子进程退出了，而父进程没有退出并且也不理会这个子进程（回收），那么此时的子进程就处于“僵尸状态”。如果理会了子进程，就是子进程被成功回收。
 >   2.   如果父进程先挂掉了，无论子进程是否结束，都可以叫此时的子进程为“孤儿进程”，若是子进程结束，则子进程又陷入了“僵尸状态”。
 
-在代码编写逻辑错误的时候，如果出现了孤儿进程就会被“`1`号`init`进程”领养，下面我们来写一段代码来感受一下：
+在代码编写逻辑错误的时候，如果出现了孤儿进程就会被“`1`号`init`进程”领养，并且成为后台进程，下面我们来写一段代码来感受一下：
 
 ```c
 #include <stdio.h> 
@@ -432,13 +441,15 @@ int main()
 
 <img src="./assets/6edcd390-5547-4ff3-bfc5-d9c1abd24be5.png" title="" alt="6edcd390-5547-4ff3-bfc5-d9c1abd24be5" style="zoom:50%;">
 
-可以看到父进程一结束，子进程的`PPID`瞬间切换为`1`，也就是被`1号init/systemd`进程所“领养”，这个进程可以简单理解为“系统本身”。
+可以看到父进程一结束，子进程的`PPID`瞬间切换为`1`，也就是被`1号`进程`init/systemd`所“领养”，这个进程可以简单理解为“系统本身”。
 
 但是为什么父进程退出后，子进程要被“领养”呢？因为回收子进程的代码一般处于父进程中，如果子进程变成孤儿进程则没有人来回收该进程，那么就需要被其他进程领养进行回收。
 
-而且从上面的结果图我们可以看到，如果子进程变成了孤儿进程，其状态变成后后台运行状态，这就意味着，我们无法使用`[ctrl+c]`快捷键方式终止这个进程（命令行显示该快捷键为`^C`）。
+而且从上面的结果图我们可以看到，如果子进程变成了孤儿进程，那就会变成后台运行的进程，这就意味着，我们无法直接使用`[ctrl+c]`快捷键方式终止这个进程（命令行显示该快捷键为`^C`），必须使用`-9`信号杀死。
 
 > 吐槽：不过比较好玩的是，基本是在左侧不断输出后台进程的`bash`界面中依旧是可以正常输入命令的，只不过输入命令显得的有点乱……  
+
+>   补充：守护进程/精灵进程实际上就是孤儿进程，他们的父进程是`1`号`init`进程，退出后不会变成僵尸进程，一般孤儿进程的出现都是刻意为之，脱离了终端和登录会话的所有联系，可以用来独立执行一些周期性任务，因此这样的进程不算是内存泄露。
 
 # 6.进程优先
 
@@ -522,7 +533,7 @@ int main()
 
 # 7.进程调度
 
-这里我们做一个知识拓展，主要是讲解`Linux 2.6`内核种的调度队列和调度原理（大`O(1)`调度）。
+这里我们做一个知识拓展，主要是讲解`Linux 2.6.32(32位平台)`内核种的调度队列和调度原理（大`O(1)`调度）。
 
 首先需要普及一个知识，一般操作系统可以按照调度的原理分为两种系统：
 
@@ -547,11 +558,11 @@ int main()
 
 而整个查找过程很接近`O(1)`，也就是内核的大`O(1)`调度算法。这种调度策略既保证了优先级的意义，又保证了平衡性。
 
-# ==8.进程空间==
+# 8.进程空间
 
-## 7.1.进程地址空间
+## 8.1.进程地址
 
-我们以`Linux2.6.32(32位平台)`为研究背景，探究一下对一个进程来说，自己可用的内存及其分布：
+我们以`Linux 2.6.32(32位平台)`为研究背景，探究一下对一个进程来说，自己可用的内存及其分布：
 
 <img title="" src="./assets/dd286fcb-1e53-4cd7-8455-adbf522ca683.png" alt="dd286fcb-1e53-4cd7-8455-adbf522ca683" style="zoom:67%;">
 
@@ -596,7 +607,7 @@ int main(int argc, char* argv[], char* env[])
     printf("\n");
     for (int j = 0; env[j]; j++)
     {
-        printf("command line parameter<环境变量>：env[%] = %p\n", j, env[j]);
+        printf("command line parameter<环境变量>：env[%d] = %p\n", j, env[j]);
     }
 
     free(p1);
@@ -606,7 +617,7 @@ int main(int argc, char* argv[], char* env[])
 ```
 
 ```bash
-$ ./a.out abde dasdas asdasd asdasd asdasdad #后面是随意输入的参数
+$ ./a.out a ab abc abcd abcde #后面是随意输入的参数
 code addr<代码区/正文>: 0x40060d
 
 read only addr<静态区>: 0x400882
@@ -615,86 +626,106 @@ init g_value_1 global addr<已初始化全局变量区>: 0x60104c
 
 uninit g_value_2 global addr<未初始化全局变量区>: 0x601054
 
-heap addr<堆区>: 0x7d2010
-heap addr<堆区>: 0x7d2040
+heap addr<堆区>: 0x1974010
+heap addr<堆区>: 0x1974040
 
-stack addr<栈区>: 0x7ffc4c26aa10
-stack addr<栈区>: 0x7ffc4c26aa08
-stack addr<栈区>: 0x7ffc4c26aa00
+stack addr<栈区>: 0x7ffddd6b80d0
+stack addr<栈区>: 0x7ffddd6b80c8
+stack addr<栈区>: 0x7ffddd6b80c0
 
-command line paramete<命令行参数>r：argv[0] = 0x7ffc4c26b7bf
-command line paramete<命令行参数>r：argv[1] = 0x7ffc4c26b7c7
-command line paramete<命令行参数>r：argv[2] = 0x7ffc4c26b7cc
-command line paramete<命令行参数>r：argv[3] = 0x7ffc4c26b7d3
-command line paramete<命令行参数>r：argv[4] = 0x7ffc4c26b7da
-command line paramete<命令行参数>r：argv[5] = 0x7ffc4c26b7e1
+command line paramete<命令行参数>r：argv[0] = 0x7ffddd6ba346
+command line paramete<命令行参数>r：argv[1] = 0x7ffddd6ba34e
+command line paramete<命令行参数>r：argv[2] = 0x7ffddd6ba350
+command line paramete<命令行参数>r：argv[3] = 0x7ffddd6ba353
+command line paramete<命令行参数>r：argv[4] = 0x7ffddd6ba357
+command line paramete<命令行参数>r：argv[5] = 0x7ffddd6ba35c
 
-command line parameter<环境变量>：env[%] = (nil)
-command line parameter<环境变量>：env[%] = 0x1
-command line parameter<环境变量>：env[%] = 0x2
-command line parameter<环境变量>：env[%] = 0x3
-command line parameter<环境变量>：env[%] = 0x4
-command line parameter<环境变量>：env[%] = 0x5
-command line parameter<环境变量>：env[%] = 0x6
-command line parameter<环境变量>：env[%] = 0x7
-command line parameter<环境变量>：env[%] = 0x8
-command line parameter<环境变量>：env[%] = 0x9
-command line parameter<环境变量>：env[%] = 0xa
-command line parameter<环境变量>：env[%] = 0xb
-command line parameter<环境变量>：env[%] = 0xc
-command line parameter<环境变量>：env[%] = 0xd
-command line parameter<环境变量>：env[%] = 0xe
-command line parameter<环境变量>：env[%] = 0xf
-command line parameter<环境变量>：env[%] = 0x10
-command line parameter<环境变量>：env[%] = 0x11
-command line parameter<环境变量>：env[%] = 0x12
-command line parameter<环境变量>：env[%] = 0x13
-command line parameter<环境变量>：env[%] = 0x14
-command line parameter<环境变量>：env[%] = 0x15
-command line parameter<环境变量>：env[%] = 0x16
+command line parameter<环境变量>：env[0] = 0x7ffddd6ba362
+command line parameter<环境变量>：env[1] = 0x7ffddd6ba378
+command line parameter<环境变量>：env[2] = 0x7ffddd6ba38c
+command line parameter<环境变量>：env[3] = 0x7ffddd6ba3a3
+command line parameter<环境变量>：env[4] = 0x7ffddd6ba3b7
+command line parameter<环境变量>：env[5] = 0x7ffddd6ba3c7
+command line parameter<环境变量>：env[6] = 0x7ffddd6ba3d5
+command line parameter<环境变量>：env[7] = 0x7ffddd6ba3f6
+command line parameter<环境变量>：env[8] = 0x7ffddd6ba412
+command line parameter<环境变量>：env[9] = 0x7ffddd6ba41b
+command line parameter<环境变量>：env[10] = 0x7ffddd6baad3
+command line parameter<环境变量>：env[11] = 0x7ffddd6bab7a
+command line parameter<环境变量>：env[12] = 0x7ffddd6bac29
+command line parameter<环境变量>：env[13] = 0x7ffddd6bac42
+command line parameter<环境变量>：env[14] = 0x7ffddd6bac68
+command line parameter<环境变量>：env[15] = 0x7ffddd6bac78
+command line parameter<环境变量>：env[16] = 0x7ffddd6bac97
+command line parameter<环境变量>：env[17] = 0x7ffddd6baca6
+command line parameter<环境变量>：env[18] = 0x7ffddd6bacae
+command line parameter<环境变量>：env[19] = 0x7ffddd6bad30
+command line parameter<环境变量>：env[20] = 0x7ffddd6bad3c
+command line parameter<环境变量>：env[21] = 0x7ffddd6bad7c
+command line parameter<环境变量>：env[22] = 0x7ffddd6badaa
+command line parameter<环境变量>：env[23] = 0x7ffddd6bae02
+command line parameter<环境变量>：env[24] = 0x7ffddd6bae25
+command line parameter<环境变量>：env[25] = 0x7ffddd6bae8a
+command line parameter<环境变量>：env[26] = 0x7ffddd6baeb3
+command line parameter<环境变量>：env[27] = 0x7ffddd6baf16
+command line parameter<环境变量>：env[28] = 0x7ffddd6baf87
+command line parameter<环境变量>：env[29] = 0x7ffddd6bafa6
+command line parameter<环境变量>：env[30] = 0x7ffddd6bafbc
+command line parameter<环境变量>：env[31] = 0x7ffddd6bafd0
+command line parameter<环境变量>：env[32] = 0x7ffddd6bafda
 ```
 
-> 注意：我们这里将进程地址空间倒过来打印了，所以地址大小呈现出越来越大，也就是从低地址到高地址。您也可以通过一些文本指令倒过来打印。
+这里，打印出来的地址大小越来越大，也就是从低地址到高地址。您也可以通过一些文本指令倒过来打印。
 
 ```bash
-$ ./a.out abde dasdas asdasd asdasd asdasdad | tac
-command line parameter<环境变量>：env[%] = 0x16
-command line parameter<环境变量>：env[%] = 0x15
-command line parameter<环境变量>：env[%] = 0x14
-command line parameter<环境变量>：env[%] = 0x13
-command line parameter<环境变量>：env[%] = 0x12
-command line parameter<环境变量>：env[%] = 0x11
-command line parameter<环境变量>：env[%] = 0x10
-command line parameter<环境变量>：env[%] = 0xf
-command line parameter<环境变量>：env[%] = 0xe
-command line parameter<环境变量>：env[%] = 0xd
-command line parameter<环境变量>：env[%] = 0xc
-command line parameter<环境变量>：env[%] = 0xb
-command line parameter<环境变量>：env[%] = 0xa
-command line parameter<环境变量>：env[%] = 0x9
-command line parameter<环境变量>：env[%] = 0x8
-command line parameter<环境变量>：env[%] = 0x7
-command line parameter<环境变量>：env[%] = 0x6
-command line parameter<环境变量>：env[%] = 0x5
-command line parameter<环境变量>：env[%] = 0x4
-command line parameter<环境变量>：env[%] = 0x3
-command line parameter<环境变量>：env[%] = 0x2
-command line parameter<环境变量>：env[%] = 0x1
-command line parameter<环境变量>：env[%] = (nil)
+$ ./a.out a ab abc abcd abcde | tac
+command line parameter<环境变量>：env[32] = 0x7ffe2d93bfda
+command line parameter<环境变量>：env[31] = 0x7ffe2d93bfd0
+command line parameter<环境变量>：env[30] = 0x7ffe2d93bfbc
+command line parameter<环境变量>：env[29] = 0x7ffe2d93bfa6
+command line parameter<环境变量>：env[28] = 0x7ffe2d93bf87
+command line parameter<环境变量>：env[27] = 0x7ffe2d93bf16
+command line parameter<环境变量>：env[26] = 0x7ffe2d93beb3
+command line parameter<环境变量>：env[25] = 0x7ffe2d93be8a
+command line parameter<环境变量>：env[24] = 0x7ffe2d93be25
+command line parameter<环境变量>：env[23] = 0x7ffe2d93be02
+command line parameter<环境变量>：env[22] = 0x7ffe2d93bdaa
+command line parameter<环境变量>：env[21] = 0x7ffe2d93bd7c
+command line parameter<环境变量>：env[20] = 0x7ffe2d93bd3c
+command line parameter<环境变量>：env[19] = 0x7ffe2d93bd30
+command line parameter<环境变量>：env[18] = 0x7ffe2d93bcae
+command line parameter<环境变量>：env[17] = 0x7ffe2d93bca6
+command line parameter<环境变量>：env[16] = 0x7ffe2d93bc97
+command line parameter<环境变量>：env[15] = 0x7ffe2d93bc78
+command line parameter<环境变量>：env[14] = 0x7ffe2d93bc68
+command line parameter<环境变量>：env[13] = 0x7ffe2d93bc42
+command line parameter<环境变量>：env[12] = 0x7ffe2d93bc29
+command line parameter<环境变量>：env[11] = 0x7ffe2d93bb7a
+command line parameter<环境变量>：env[10] = 0x7ffe2d93bad3
+command line parameter<环境变量>：env[9] = 0x7ffe2d93b41b
+command line parameter<环境变量>：env[8] = 0x7ffe2d93b412
+command line parameter<环境变量>：env[7] = 0x7ffe2d93b3f6
+command line parameter<环境变量>：env[6] = 0x7ffe2d93b3d5
+command line parameter<环境变量>：env[5] = 0x7ffe2d93b3c7
+command line parameter<环境变量>：env[4] = 0x7ffe2d93b3b7
+command line parameter<环境变量>：env[3] = 0x7ffe2d93b3a3
+command line parameter<环境变量>：env[2] = 0x7ffe2d93b38c
+command line parameter<环境变量>：env[1] = 0x7ffe2d93b378
+command line parameter<环境变量>：env[0] = 0x7ffe2d93b362
 
-command line paramete<命令行参数>r：argv[5] = 0x7ffe249247e1
-command line paramete<命令行参数>r：argv[4] = 0x7ffe249247da
-command line paramete<命令行参数>r：argv[3] = 0x7ffe249247d3
-command line paramete<命令行参数>r：argv[2] = 0x7ffe249247cc
-command line paramete<命令行参数>r：argv[1] = 0x7ffe249247c7
-command line paramete<命令行参数>r：argv[0] = 0x7ffe249247bf
+command line paramete<命令行参数>r：argv[5] = 0x7ffe2d93b35c
+command line paramete<命令行参数>r：argv[4] = 0x7ffe2d93b357
+command line paramete<命令行参数>r：argv[3] = 0x7ffe2d93b353
+command line paramete<命令行参数>r：argv[2] = 0x7ffe2d93b350
+command line paramete<命令行参数>r：argv[1] = 0x7ffe2d93b34e
+command line paramete<命令行参数>r：argv[0] = 0x7ffe2d93b346
 
-stack addr<栈区>: 0x7ffe24922fe0
-stack addr<栈区>: 0x7ffe24922fe8
-stack addr<栈区>: 0x7ffe24922ff0
+stack addr<栈区>: 0x7ffe2d939be0
+stack addr<栈区>: 0x7ffe2d939be8
+stack addr<栈区>: 0x7ffe2d939bf0
 
-heap addr<堆区>: 0x114d040
-heap addr<堆区>: 0x114d010
+heap addr<堆区>: 0x19a9040
+heap addr<堆区>: 0x19a9010
 
 uninit g_value_2 global addr<未初始化全局变量区>: 0x601054
 
@@ -709,7 +740,7 @@ code addr<代码区/正文>: 0x40060d
 
 >   注释`1`：未初始化数据全称为“未初始化全局数据区”、已初始化数据全称为“已初始化全局数据区”
 >
->   注释`2`：栈空间的使用向下增长，堆空间的使用向上增长，不过这些现象仅限于`Linux`中，`Windows`操作系统为了系统安全考虑，在这方面改动比较多，这也就是为什么我限定了`32`位`Linux`背景的缘故。
+>   注释`2`：栈空间的整体空间开辟使用规律向下增长，堆空间的整体空间开辟使用规律向上增长（但是在使用空间都是向上使用的，利用类型这种“偏移量”的方式使用）。不过这些现象仅限于`Linux`中，`Windows`操作系统为了系统安全考虑，在这方面改动比较多，这也就是为什么我限定了`32`位`Linux`背景的缘故。
 >
 >   注释`3`：栈区和堆区中间有巨大的“镂空”，这里的共享区等我们以后讲到共享内存的时候会详细学习。
 >
@@ -719,11 +750,11 @@ code addr<代码区/正文>: 0x40060d
 
 在`32`位下一个进程的地址空间的取值范围是`0x0000 0000 ~ 0xFFFF FFFF`。其中`[0, 3GB]`为用户空间，`[3GB, 4GB]`为内核空间。往后我们理解地址空间，一定要想到这`4GB`的空间，而不仅仅是那`3GB`的空间。
 
-很多初学者会误认为进程地址空间分布是内存地址空间分布，但是实际上进程地址空间是一个抽象的概念，并不是内存的布局！就连以前我们打印的指针地址也不是真正的内存地址（是一个虚拟内存地址）。以前学习`C`语言的时候只是为了方便说明，因此没有在地址这里深入探究。
+很多初学者会误认为进程地址空间分布是内存地址空间分布，但是实际上进程地址空间是一个抽象的概念，并不是内存的布局！就连以前我们在`C`语言内打印的指针地址也不是真正的内存地址（是一个虚拟内存地址）。以前学习`C`语言的时候只是为了方便说明，因此没有在地址这里深入探究。
 
-## 6.2.虚拟空间
+## 6.2.虚拟地址
 
-为什么说我们以前在`C`语言提到的内存不是真实内存而是虚拟内存呢？我们首先可以通过一个`C`程序观察一下现象：
+为什么说我们以前在`C`语言提到的内存地址不是真实内存地址而是虚拟内存地址呢？换句话来说，以前我们在语言层面说的内存难道不是真实的内存吗？我们首先可以通过一个`C`程序观察一下现象：
 
 ```c
 #include <stdio.h>
@@ -731,75 +762,79 @@ code addr<代码区/正文>: 0x40060d
 int g_val = 100;
 int main()
 {
-    pid_t id = fork();
-    if(id == 0)
+    pid_t id = fork();//创建子进程
+
+    if(id == 0)//子进程代码
     {
+        int cnt = 0;
         while(1)
         {
-            printf("I am a child. pid = %d, ppid = %d, g_val = %d, &g_val = %p\n.", getpid(), getppid(), g_val, &g_val);
+            printf("I am a child. pid = %d, ppid = %d, g_val = %d, &g_val = %p.\n", \
+            getpid(), getppid(), g_val, &g_val);
             sleep(1);
-            int cnt = 0;
             cnt++;
-            if(cnt == 5)
+            if(cnt == 3)
             {
                 g_val = 200;
                 printf("child chage g_val = 100 --> g_val = 200\n");
             }
-            else
-            {
-                while(1)
-                {
-                     printf("I am a father. pid = %d, ppid = %d, g_val = %d, &g_val = %p\n.", getpid(), getppid(), g_val, &g_val);
-                    sleep(1);
-                }
-            }
         }
-    }        
+    }
+    else//父进程代码
+    {
+        while(1)
+        {
+            printf("I am a father. pid = %d, ppid = %d, g_val = %d, &g_val = %p.\n", \
+            getpid(), getppid(), g_val, &g_val);
+            sleep(1);
+        }
+    }
     return 0;
 }
 ```
 
 ```bash
-$ vim main.c
-$ gcc main.c
 $ ./a.out
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-I am a child. pid = 21421, ppid = 21420, g_val = 100, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-I am a child. pid = 21421, ppid = 21420, g_val = 100, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-I am a child. pid = 21421, ppid = 21420, g_val = 100, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-I am a child. pid = 21421, ppid = 21420, g_val = 100, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-I am a child. pid = 21421, ppid = 21420, g_val = 100, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-child change "g_val = 100 --> g_val = 200".
-I am a child. pid = 21421, ppid = 21420, g_val = 200, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
-I am a child. pid = 21421, ppid = 21420, g_val = 200, &g_val = 0x60105c.
-I am a father. pid = 21420, ppid = 29863, g_val = 100, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 100, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 100, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 100, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+child chage g_val = 100 --> g_val = 200
+I am a child. pid = 6947, ppid = 6946, g_val = 200, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 200, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 200, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 200, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 200, &g_val = 0x60105c.
+I am a father. pid = 6946, ppid = 24702, g_val = 100, &g_val = 0x60105c.
+I am a child. pid = 6947, ppid = 6946, g_val = 200, &g_val = 0x60105c.
 ```
 
-欸！我们发现了一个离谱的现象：子进程修改的全局变量不会影响父进程的输出该全局变量的值，也就是说”在同一个地址不同的两次访问的值出现了不同值“。
+欸！我们发现了一个离谱的现象：子进程修改的全局变量不会影响父进程的输出该全局变量的值，也就是说”在同一个地址不同的两次访问，出现了不同值“。
 
 那么这就让我们怀疑一个事实，全局变量的分别打印出来的两个相同数值地址，真的是“相同”的么？
 
 也就是说，我们通过`printf()`和`&`打印出来的地址绝对不是物理意义（或者叫”实际意义“）上的内存地址，因为如果是真实的地址，是不可能同时存储两个值的。
 
-实际出来的地址是虚拟地址（在Linux里也叫”线性地址“）。每个进程都认为自己用的地址是真实地址，实际上它被操作系统”欺骗“了，它使用的是虚拟地址，这些虚拟地址整体构成虚拟空间。
+实际出来的地址是虚拟地址（在`Linux`里也叫”线性地址“）。每个进程都认为自己用的地址是真实地址（认为自己独享整个内存空间），实际上它被操作系统”欺骗“了，它使用的是虚拟地址，这些虚拟地址整体构成虚拟空间。
 
-> 注意：实际上几乎所有带有”地址“概念的语言使用的地址都是虚拟地址。 
+> 补充`1`：实际上几乎所有带有”地址“概念的语言使用的地址都是虚拟地址。 
+>
+> 补充`2`：不止是`CPU`有寄存器，其他外设或者显卡也有寄存器，这些地址也应该被利用，所以我们给计算机一个页表，使得虚拟地址可以通过页表来一一映射到内存地址、显卡寄存器地址等等真实地址，而我们的程序在调用的时候也会误认为自己用的是内存地址，从而达到统一对待真实地址的目的。
 
-> 注意：不止是CPU有寄存器，其他外设或者显卡也有寄存器，这些地址也应该被利用，所以我们给计算机一个虚拟地址空间，使得虚拟地址可以一一映射内存地址、显卡寄存器地址等等地址，而我们的程序在调用的时候也会误认为自己用的是内存地址，从而达到统一对待真实地址的目的。
+## 6.3.映射地址
 
-## 6.3.进程地址空间、虚拟地址空间、物理地址空间的关系
+在很久以前，多个进程的确是直接写入物理内存，也就是直接使用物理地址的。但是，一旦在运行某个进程的过程有可能出现一些危险的情况：
 
-在很久以前，多个进程的确是直接进入内存的，但是，一旦在运行某个进程的过程有可能出现：
+1. 野指针问题：对野指针的访问有可能出现篡改其他进程数据的情况，这是极其危险的。而且对于黑客来说，如果某个进程是需要密钥等方式才可以进入，那么就会出现某些黑客软件在运行过程中通过野指针窃取该进程数据的可能，导致数据不安全。
 
-1. 野指针问题：对野指针的访问有可能出现篡改其他进程数据的情况，这是极其危险的。而且对于黑客来说，如果某个进程是需要密钥等方式才可以进入，那么就会出现某些黑客软件在运行过程中窃取该进程数据的可能，导致数据不安全。
-
-2. 内存碎片问题：如果直接加载进内物理存，就极有可能出现内存碎片问题，导致内存空间分配不合理。
+2. 内存碎片问题：如果直接加载进内物理存，就极有可能出现内存碎片问题，导致内存空间分配不合理，空间效率底下。
 
 因此直接写进物理空间的方式极其不安全、不合理。于是就出现了虚拟地址空间，每个进程通过虚拟地址空间，都认为自己占用了整个进程地址空间，实际上这是操作系统的一种“骗术”，操作系统在管理每一个进程的虚拟地址空间，再一一映射到物理内存，这样子就可以解决上面的两个问题。
 
@@ -814,11 +849,10 @@ F["进程..."] --> |"进程地址空间...（虚拟空间）"| A
 A-->|"映射"| G[物理内存]
 ```
 
-因此我们可以知道进程地址空间是进程使用物理内存和虚拟内存的一个内存使用模板 。
-
-另外，内核中的“进程地址空间”的本质是一种“数据结构”的描述，虚拟地址空间本质也是一种“数据结构”的定义，依靠这个数据结构来划分地址范围。
+另外，内核中的“进程地址空间”的本质是一种“数据结构”的描述，本质也就是一种“数据结构”的定义，依靠这个数据结构来划分地址范围。
 
 ```c
+//进程地址空间地址划分
 struct addr_room
 {
     int code_start;
@@ -840,13 +874,13 @@ struct addr_room
 };
 ```
 
-在`task_struct`结构体中，有一个成员`mm_struct* mm`，指向进程所拥有的虚拟地址空间，而操作系统通过某种映射关系（或者叫“页表”）来映射到物理内存中。地址空间和页表（用户级）是每一个进程都私有一份的。
+在`task_struct`结构体中，有一个成员`mm_struct* mm`，指向该进程所拥有的虚拟地址空间对象，而操作系统通过某种映射关系（或者叫“页表”）来映射到物理内存中。地址空间和页表（用户级）是每一个进程都私有一份的。
 
 只要保证每一个进程的页表映射的是不同区域，就能做到进程之间相互独立、安全。
 
-> 注意：有关于“页表”的知识，我们后面会再次提到。
+> 注意：有关于“页表”的知识，有机会的话还会再次提及。
 
-## 6.4.解释现象
+## 6.4.==解释现象==
 
 经过前几个小节的铺垫，我们现在终于可以解释前面父子进程代码的问题所在了。父子进程使用的同名的全局变量，根本就是两个变量！
 
@@ -1181,4 +1215,3 @@ int execle(const char *path, const char *arg, ..., char *const envp[]);
 无论是什么变成语言最后都会变成进程，因此上述的函数可以做到调用其他语言的进程。
 
 另外，上述函数都不是严格意义上的系统接口，真正的系统接口是`execve(const char* filename, char* const argv[], char* const envp[]);`，上述六个函数都是调用这个系统接口的派生函数。
-
