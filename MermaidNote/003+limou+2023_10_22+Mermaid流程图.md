@@ -304,7 +304,252 @@ flowchart TD
 
 # 5.Links between nodes(结点之间的链接)
 
+>   译者：这里主要是看链接语法，无需翻译过度。
 
+## 5.1.带箭头的链接
+
+```
+flowchart LR
+    A-->B
+```
+
+```mermaid
+flowchart LR
+    A-->B
+```
+
+## 5.2.开放的链接
+
+```
+flowchart LR
+    A --- B
+```
+
+```mermaid
+flowchart LR
+    A --- B
+```
+
+## 5.3.带文字的链接
+
+```
+flowchart LR
+    A-- This is the text ---B
+    C---|This is the text|D
+    
+    G-- |This is the text|--> H
+    E-->|This is the text|F    
+```
+
+```mermaid
+flowchart LR
+    A-- This is the text ---B
+    C---|This is the text|D
+    
+    G-- |This is the text|--> H
+    E-->|This is the text|F    
+```
+
+## 5.4.虚线的链接
+
+```
+flowchart LR
+   A-.->B;
+   C-. This is the text .-> D
+   E -.->|This is the text| F
+```
+
+```mermaid
+flowchart LR
+   A-.->B;
+   C-. This is the text .-> D
+   E -.->|This is the text| F
+```
+
+## 5.5.带粗线的链接
+
+```
+flowchart LR
+   A ==> B
+   C == This is the text ==> D
+   E ==>|This is the text| F
+```
+
+```mermaid
+flowchart LR
+   A ==> B
+   C == This is the text ==> D
+   E ==>|This is the text| F
+```
+
+## 5.6.看不见的链接
+
+```
+flowchart LR
+    A ~~~ B
+```
+
+```mermaid
+flowchart LR
+    A ~~~ B
+```
+
+This can be a useful tool in some instances where you want to alter the default positioning of a node.
+
+>   翻译：在某些情况下（`in some instances`在某些（特定）情况下）这可能是（`can be`可能是、能成为、可以是）有用的（`useful`有用的、有益的）工具（当您希望改变（`alter`）结点的默认位置（`positioning`位置，定位，走位）的时候）。
+
+## 5.7.Chaining of links(连接链接们)
+
+It is possible declare many links in the same line as per below:
+
+>   翻译：（`possible`可能的，可能做到的）（`declare`声明）可以在同一行中声明许多同样的链接，如下所示（`as per below:`）：
+
+```
+flowchart LR
+   A -- text --> B -- text2 --> C
+```
+
+It is also possible to declare multiple nodes links in the same line as per below:
+
+>   翻译：也可以在同一行中声明多个（`multiple`多个的、多种的，多人共有的）点链接，如下所示：
+
+```mermaid
+flowchart LR
+   a --> b & c--> d
+```
+
+You can then describe dependencies in a very expressive way. Like the one-liner below:
+
+>   翻译：你也可以用一种非常富有表现力的方式（`expressive way`表现手法）声明依赖，就像下面这一行：
+
+```
+flowchart TB
+    A & B--> C & D
+```
+
+```mermaid
+flowchart TB
+    A & B--> C & D
+```
+
+If you describe the same diagram using the the basic syntax, it will take four lines.
+
+A word of warning, one could go overboard with this making the flowchart harder to read in markdown form.
+
+The Swedish word `lagom` comes to mind. It means, not too much and not too little.
+
+This goes for expressive syntaxes as well.
+
+>   翻译：如果你使用级别的语法（`syntax`语法）声明同样的图表（`diagram`图表），这将需要四行。
+>
+>   提醒一句，？？？
+
+```
+flowchart TB
+    A --> C
+    A --> D
+    B --> C
+    B --> D
+```
+
+```mermaid
+flowchart TB
+    A --> C
+    A --> D
+    B --> C
+    B --> D
+```
+
+## 5.8.New arrow types(新的箭头类型)
+
+There are new types of arrows supported as per below:
+
+```
+flowchart LR
+    A --o B
+    B --x C
+```
+
+```mermaid
+flowchart LR
+    A --o B
+    B --x C
+```
+
+## 5.9.Multi directional arrows(多方向箭头)
+
+There is the possibility to use multidirectional arrows.
+
+```
+flowchart LR
+    A o--o B
+    B <--> C
+    C x--x D
+```
+
+```mermaid
+flowchart LR
+    A o--o B
+    B <--> C
+    C x--x D
+```
+
+## 5.10.Minimum length of a link(链接的最小长度)
+
+Each node in the flowchart is ultimately assigned to a rank in the rendered graph, i.e. to a vertical or horizontal level (depending on the flowchart orientation), based on the nodes to which it is linked. By default, links can span any number of ranks, but you can ask for any link to be longer than the others by adding extra dashes in the link definition.
+
+In the following example, two extra dashes are added in the link from node *B* to node *E*, so that it spans two more ranks than regular links:
+
+```
+flowchart TD
+    A[Start] --> B{Is it?}
+    B -->|Yes| C[OK]
+    C --> D[Rethink]
+    D --> B
+    B ---->|No| E[End]
+```
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Is it?}
+    B -->|Yes| C[OK]
+    C --> D[Rethink]
+    D --> B
+    B ---->|No| E[End]
+```
+
+**Note** Links may still be made longer than the requested number of ranks by the rendering engine to accommodate other requests.
+
+When the link label is written in the middle of the link, the extra dashes must be added on the right side of the link. The following example is equivalent to the previous one:
+
+```
+flowchart TD
+    A[Start] --> B{Is it?}
+    B -- Yes --> C[OK]
+    C --> D[Rethink]
+    D --> B
+    B -- No ----> E[End]
+```
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Is it?}
+    B -- Yes --> C[OK]
+    C --> D[Rethink]
+    D --> B
+    B -- No ----> E[End]
+```
+
+For dotted or thick links, the characters to add are equals signs or dots, as summed up in the following table:
+
+| Length(长度)                    |   1    |    2    |    3     |
+| :------------------------------ | :----: | :-----: | :------: |
+| Normal(正常)                    | `---`  | `----`  | `-----`  |
+| Normal with arrow(正常带箭头的) | `-->`  | `--->`  | `---->`  |
+| Thick(粗的)                     | `===`  | `====`  | `=====`  |
+| Thick with arrow(带厚箭头的)    | `==>`  | `===>`  | `====>`  |
+| Dotted(虚线)                    | `-.-`  | `-..-`  | `-...-`  |
+| Dotted with arrow(箭头箭头)     | `-.->` | `-..->` | `-...->` |
 
 # 6.Special characters that break syntax(破坏语法的特殊字符)
 

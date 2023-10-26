@@ -781,8 +781,6 @@ struct mm_struct//这个结构体就是用来划分地址范围的，这里只�
 };
 ```
 
->   补充：所谓堆栈相对而生，实际上就是`struct mm_struct{/.../};`
-
 但是，很多初学者会误认为进程地址空间分布是内存地址空间分布，但是实际上进程地址空间是一个抽象的概念，并不是内存的布局！
 
 就连以前我们在`C`语言内打印的指针地址也不是真正的内存地址（是一个虚拟内存地址）。以前学习`C`语言的时候只是为了方便说明，因此没有在地址这里深入探究。
@@ -893,15 +891,17 @@ A-->|"映射"| G[物理内存]
 >
 >   补充`2`：`32`位操作系统的内存寻址能力就是`4G`，即使安装了`16G`内存条，也只能识别和使用其中的`4G`。这是由于`32`位系统的地址空间最大只有`4G`。然而，实际上，`32`位系统一般只能识别到`3.25G`的内存。因此，如果您的电脑安装了`32`位操作系统，且拥有超过`4G`的内存，会有至少`12G`的内存是永远用不到的，这无疑是一种浪费。
 >
->   对于拥有`4G`或`4G`以上内存的设备，推荐使用`64`位操作系统。`64`位系统目前最高可以识别`192G`左右的内存。此外，`PAE`（物理地址扩展）允许`32`位操作系统在特定情况下使用大于4G的物理内存。`Linux`在开启`PAE`的模式下能支持在`32`位系统中使用超过`4G`的内存。`Windows XP`系列虽然支持`PAE`，但实际在使用中最大内存限制在了`4G`。
+>   对于拥有`4G`或`4G`以上内存的设备，推荐使用`64`位操作系统。`64`位系统目前最高可以识别`192G`左右的内存。此外，`PAE`（物理地址扩展）允许`32`位操作系统在特定情况下使用大于`4G`的物理内存。`Linux`在开启`PAE`的模式下能支持在`32`位系统中使用超过`4G`的内存。`Windows XP`系列虽然支持`PAE`，但实际在使用中最大内存限制在了`4G`。
 >
 >   补充`3`：`CPU`在执行进程代码时，进程将虚拟地址给`CPU`，而`CPU`内部的`CR3`寄存器存储当前进程页表的地址（页表对象也是数据，肯定在物理地址上存储，这里不能存放页表的虚拟地址，会出现因果困境问题），辅助`CPU`通过”进程传递过来的虚拟地址“和”`CR3`指向的页表“进行访址的操作，而切换进程的时候就会更换该寄存器的内容。
 >
 >   补充`4`：有关于“页表”，实际上不仅仅会存储虚拟地址和物理地址，还会存储一个权限字段，代表指向的物理地址可读还是可写，可以对访存进行安全检查。
 >
->   补充`5`：页表内还有一个标志字段，用来表明虚拟地址对应的物理地址是否分配了以及是否有内容，这样就可以让一些进程在阻塞的时候，判断是单纯的阻塞（阻塞就设置没有分配，但是有内容）还是阻塞挂起（阻塞就设置分配没有了，内容也没有了）。而进程如果被挂起，该进程的虚拟地址对应的物理地址就可以让给别的进程使用，达到效率优化，避免过大的内存被一个进程全部占用。
+>   补充`5`：页表内还有一个标志字段，用来表明虚拟地址对应的物理地址是否分配了以及是否有内容，这样就可以让一些进程在阻塞的时候，判断是单纯的阻塞（阻塞就设置没有分配，但是有内容）还是阻塞挂起（阻塞挂起就设置分配没有了，内容也没有了）。而进程如果被挂起，该进程的虚拟地址对应的物理地址就可以让给别的进程使用，达到效率优化，避免过大的内存被一个进程全部占用。
 >
 >   而如果进程在使用虚拟内存访问物理内存的时候，标志字段还没有设置好（没有分配，并且也没有内容），这个时候操作系统就会暂时停止进程的访址需求，去给进程在物理内存申请物理地址，填充好对应的内容，并且给给进程的页表建立虚拟地址和物理地址的联系，再让进程继续访址。而这个过程，就叫”缺页中断“（并且对于进程来说这一切是看不见的）。
+>
+>   补充`6`：“进程地址空间”、“线性地址空间”、“虚拟地址空间”是同一个概念。
 
 ## 8.3.地址现象
 
@@ -921,41 +921,60 @@ A-->|"映射"| G[物理内存]
 >
 > 这样，从代码表面上来看，`if-else`的两个部分都会被执行。
 
----
-
 ## 8.4.地址生成
 
-当我们的程序在编译的时候，在生成可执行程序且还没有加载到内存中的时候存在地址么？
+当我们的程序在编译的时候，在生成可执行程序且还没有加载到内存中的时候存在地址么？答案是：可执行程序在编译的时候，内部实际上早就有地址了！
 
-答案是：可执行程序在编译的时候，内部实际上早就有地址了！
+地址空间不要仅仅是`0S`内部要遵守的，其实编译器也要遵守，即：编详器编译代码的时候，就已经给我们形成了“各个区域”。并且采用和`Linux`内核中一样的编址方式，给每一个变量，每一行代码都进行了虚拟编址（对于磁盘中的可执行程序，除了存储代码本身，还存储了每一句和变量对应的地址。这些地址是虚拟地址，由编译器编址，方便编译做跳转）。
 
-地址空间不要仅仅是`0S`内部要遵守的，其实编译器也要遵守，即：编详器编译代码的时候，就已经给我们形成了“各个区域”代码区、数据区。并且，采用和`Linux`内核中一样的编址方式，给每一个变量，每一行代码都进行了编址。
-
-故：程序在编译的时候，每一个字段早已经具有了一个虚拟地址。
+故程序在编译的时候，每一个字段早已经具有了一个虚拟地址。
 
 而虚拟地址也是数据，因此代码被加载到内存中的时候，不仅仅是加载了代码，实际上虚拟地址也被加载进去了。
 
-程序内部地址使用的是地址，依旧是编译器编好的地址，当程序加载到内存，每行代码、每个变量就具有了一个物理地址。
+程序内部地址使用的是地址，依旧是编译器编好的地址，当程序加载到内存，每行代码、每个变量就被操作系统安排了对应的物理地址，并且制作了进程自己的映射页表。
 
-并且`CPU`读取的是虚拟地址。
+并且`CPU`读取的是虚拟地址。根据程序的第一个虚拟地址，通过进程结构内的进程地址空间范围，再根据页表的映射关系，查找到物理内存内的代码和虚拟空间，又拿取到虚拟地址再循环上面的步骤进行处理。
 
-再来理顺一下：
+## 8.5.细致划分
 
-1. 对于磁盘中的可执行程序，除了存储代码本身，还存储了每一句和变量对应的地址。这些地址是虚拟地址，由编译器编址，方便编译做跳转。
+实际上，地址进程空间要比我们想象的还要复杂，不仅仅只是分为几个区域，还能再被划分。
 
-2. 将可执行程序加载进物理内存，转化为进程后，进程本身有需要物理地址，这样每一条代码都有两个地址。（实际上就是在填写页表，使得虚拟地址和物理地址一一对应）
+而这个划分的依据就是`vm_area_struct{/*...*/};`，在内核中的具体实现如下：
 
-3. 接下来创建出`task_struct`的`PCB`结构体，内部包含一个`mm_struct`的进程地址空间结构体，构建了一个页表映射关系（`key->value`）。
+```cpp
+struct vm_area_struct {
+	/* The first cache line has the info for VMA tree walking. */
 
-4. 然后根据编译器把代码的各区起始虚拟地址和结尾虚拟地址填充到进程地址空间对地址空间范围的划分（`start`和`end`），这样进程地址空间的各个区域范围就设置好了。
+	union {
+		struct {
+			/* VMA covers [vm_start; vm_end) addresses within mm */
+			unsigned long vm_start;//开始
+			unsigned long vm_end;//结束
+		};
+#ifdef CONFIG_PER_VMA_LOCK
+		struct rcu_head vm_rcu;	/* Used for deferred freeing. */
+#endif
+	};
 
-5. 这个时候`CPU`先根据程序的第一个虚拟地址，通过进程结构内的进程地址空间范围，再根据页表的映射关系，查找到物理内存内的代码和虚拟空间，又拿取到虚拟地址再循环上面的步骤进行处理。
+	struct mm_struct *vm_mm;	/* The address space we belong to. */
+	pgprot_t vm_page_prot;   
+	/*...*/
+}
+```
 
-# ==9.进程操作（二）==
+![image-20231026141329546](./assets/image-20231026141329546.png)
+
+实际上，在`Linux`中，`mm_struct`被称为“内存描述符”，`vm_area_struct`被称为“线性空间”，合起来才是地址空间，这里只是简单一提。
+
+# 9.进程操作（二）
 
 这里的进程操作相比[进程操作（一）](# 3.进程操作（一）)要更加详细，偏重原理和底层，并且有一些补充。
 
-## 6.1.进程创建
+## 9.1.进程创建
+
+前面讲得`fork()`已经足够多了，但是这里再复习和补充以下。
+
+### 9.1.1.进程创建原理
 
 在`Linux`中，`fork()`可以从已经存在的进程中创建一个新进程，新进程为子进程，原进程为父进程。
 
@@ -1005,44 +1024,106 @@ int main()
 
 `fork()`使得系统多了一个进程，父进程在调用`fork()`时，内核做了以下事情：
 
-1. 分配新的内存块和创建新的内核数据结构`task_struct`对象中
+1. 分配新的内存块和创建新的内核数据结构`task_struct`对象
 
-2. 以父进程为模板，将父进程大部分数据内容深拷贝到子进程的`task_struct`对象中（比如：进程`PID`就会不一样）
+2. 以父进程为模板，将父进程大部分数据内容深拷贝到子进程的`task_struct`对象中（不能是浅拷贝，有的数据是每个进程独有的，比如：进程`PID`就会不一样）
 
-3. 添加子进程搭配系统进程列表中
+3. 添加子进程到进程列表中
 
-4. `fork()`返回，开始调度器调度
+4. `fork()`返回，系统开始使用调度器调度
 
 由于子进程没有自己的代码和数据，所以子进程只能共享/使用父进程的代码和数据。
 
-1. 而对于代码：都是不可写的，只可读，所以父子共享（共享所有的代码）没有问题
+![image-20231026151750005](./assets/image-20231026151750005.png)
 
-2. 而对于数据：不能直接共享，有可能需要隔离开，避免互相影响（隔离是通过页表来实现的）。对“不会访问”或者“只做读取”的数据不需要拷贝多一份副本出来。对于有可能会做修改的数据，操作系统虽然需要拷贝出一份副本给子进程使用，但是操作系统没有立刻进行拷贝（因为有可能就算给了子进程副本，子进程页暂时用不到），而是使用了“写时拷贝”技术实现父子间数据分离。也就是说：只有写入修改的时候才进行拷贝副本，这样做可以提高效率
+1. 而对于代码：都是不可写的，只可读，所以父子共享（共享所有的代码）没有问题（后面会有一种操作导致代码数据也会被写时拷贝）。
 
->   注意：这也就是为什么之前说父子进程可以独立的原因。
+2. 而对于数据：不能直接共享，有可能需要隔离开，避免互相影响（隔离是通过页表来实现的）。
 
-另外，虽然子进程可以看到`fork()`之前的代码，但是依旧只会执行`fork()`后面的代码，这是为什么呢？
+    对“不会访问”或者“只做读取”的数据不需要拷贝多一份副本出来。
 
-这是为了避免出现父进程创建子进程，子进程创建子子进程...这种死循环情况。
+    对于有可能会做修改的数据，操作系统虽然需要拷贝出一份副本给子进程使用，但是操作系统没有立刻进行拷贝（因为有可能就算给了子进程副本，子进程也暂时用不到），而是使用了“写时拷贝”技术实现父子间数据分离。
 
-那为什么操作系统知道从哪里开始执行呢？我们之前在[进程描述](# 2.进程描述)里有提到过程序计数器的概念，由于进程有可能会被中断（可能没有执行完），因此下次继续执行该进程的时候就需要知道从哪行代码继续开始，这个时候就需要`PC`（`pointer code`）指针（也就是`EIP`寄存器）来记录当前进程的执行位置。
+    也就是说：只有写入修改的时候才进行拷贝副本，这样做可以提高效率。
 
-而子进程也会继承这个寄存器存储的数据，可以根据这个数据直接找到后续要执行的代码。
+>   补充：写时拷贝的发生时机就是“缺页中断”的时候。
+>
+>   一开始创建出页表，父子内部的对应的物理地址都是只读的（y额就是设置页表内的权限字段），只有当子进程需要对地址指向的内容进行修改时，会向操作系统发出类似“错误”的报告，操作系统检查后，认为这种“错误”不是真的错误，而是子进程需要新的空间进行写入。
+>
+>   此时操作系统就会通过这种“触发策略”来向内存申请空间，把父进程的内容拷贝到新空间内，再重新映射子进程的页表，指向这块新开辟的空间，并且将页表内的字段改为“可读写”。 
+>
+>   但是为什么一定要拷贝父进程的东西呢？反正都要写入不是么？原因很简单，覆盖（全部修改）和修改（部分修改）是不一样的。有可能会再父进程原有数据的基础上做部分修改而已，比如：`++i`，就需要根据原有的`i`值来递增并作修改。
 
-没错，操作系统就是根据这个寄存器来得知子进程应该从哪里开始运行代码，而不是在子进程中重复调用`fork()`造成循环调用。
+另外，虽然子进程可以看到`fork()`之前的代码（也必须看得到，否者类似定义和声明语句就会失效造成代码出现问题），但是依旧只会执行`fork()`后面的代码，这是为什么呢？这是为了避免出现父进程创建子进程，子进程创建子子进程...这种死循环情况。
 
-而`fork()`系统调用之所以有两个返回值，是因为父进程代码会被子进程共享，就会有两次调用，导致有两个放回值（实际是通过寄存器做到的）。
+那为什么操作系统怎么知道从哪里开始执行呢？我们之前在[2.进程描述](# 2.进程描述)里有提到过程序计数器的概念，由于进程有可能会被中断（可能没有执行完），因此下次继续执行该进程的时候就需要知道从哪行代码继续开始，这个时候就需要`PC`（`pointer code`）指针（也就是`EIP`寄存器）来记录当前进程的执行位置，在进程退出`CPU`后就将这歌寄存器内的数据还给进程，等待下次进程被`CPU`计算时重新又进程交给`PC`寄存器。
 
-而为什么同一个地址的变量可以存储两个返回值呢？
+而子进程也会从父进程中继承该寄存器存储的数据，可以根据这个数据直接找到子进程后续要执行的代码，因此子进程中不会重复调用`fork()`造成循环调用。
 
-1. 首先，父子进程都会对`id`这个变量进行写入，所以就会发生写时拷贝，使得父子各有一个`id`变量，可以存储不同的值。因此这两个返回值一定是存储在不同地方的，但是为什么父子打印出来的地址是一样的呢？
-2. 这就需要利用之前的[进程空间](# 5.进程空间)知==识...==，这里打印的地址不是物理地址，而是编译器分配的虚拟地址。
+而`fork()`系统调用之所以有两个返回值，是因为父进程代码会被子进程共享，就会有两次调用，导致有两个返回值。
+
+而为什么同一个地址的变量可以存储两个返回值呢？这是因为：父子进程都会通过`return`对`id`这个变量进行写入，所以就会发生写时拷贝，使得父子各有一个`id`变量，可以存储不同的值。因此这两个返回值一定是存储在不同地方的，但是为什么父子打印出来的地址是一样的呢？这就需要利用之前的[进程空间](# 8.进程空间)知识，这里打印的地址不是物理地址，而是编译器分配的虚拟地址。
+
+### 9.1.1.创建多个子进程
+
+先创建多个子进程：
+
+```cpp
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define N 10
+
+void Worker()
+{
+    int cnt = 10;
+    while(cnt--)
+    {
+        printf("I am child process, [pid:%d], [ppid:%d], [cnt:%d]\n", getpid(), getppid(), cnt);
+        sleep(1);
+    }
+}
+
+int main()
+{
+    int i;
+    for(i = 0; i < N; i++)
+    {
+        sleep(1);
+        pid_t id = fork();
+        if(id == 0)
+        {
+            //child进程只会执行一次循环
+            printf("[creat child %d]\n", i);
+            Worker();
+            exit(0);//子进程退出，暂时变成僵尸状态
+        }
+        //father进程执行循环，但是不会进入if语句
+    }
+    //这里只有父进程走到这里
+    sleep(100);//由于我们还没有讲解僵尸进程的解决方法，因此这里就让父进程多等一会，直到全部子进程结束再来回收
+
+    return 0;
+}
+```
+
+运行上述代码之前，先写一个`test.sh`脚本，然后先使用`bash test.sh`运行`shell`脚本再运行`a.out`，来观察进程直接发生的变化（不过打印输出的先后顺序取决于调度器）。
+
+```shell
+while :
+    do ps ajx | head -1 && ps ajx | grep a.out |grep -v grep
+    echo '------------'
+    sleep 1
+done
+```
 
 ## 6.2.进程终止
 
+进程终止原理上就是创建进程反动作：销毁`pcb`结构体、销毁地址空间、页表等等资源销毁。
+
 ### 6.2.1.进程终止的情况
 
-在以下情况：
+进程终止存在以下情况：
 
 1. 代码运行完毕，结果正确
 
@@ -1050,15 +1131,330 @@ int main()
 
 3. 代码异常终止，程序崩溃
 
-需要强行让进程终止（释放进程申请的相关内核数据和对应的代码和数据），本质就是释放系统资源（主要是内存资源还有`CPU`资源）。
-
 ### 6.2.2.进程终止的信息
 
-进程退出码我们是有了，但是只有一串数字，这是无法进行错误探究的，所以我们需要将错误码/退出码转化为包含错误信息字符串的方案（例如使用`strerror()`来转化错误码为信息字符串）。
+以前我们在写`main()`的时候，结尾总是会写`return 0;`但是这个语句到底是什么呢？实际上`main()`会被其他函数调用，因此这个返回值就会交给这个函数，但是这个函数又需要交付返回值给谁呢？实际上是作为进程退出码交付给了父进程`bash`，可以在运行一个`C`代码后使用`echo $?`来查看最近一次父进程`bash`得到的进程退出码。
 
-并且我们也可以自己设计一套退出方案。
+```bash
+$ cat test.c
+int main()
+{
+    return 123;
+}
 
-我们也可以去打印一下系统的退出码有哪些。
+$ gcc test.c
+$ ./a.out
+$ echo $?
+123
+```
+
+而`main()`返回`0`代表第一种情况（代码运行完毕，结果正确），非`0`代表第二种情况（代码运行完毕，结果错误）。而成功我们就无需关心了，错误就会返回多种非零进程退出码。
+
+进程退出码（也就是`main()`的返回值）我们是有了，但是只有一串数字，这是无法直接进行错误探究的，所以我们需要将进程退出码人为映射转化为包含错误信息字符串的方案（使用`strerror(<退出码>)`即可将退出码转化为`Linux`下的错误信息字符串）。
+
+1.   自己设计一套退出方案
+
+2.   使用系统/语言规定的退出码方案
+
+     ```bash
+     $ cat test.c
+     #include<stdio.h>
+     #include<string.h>
+     int main()
+     {
+         int i;
+         for(i = 0; i < 200; i++)
+         {
+             printf("%s\n", strerror(i));
+         }
+         return 0;
+     $ gcc test.c
+     $ ./a.out
+     Success
+     Operation not permitted
+     No such file or directory
+     No such process
+     Interrupted system call
+     Input/output error
+     No such device or address
+     Argument list too long
+     Exec format error
+     Bad file descriptor
+     No child processes
+     Resource temporarily unavailable
+     Cannot allocate memory
+     Permission denied
+     Bad address
+     Block device required
+     Device or resource busy
+     File exists
+     Invalid cross-device link
+     No such device
+     Not a directory
+     Is a directory
+     Invalid argument
+     Too many open files in system
+     Too many open files
+     Inappropriate ioctl for device
+     Text file busy
+     File too large
+     No space left on device
+     Illegal seek
+     Read-only file system
+     Too many links
+     Broken pipe
+     Numerical argument out of domain
+     Numerical result out of range
+     Resource deadlock avoided
+     File name too long
+     No locks available
+     Function not implemented
+     Directory not empty
+     Too many levels of symbolic links
+     Unknown error 41
+     No message of desired type
+     Identifier removed
+     Channel number out of range
+     Level 2 not synchronized
+     Level 3 halted
+     Level 3 reset
+     Link number out of range
+     Protocol driver not attached
+     No CSI structure available
+     Level 2 halted
+     Invalid exchange
+     Invalid request descriptor
+     Exchange full
+     No anode
+     Invalid request code
+     Invalid slot
+     Unknown error 58
+     Bad font file format
+     Device not a stream
+     No data available
+     Timer expired
+     Out of streams resources
+     Machine is not on the network
+     Package not installed
+     Object is remote
+     Link has been severed
+     Advertise error
+     Srmount error
+     Communication error on send
+     Protocol error
+     Multihop attempted
+     RFS specific error
+     Bad message
+     Value too large for defined data type
+     Name not unique on network
+     File descriptor in bad state
+     Remote address changed
+     Can not access a needed shared library
+     Accessing a corrupted shared library
+     .lib section in a.out corrupted
+     Attempting to link in too many shared libraries
+     Cannot exec a shared library directly
+     Invalid or incomplete multibyte or wide character
+     Interrupted system call should be restarted
+     Streams pipe error
+     Too many users
+     Socket operation on non-socket
+     Destination address required
+     Message too long
+     Protocol wrong type for socket
+     Protocol not available
+     Protocol not supported
+     Socket type not supported
+     Operation not supported
+     Protocol family not supported
+     Address family not supported by protocol
+     Address already in use
+     Cannot assign requested address
+     Network is down
+     Network is unreachable
+     Network dropped connection on reset
+     Software caused connection abort
+     Connection reset by peer
+     No buffer space available
+     Transport endpoint is already connected
+     Transport endpoint is not connected
+     Cannot send after transport endpoint shutdown
+     Too many references: cannot splice
+     Connection timed out
+     Connection refused
+     Host is down
+     No route to host
+     Operation already in progress
+     Operation now in progress
+     Stale file handle
+     Structure needs cleaning
+     Not a XENIX named type file
+     No XENIX semaphores available
+     Is a named type file
+     Remote I/O error
+     Disk quota exceeded
+     No medium found
+     Wrong medium type
+     Operation canceled
+     Required key not available
+     Key has expired
+     Key has been revoked
+     Key was rejected by service
+     Owner died
+     State not recoverable
+     Operation not possible due to RF-kill
+     Memory page has hardware error
+     Unknown error 134
+     Unknown error 135
+     Unknown error 136
+     Unknown error 137
+     Unknown error 138
+     Unknown error 139
+     Unknown error 140
+     Unknown error 141
+     Unknown error 142
+     Unknown error 143
+     Unknown error 144
+     Unknown error 145
+     Unknown error 146
+     Unknown error 147
+     Unknown error 148
+     Unknown error 149
+     Unknown error 150
+     Unknown error 151
+     Unknown error 152
+     Unknown error 153
+     Unknown error 154
+     Unknown error 155
+     Unknown error 156
+     Unknown error 157
+     Unknown error 158
+     Unknown error 159
+     Unknown error 160
+     Unknown error 161
+     Unknown error 162
+     Unknown error 163
+     Unknown error 164
+     Unknown error 165
+     Unknown error 166
+     Unknown error 167
+     Unknown error 168
+     Unknown error 169
+     Unknown error 170
+     Unknown error 171
+     Unknown error 172
+     Unknown error 173
+     Unknown error 174
+     Unknown error 175
+     Unknown error 176
+     Unknown error 177
+     Unknown error 178
+     Unknown error 179
+     Unknown error 180
+     Unknown error 181
+     Unknown error 182
+     Unknown error 183
+     Unknown error 184
+     Unknown error 185
+     Unknown error 186
+     Unknown error 187
+     Unknown error 188
+     Unknown error 189
+     Unknown error 190
+     Unknown error 191
+     Unknown error 192
+     Unknown error 193
+     Unknown error 194
+     Unknown error 195
+     Unknown error 196
+     Unknown error 197
+     Unknown error 198
+     Unknown error 199
+     ```
+
+     可以看到只提供了`[0,133]`范围的错误码对应字符。
+
+而`C`语言提供了一个全局变量`errno`，如果调用`C`接口的时候发生错误，那么就会设置该变量为对应的错误码，然后可以使用`strerror(errno)`输出原因。
+
+因此退出码和错误码是有区别的，一个描述进程，一个描述函数调用，这两种码可以一起结合使用，也可以自定义。
+
+```cpp
+#include<stdio.h>
+#include<string.h>
+#include<errno.h>
+int main()
+{
+    int ret = 0;
+    
+    printf("before: %d\n", errno);
+    FILE* fp = fopen("./log.txt", "r");//注意这个文件是不存在的
+    if(fp == NULL)
+    {
+    	printf("after: %d, error string: %s\n", errno, strerror(errno));
+        ret = errno;
+    }
+    
+    return ret;//错误码和退出码达成一致
+}
+```
+
+>   补充：有些时候我们会发现，`Linux`内的有些系统调用，也会设置`errno`，这是为什么呢？这不是`C`才有的全局变量么？怎么系统调用也可以设置？原因很简单，很多`Linux`下的系统调用实际上也是用`C`写的，自然可以设置这个语言级别的全局变量。
+
+如果一个代码形成的进程运行起来出现异常了，那么其退出码就没有意义了，因为这个进程是中间就因为异常（比如：空指针解引用写入（不允许用户写入到内核空间）、除`0`错误）崩溃了（崩溃是语言概念，更深一步就是操作系统将这个进程杀死了）。
+
+而进程出现的异常信息，会被操作系统检测到，转化为对应的信号（可以用`kill -l`查看系统规定的信号），此时操作系统就会给进程发生对应的信号，最终杀掉进程（有关信号的原理我们以后再来深入）。
+
+因此，我们可以做到让一个正常的代码收到操作系统信号而终止：
+
+```bash
+$ cat test.c
+#include<stdio.h>
+#include<unistd.h>
+int main()
+{
+    while(1)
+    {
+        printf("I am a code!%d\n", getpid());
+        sleep(1);
+    }
+    return 0;//错误码和退出码达成一致
+$ gcc test.c
+$ ./a.out
+I am a code!26422
+I am a code!26422
+I am a code!26422
+I am a code!26422
+I am a code!26422
+I am a code!26422
+I am a code!26422
+Floating point exception
+```
+
+```bash
+$ kill -l
+ 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL       5) SIGTRAP
+ 6) SIGABRT      7) SIGBUS       8) SIGFPE       9) SIGKILL     10) SIGUSR1
+11) SIGSEGV     12) SIGUSR2     13) SIGPIPE     14) SIGALRM     15) SIGTERM
+16) SIGSTKFLT   17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP
+21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ
+26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO       30) SIGPWR
+31) SIGSYS      34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3
+38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8
+43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13
+48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12
+53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7
+58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
+63) SIGRTMAX-1  64) SIGRTMAX
+$ kill -8 26422
+```
+
+可以看到明明代码没有浮点错误（一般除以`0`就会出现这个错误），在接受到`-8`信号后进程依旧以该异常而终止了。因此判断一个进程是否出异常，只要看有没有收到信号即可。
+
+>    补充：其中需要注意，信号是从`1`开始的，因此`0`给进程就是表示没有收到信号，非`0`信号给进程就会造成进程因为异常而终止。
+
+总结：父进程只需要根据“退出码”和“信号”即可完整查看子进程的所有运行状况。
+
+---
 
 ### 6.2.3.进程终止的方法
 
