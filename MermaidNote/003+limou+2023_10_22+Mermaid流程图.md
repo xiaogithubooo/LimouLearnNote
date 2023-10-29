@@ -436,13 +436,9 @@ If you describe the same diagram using the the basic syntax, it will take four l
 
 A word of warning, one could go overboard with this making the flowchart harder to read in markdown form.
 
-The Swedish word `lagom` comes to mind. It means, not too much and not too little.
-
-This goes for expressive syntaxes as well.
-
 >   翻译：如果你使用级别的语法（`syntax`语法）声明同样的图表（`diagram`图表），这将需要四行。
 >
->   提醒一句，？？？
+>   提醒一句，可能使得（`making`使得）这个流程图在`Markdown`中更难阅读。
 
 ```
 flowchart TB
@@ -476,6 +472,8 @@ flowchart LR
     B --x C
 ```
 
+>   翻译：支持如下所示（`as per below`）新的箭头类型。
+
 ## 5.9.Multi directional arrows(多方向箭头)
 
 There is the possibility to use multidirectional arrows.
@@ -493,6 +491,8 @@ flowchart LR
     B <--> C
     C x--x D
 ```
+
+>   可以（` possibility`）使用多向的箭头。
 
 ## 5.10.Minimum length of a link(链接的最小长度)
 
