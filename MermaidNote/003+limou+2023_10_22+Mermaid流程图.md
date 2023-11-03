@@ -498,7 +498,9 @@ flowchart LR
 
 Each node in the flowchart is ultimately assigned to a rank in the rendered graph, i.e. to a vertical or horizontal level (depending on the flowchart orientation), based on the nodes to which it is linked. By default, links can span any number of ranks, but you can ask for any link to be longer than the others by adding extra dashes in the link definition.
 
-In the following example, two extra dashes are added in the link from node *B* to node *E*, so that it spans two more ranks than regular links:
+>   翻译：在流程图每一个（`Each`）结点最终（`ultimately`）分配（`assigned `指定的；已分配的）到渲染图中的等级。即根据（`based`）链接到的结点分配（`i.e./id est`）垂直（`vertical`）或者水平（`horizontal`）级别（依赖于流程图方向）。默认情况下，链接可以跨越（`span`）任意数量的排名（`ranks`排列），但是你可以通过在链接定义中，添加额外（`extra`）的破折号（`dashes`），请求任何链接比其他链接长。
+
+In the following example, two extra dashes are added in the link from node B to node E, so that it spans two more ranks than regular links:
 
 ```
 flowchart TD
