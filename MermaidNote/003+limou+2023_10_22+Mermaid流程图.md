@@ -10,7 +10,7 @@ Flowcharts are composed of **nodes** (geometric shapes) and **edges** (arrows or
 >
 >   `Mermaid`代码定义了如何制作结点和箭头，并且适应（`accommodates`适应）不同的箭头类型、多向（`multi`多用的 `directional`方向）箭头，以及和子图的任意连接。
 
-# 1.A node(default)(默认结点)
+# 1.默认结点
 
 ```
 ---
@@ -32,7 +32,7 @@ Instead of `flowchart` one can also use `graph`.
 
 >   翻译：也可以使用`graph`替代（`instead of`替代）`flowchart`。
 
-# 2.A node with text(包含文本的结点)
+# 2.包含文本的结点
 
 ```
 graph LR
@@ -112,7 +112,7 @@ Use double quotes and backticks "\` text \`" to enclose the markdown text.
 >
 >   >   译者：上述两句话第一句推荐在定义任何文本的时候使用，避免渲染的时候错误解析了文本。第二句话实际上就是支持一些`Markdown`语法，需要注意换行也会被解释为实际的换行，而不会被省略。
 
-# 3.Direction(方向)
+# 3.方向
 
 This statement declares the direction of the Flowchart.
 
@@ -150,9 +150,9 @@ Possible FlowChart orientations are:
 >   3.   `RL`：从右到左
 >   4.   `LR`：从左到右
 
-# 4.Node shapes(结点形状)
+# 4.结点形状
 
-## 4.1.A node with round edges(圆角边缘结点)
+## 4.1.圆角边缘结点
 
 ```
 flowchart LR
@@ -164,7 +164,7 @@ flowchart LR
     id1(This is the text in the box)
 ```
 
-## 4.2.A stadium-shaped node(椭圆形结点)
+## 4.2.椭圆形结点
 
 ```
 flowchart LR
@@ -176,7 +176,7 @@ flowchart LR
     id1([This is the text in the box])
 ```
 
-## 4.3.A node in a subroutine shape(在子形状中的结点)
+## 4.3.在子形状中的结点
 
 ```
 flowchart LR
@@ -188,7 +188,7 @@ flowchart LR
     id1[[This is the text in the box]]
 ```
 
-## 4.4.A node in a cylindrical shape(圆柱形节点)
+## 4.4.圆柱形节点
 
 ```
 flowchart LR
@@ -200,7 +200,7 @@ flowchart LR
     id1[(Database)]
 ```
 
-## 4.5.A node in the form of a circle(圆形节点)
+## 4.5.圆形节点
 
 ```
 flowchart LR
@@ -222,7 +222,7 @@ flowchart TD
     id1(((This is the text in the circle)))
 ```
 
-## 4.6.A node in an asymmetric shape(不对称形状的节点)
+## 4.6.不对称形状的节点
 
 ```
 flowchart LR
@@ -234,7 +234,7 @@ flowchart LR
     id1>This is the text in the box]
 ```
 
-## 4.7.A node (rhombus)(菱形节点)
+## 4.7.菱形节点
 
 ```
 flowchart LR
@@ -246,7 +246,7 @@ flowchart LR
     id1{This is the text in the box}
 ```
 
-## 4.8.A hexagon node(六边形节点)
+## 4.8.六边形节点
 
 ```
 flowchart LR
@@ -258,7 +258,7 @@ flowchart LR
     id1{{This is the text in the box}}
 ```
 
-## 4.9.Parallelogram(平行四边形)
+## 4.9.平行四边形
 
 ```
 flowchart TD
@@ -280,7 +280,7 @@ flowchart TD
     id1[\This is the text in the box\]
 ```
 
-## 4.10.Trapezoid(梯形)
+## 4.10.梯形
 
 ```
 flowchart TD
@@ -302,7 +302,7 @@ flowchart TD
     B[\Go shopping/]
 ```
 
-# 5.Links between nodes(结点之间的链接)
+# 5.结点之间的链接
 
 >   译者：这里主要是看链接语法，无需翻译过度。
 
@@ -398,7 +398,7 @@ This can be a useful tool in some instances where you want to alter the default 
 
 >   翻译：在某些情况下（`in some instances`在某些（特定）情况下）这可能是（`can be`可能是、能成为、可以是）有用的（`useful`有用的、有益的）工具（当您希望改变（`alter`）结点的默认位置（`positioning`位置，定位，走位）的时候）。
 
-## 5.7.Chaining of links(连接链接们)
+## 5.7.连接链接
 
 It is possible declare many links in the same line as per below:
 
@@ -456,7 +456,7 @@ flowchart TB
     B --> D
 ```
 
-## 5.8.New arrow types(新的箭头类型)
+## 5.8.新的箭头类型
 
 There are new types of arrows supported as per below:
 
@@ -474,7 +474,7 @@ flowchart LR
 
 >   翻译：支持如下所示（`as per below`）新的箭头类型。
 
-## 5.9.Multi directional arrows(多方向箭头)
+## 5.9.多方向箭头
 
 There is the possibility to use multidirectional arrows.
 
@@ -494,13 +494,15 @@ flowchart LR
 
 >   可以（` possibility`）使用多向的箭头。
 
-## 5.10.Minimum length of a link(链接的最小长度)
+## 5.10.链接的最小长度
 
 Each node in the flowchart is ultimately assigned to a rank in the rendered graph, i.e. to a vertical or horizontal level (depending on the flowchart orientation), based on the nodes to which it is linked. By default, links can span any number of ranks, but you can ask for any link to be longer than the others by adding extra dashes in the link definition.
 
->   翻译：在流程图每一个（`Each`）结点最终（`ultimately`）分配（`assigned `指定的；已分配的）到渲染图中的等级。即根据（`based`）链接到的结点分配（`i.e./id est`）垂直（`vertical`）或者水平（`horizontal`）级别（依赖于流程图方向）。默认情况下，链接可以跨越（`span`）任意数量的排名（`ranks`排列），但是你可以通过在链接定义中，添加额外（`extra`）的破折号（`dashes`），请求任何链接比其他链接长。
+>   翻译：在流程图每一个（`Each`）结点最终（`ultimately`）分配（`assigned `指定的；已分配的）到渲染图中的等级。即根据（`based`）链接到的结点分配（`i.e./id est`）垂直（`vertical`）或者水平（`horizontal`）级别（依赖于流程图方向）。默认情况下，链接可以跨越（`span`）任意数量的等级（`ranks`排列），但是你可以通过在链接定义中，添加额外（`extra`）的破折号（`dashes`），请求任何链接比其他链接长。
 
 In the following example, two extra dashes are added in the link from node B to node E, so that it spans two more ranks than regular links:
+
+>   翻译：在这下面示例（`example`）中，两个额外破折号（`dash`破折号）添加到了`B`到`E`的链接中，所以它比普通链接多跨越两个等级：
 
 ```
 flowchart TD
@@ -522,7 +524,11 @@ flowchart TD
 
 **Note** Links may still be made longer than the requested number of ranks by the rendering engine to accommodate other requests.
 
+>   翻译：？
+
 When the link label is written in the middle of the link, the extra dashes must be added on the right side of the link. The following example is equivalent to the previous one:
+
+>   当链接标签（`label`标签）写入链接中间（`middle`）时，这个额外破折号必须添加到链接的右侧，下面例子等效（`equivalent`）上一个：
 
 ```
 flowchart TD
@@ -544,6 +550,8 @@ flowchart TD
 
 For dotted or thick links, the characters to add are equals signs or dots, as summed up in the following table:
 
+>   翻译：对于虚线链接或者粗链接，这个要添加的字符是等号或点，总结起来（`as summed up`）在下面表格中：
+
 | Length(长度)                    |   1    |    2    |    3     |
 | :------------------------------ | :----: | :-----: | :------: |
 | Normal(正常)                    | `---`  | `----`  | `-----`  |
@@ -553,17 +561,45 @@ For dotted or thick links, the characters to add are equals signs or dots, as su
 | Dotted(虚线)                    | `-.-`  | `-..-`  | `-...-`  |
 | Dotted with arrow(箭头箭头)     | `-.->` | `-..->` | `-...->` |
 
-# 6.Special characters that break syntax(破坏语法的特殊字符)
+# 6.破坏语法的特殊字符
 
-# 7.Subgraphs(子图)
+It is possible to put text within quotes in order to render more troublesome characters. As in the example below:
 
-# 8.Markdown Strings(Markdown字符串)
+>   翻译：输出文本。就像下面（`below`）例子一样：
 
-# 9.Interaction(互动)
+```
+flowchart LR
+    id1["This is the (text) in the box"]
+```
 
-# 10.Styling and classes(样式和类)
+```mermaid
+flowchart LR
+    id1["This is the (text) in the box"]
+```
 
-# 11.Basic support for fontawesome(对fontawesome的基本支持)
+It is possible to escape characters using the syntax exemplified here.
+
+```
+flowchart LR
+	A["A double quote:#quot;"] --> B["A dec char:#9829;"]
+```
+
+```mermaid
+flowchart LR
+	A["A double quote:#quot;"] --> B["A dec char:#9829;"]
+```
+
+Numbers given are base 10, so `#` can be encoded as `#35;`. It is also supported to use HTML character names.
+
+# 7.子图
+
+# 8.Markdown字符串
+
+# 9.互动
+
+# 10.样式和类
+
+# 11.对fontawesome的基本支持
 
 
 
