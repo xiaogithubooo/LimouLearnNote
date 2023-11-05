@@ -2,6 +2,8 @@
 
 ## 1.1.[字符串中找出连续最长的数字串](https://www.nowcoder.com/practice/bd891093881d4ddf9e56e7cc8416562d?tpId=182&tqId=34785&ru=/exam/oj)
 
+下面使用一种类似擂台竞争的算法：
+
 ```cpp
 #include <iostream>
 #include <string>
