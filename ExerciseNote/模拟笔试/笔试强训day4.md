@@ -54,7 +54,7 @@ int main()
 
 ## 1.2.[计算糖果](https://www.nowcoder.com/practice/02d8d42b197646a5bbd0a98785bb3a34?tpId=122&tqId=33679&ru=/exam/oj)
 
-这一题比较坑得情况就是会出现无解的情况，需要在最后代入判断正误即可。
+这一题比较坑的情况就是会出现无解的情况，需要在最后代入判断正误即可。
 
 ```cpp
 #include <iostream>
