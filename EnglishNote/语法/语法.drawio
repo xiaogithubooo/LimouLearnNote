@@ -1,0 +1,85 @@
+<mxfile host="Electron" modified="2023-11-22T03:46:03.034Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="oiTNczEQCq6YOvU4jjCk" version="22.0.3" type="device">
+  <diagram name="第 1 页" id="-2IOM-B_K8dOG7VmxpdY">
+    <mxGraphModel dx="379" dy="233" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-17" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="160" as="sourcePoint" />
+            <mxPoint x="500" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-9" value="过去" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+          <mxGeometry x="410" y="200" width="20" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-7" value="现在" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="490" y="200" width="20" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-8" value="将来" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+          <mxGeometry x="570" y="200" width="20" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-11" value="&lt;b&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;动词时间&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="375" y="100" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-13" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;entryX=0;entryY=0.5;entryDx=15.07;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="3IwwoyQ_5I7H_tMcKWd4-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="385" y="160" as="sourcePoint" />
+            <mxPoint x="615" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-2" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="3IwwoyQ_5I7H_tMcKWd4-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="385" y="160" as="sourcePoint" />
+            <mxPoint x="615" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-12" value="&lt;font size=&quot;1&quot; face=&quot;Comic Sans MS&quot;&gt;&lt;b style=&quot;&quot;&gt;过去将来&lt;/b&gt;&lt;/font&gt;" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=13.47;notch=13.33;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;strokeWidth=0;" vertex="1" parent="1">
+          <mxGeometry x="435" y="150" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-16" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="3IwwoyQ_5I7H_tMcKWd4-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="420" y="160" as="sourcePoint" />
+            <mxPoint x="445" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-18" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=10;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="580" y="160" as="sourcePoint" />
+            <mxPoint x="580" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-19" value="&lt;b&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;动词状态&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="375" y="300" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-22" value="进行态" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=10;notch=10;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="370" y="410" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-23" value="完成态" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=10;notch=10;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;gradientColor=default;gradientDirection=east;" vertex="1" parent="1">
+          <mxGeometry x="495" y="410" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-26" value="完成" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=10;notch=10;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;gradientColor=default;gradientDirection=east;" vertex="1" parent="1">
+          <mxGeometry x="390" y="480" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-27" value="进行态" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=10;notch=10;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="480" y="480" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-28" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;动作已经完成了一部分，剩下的还在进行中&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="360" y="510" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-29" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;动作一直在进行中&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="360" y="440" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-30" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;动作已经完成了&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="490" y="440" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-31" value="一般态" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=10;notch=10;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="425" y="340" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3IwwoyQ_5I7H_tMcKWd4-32" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;动作简单的一般的状态&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="405" y="370" width="140" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
