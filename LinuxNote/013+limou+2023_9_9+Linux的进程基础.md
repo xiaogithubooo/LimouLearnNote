@@ -984,6 +984,7 @@ struct vm_area_struct {
 
 ```c
 #include <unistd.h>//需要包含的头文件
+#include <sys/types.h>
 pid_t fork(void);
 //返回值：
 //1.子进程中返回 0
