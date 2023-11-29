@@ -134,7 +134,7 @@ int close(int fd);
 
 ```cpp
 #include <unistd.h>
-ssize_t read(int fd, void* buf, size_t count);//将文件内容读取到 buf 中，ssize_t 是实际读取到的字符个数
+ssize_t read(int fd, void* buf, size_t count);//将文件内容读取到 buf 中，ssize_t 是实际读取到的字符个数，只要有 fd 就可以读取，无需提前打开文件，后面的函数也是类似
 ```
 
 ### 2.2.4.write()
@@ -209,7 +209,7 @@ int main()
 }
 ```
 
-优先分配最小的没有被占用的文件描述符给新打开的文件，而如果我们把默认的三个标准输入输出文件使用`fclose()`关掉，那么新打开的文件就可以占用`0`、`1`、`2`中某个标识符。
+文件描述符的分配规则非常简单：先分配最小的没有被占用的文件描述符给新打开的文件。如果我们把默认的三个标准输入输出文件使用`fclose()`关掉，那么新打开的文件就可以占用`0`、`1`、`2`中某个标识符。
 
 >   补充：在`C`语言下，所有的文件都具有文件指针`FILE`。而`FILE`是`C`标准库设计的文件结构体，内部有多种成员。在系统角度只认识`fd`，不认识`FILE`，因此我们可以猜测：在`FILE`结构体内部一定封装了文件描述符`fd`。
 >
@@ -241,12 +241,28 @@ struct file
     } f_u;
     struct path f_path;
     //...
+    const struct file_operations* f_op;//文件方法操作集
+    //...
     fmode_t f_mode;//文件权限
     struct fown_struct f_owner;//文件的拥有者
+    //...
+    atomic_long_t f_count;//引用计数（统计有多少个进程在打开该文件）
+    //...
     u64 f_version;//文件的版本
     //...
 };
 ```
+
+内部必然包含文件的各种属性和文件内容，每创建一个文件实例化，就是描述了一个文件。除此之外，还需要提供了一个文件缓存区（也就是一段内存空间）由操作系统申请给文件，在本文后面有关于缓冲区的详细描述。
+
+这个结构实例化后的对象和进程结构的实例化一样，都只是在内存中存在，因此准确来说，该进程是描述一个被打开的文件。
+
+-   所谓打开文件读数据，就是先发生缺页中断，然后将数据加载到内存（缓冲区）中，才允许进程读取文件的数据。
+-   而写数据就是修改文件，改动内容和改动属性都是修改，也需要先将数据加载到内存（缓冲区），再进行修改。
+
+因此文件读写操作都需要加载到内存中，都是来回拷贝。
+
+除此之外，在文件结构体中还有对文件的操作方法集，可以根据每个文件自己的缓冲区进行文件操作（这点在`C`语言中可以使用函数回调来实现）。
 
 ## 4.2.指针数组
 
@@ -269,7 +285,7 @@ struct files_struct
 
 上面的结构体内的`fd_array[]`数组就是指针数组，每一个指针成员指向一个描述文件的结构体。
 
-但是为什么这个数组这么小呢？只能同时打开`64/32`个文件？实际上还有其他的拓展字段（其他成员变量）来帮助这个数组指向更多的文件，在现在的操作系统里，有的时候一个进程可以打开的文件能达到`10 000`个。这个文件结构被实例化一次，就具体描述了一个文件。
+但是为什么这个数组这么小呢？只能同时打开`64/32`个文件？实际上还有其他的拓展字段（其他成员变量）来帮助这个数组指向更多的文件，在现在的某些操作系统里，一个进程有时候可以打开的文件能达到`10 000`个。
 
 >   补充：因此经过上面所有知识的铺垫，我们终于可以得到更深入的结论：
 >
@@ -284,11 +300,11 @@ struct files_struct
 
 # 5.重定向
 
+## 5.1.重定向模拟
+
 如果`close()`关掉`fd=1`的文件，根据`fd`的分配原则，关闭`fd=1`意味着下次打开文件分配的`fd`为`1`，而`C`又默认往`fd=1`的`stdout`打印。
 
 那么打印就会往新打开的文件内输出，而且不只是这一次打印，往后所有的打印输出函数都会输入的这个新打开的文件内部，这也就模拟了输出重定向。
-
-类似的，关掉`fd=0`也可以模拟输入重定向。
 
 ```c
 #include <stdio.h>
@@ -306,12 +322,53 @@ int main()
         perror("open");
         return 1;
     }
-    fprintf(stdout, "you can see me, success\n");
-	return 0;
+    fprintf(stdout, "you can see me : %d, success\n", fd);
+    fflush(stdout);
+    //加上这个 fflush() 的原因是为了刷新用户级别的缓冲区，如果没有使用这个函数，后面执行了 close() 导致没有对应的 fd，C 语言提供的用户级缓冲区就无法通过 fd 让系统将数据刷新到对应文件
+    close(stdout);
+    return 0;
 }
 ```
 
-但是如果我们在代码的末尾带上`close(fd)`就会发现，又打印不出来了？！这又是为什么呢？我们后面来讲解，这里先跳过。
+但是如果我们在代码的末尾去带`fflush()`就会发现，在文件内没有内容？！这又是为什么呢？这涉及到缓冲区，我们后面来讲解，这里先跳过。
+
+类似的，关掉`fd=0`也可以模拟输入重定向。
+
+```cpp
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main()
+{
+    close(0);
+    int fd = open("limou.txt", O_RDONLY);//此时文件内是有内容的
+    if(fd < 0)
+    {
+        perror("open");
+        return 1;
+    }
+    char buffer[1024];
+    fread(buffer, 1, sizeof(buffer), stdin);
+    printf("%s", buffer);
+    close(fd);
+    return 0;
+}//注意这里的输出缓冲区会自动刷新，无需我们手动刷新，这和输入缓冲区不一样
+```
+
+>   补充：在`C`代码结束后，输入缓冲区中的数据不会被自动刷新。这是因为输入缓冲区中的数据是由操作系统控制的，`C`程序并不能直接控制它。如果需要确保输入缓冲区中的数据被清空，可以使用如下代码：
+>
+>   ```cpp
+>   while(getchar() != '\n');
+>   ```
+>
+>   这个代码会读取并丢弃输入缓冲区中的所有剩余字符，直到遇到换行符为止。
+>
+>   而对于输出缓冲区，通常情况下都会在程序结束时被自动刷新。但是也有一些情况下，在使用`exit()`函数或者`abort()`函数非正常退出程序时，输出缓冲区可能不会被刷新。为了避免这种情况，可以在程序结束之前手动刷新输出缓冲区，例如使用`fflush(stdout)`函数。
+
+## 5.2.重定向接口
 
 上面代码还需要我们先关闭标准输入输出，有没有其他的办法呢？有的，接下来就让我们来学习一下重定向的底层调用：
 
@@ -321,9 +378,7 @@ int dup2(int oldfd, int newfd);//重点了解这一个
 int dup3(int oldfd, int newfd, int flags);
 ```
 
-我们了解`dup2()`就够了，`duq2()`就是把`oldfd`内的指针（也就是文件结构体指针）拷贝给`newfd`（也就是留下`oldfd`）。
-
-因此`newfd`曾经的指向就可以被关闭了。
+我们了解`dup2()`就够了，`duq2()`就是把`oldfd`指向的内容拷贝给`newfd`，然后将`oldfd`指向的文件关闭（这里的关闭是指引用计数减减，而不是真的将指向的文件对象释放关闭）。也就是说：`newfd`的指向发生了改动。
 
 ```c
 #include <stdio.h>
@@ -342,7 +397,9 @@ int mian(int argc, char* argv[])
         perror("open");
         retrun 1;
     }
+    close(1);
     dup2(fd, 1);//重定向输出
+    close(fd);
     fprintf(stdout, "%s\n", argv[1]);//打印出携带的参数
     return 0;
 }
@@ -364,148 +421,92 @@ int mian(int argc, char* argv[])
 > 
 > 实际上，语言从面向过程到面向对象也是经历了这些大量的实践（每次都要设计出这样带有属性和方法的结构体）才被人们设计出来的。
 
-我们之前写过一个`MyShell`项目，但是不支持重定向，接下来让我们完整实现一下。
+我们之前写过一个`MyShell`项目，还有一个重定向的功能，用的就是这里的重定向调用。
 
-```c
-//myshell.c
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
+# 6.标准错误文件
+
+标准输出文件和标准错误文件都是输出到显示器，那么两者有什么区别呢？让我们来先看一段代码。
+
+```c++
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#define NUM 1024
-#define SIZE 32
-#define SEP " "
-char cmd_line[NUM];//保存完整命令字符串
-char* g_argv[SIZE];//保存打散后的命令字符串
-
-#define INPUT_REDIR 1//输入重定向
-#define OUTPUT_REDIR 2//输出重定向
-#define APPEND_REDIR 3//追加重定向
-#define NONE_REDIR 0
-
-int redir_status = NONE_REDIR;
-char* Checkredir(char* cmd_str)//查找重定向符号
-{
-    assert(cmd_str);
-    char* end = cmd_str + strlen(cmd_str) - 1;//例如"abcd\0"，end->'\0'
-    while (end >= cmd_str)
-    {
-        if (*end == '>')
-        {
-            if (*(end - 1) == '>')
-            {
-                //追加重定向
-                redir_status = APPEND_REDIR;
-                *(end - 1) = '\0';//例如"ls -a -l>>mytext.txt"，end->后一个'>'，end-1->前一个'>'，将前面的命令分割为单独的字符串
-                end++;//此时end->'m'
-                break;
-            }
-            //输出重定向
-            redir_status = OUTPUT_REDIR;
-            *end = '\0';//例如"la -a -l>mytext.txt"，end->'>'，将前面的命令分割为单独的字符串
-            end++;//end->'m'
-            break;
-        }
-        else if (*end == '<')
-        {
-            redir_status = INPUT_REDIR;
-            *end = '\0';
-            end++;
-            break;
-        }
-        end--;
-    }
-    if (end >= cmd_str)
-    {
-        return end;//返回要打开文件
-    }
-    else
-    {
-        return NULL;//说明没有找到重定向符号，直接返回NULL
-    }
-}
+#include <unistd.h>
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+using namespace std;
 int main()
 {
-    while (1)
-    {
-        //1.打印提示信息
-        printf("[user@myshell]$ ");
-        fflush(stdout);
-        memset(cmd_line, '\0', sizeof(cmd_line));
-        //2.获取user的输入
-        if (fgets(cmd_line, sizeof(cmd_line), stdin) == NULL)
-        {
-            //出错处理
-            continue;
-        }
-        cmd_line[strlen(cmd_line) - 1] = '\0';
-        char* sep = Checkredir(cmd_line);//分析是否有重定向符号
+    printf("hello printf 1\n");//->stdio
+    fprintf(stdout, "hello fprintf 1\n");
+    perror("hello perror 2");//->stder
 
-        //3.命令行字符解析
-        //虽然可以自己写一个算法解析，但是我们可以一些现有的接口
-        g_argv[0] = strtok(cmd_line, SEP);//第一次调用需要传入原始字符串
+    const char* s1 = "hello write 1\n";
+    write(1, s1, strlen(s1));
 
-        int index = 1;
-        if (strcmp(g_argv[0], "ls") == 0)
-        {
-            g_argv[index++] = "--color=auto";
-        }
-        while (g_argv[index++] = strtok(NULL, SEP));//第二次还想要解析原始字符串，就需要传入NULL
-        //4.TODO                                                
-        //需要判断命令，如果是cd这样的命令不能使用子进程
-        if (strcmp(g_argv[0], "cd") == 0)
-        {
-            printf("下面功能让父进程来\n");
-            //更改路径的命令
-            if (g_argv[1] != NULL) chdir(g_argv[1]);
-            continue;
-        }
-        //5.fork()一个子进程
-        pid_t id = fork();
-        if (id == 0)//child
-        {
-            if (sep != NULL)
-            {
-                //找到重定向符号，并且返回的sep保存了重定向的文件
-                int fd = -1;//因为switch内部不可以定义变量，所以搬到外面先定义了
-                switch (redir_status)//确认重定向的状态
-                {
-                case INPUT_REDIR:
-                    fd = open(sep, O_RDONLY);
-                    dup2(fd, 0);//输入重定向
-                    break;
-                case OUTPUT_REDIR:
-                    fd = open(sep, O_WRONLY | O_TRUNC | O_CREAT, 0666);
-                    dup2(fd, 1);//输出重定向
-                    break;
-                case APPEND_REDIR:
-                    fd = open(sep, O_WRONLY | O_APPEND | O_CREAT, 0666);
-                    dup2(fd, 1);//输出重定向
-                    break;
-                default:
-                    printf("There is bug.\n");
-                    break;
-                }
-            }
-            printf("子进程run：\n");
-            execvp(g_argv[0], g_argv);
-            exit(1);
-        }
-        //father
-        int status;
-        pid_t ret = waitpid(id, &status, 0);
-        if (ret > 0) printf("exit code: %d\n", WEXITSTATUS(status));
-    }
+    const char* s2 = "hello write 2\n";
+    write(2, s2, strlen(s2));
+
+    cout << "hello cout 1" << endl;
+    cerr << "hello cerr 2" << endl; 
     return 0;
 }
 ```
 
-# 6.缓冲区
+这份`C++`代码的运行结果和重定向结果如下：
+
+```bash
+$ g++ main.cpp
+$ ./a.out
+hello printf 1
+hello fprintf 1
+hello perror 2: Success
+hello write 1
+hello write 2
+hello cout 1
+hello cerr 2
+
+$ ./a.out > limou.txt
+hello perror 2: Success
+hello write 2
+hello cerr 2
+
+$ cat limou.txt
+hello write 1
+hello printf 1
+hello fprintf 1
+hello cout 1
+```
+
+可以看出`1`和`2`对于的都是显示器文件，但是两个文件是些不同的，我们可以认为一个显示器文件被打开了两次。`1`和`2`描述符都指向显示器文件。因此做重定向的时候我们会发现，如果`1`被`dup2()`了，不代表`2`会被`dup2()`。
+
+这就是两者的最大区别，这样我们就可以理解，为什么开发者不自己使用类似`printf()`和`if()`打印错误，而使用`preeor()`这样的函数来做一个错误检查的输出了。
+
+如果程序在运行的过程中出现了问题，使用类似`preeor()`、`cerr()`等函数会更加方便，因为可以使错误信息和正常打印信息区分开。
+
+## 6.1.分开输出标准输出和标准错误
+
+如果希望直接使用重定向，来使一般的文本输出和错误输出分离开查看的话，可以使用类似`./a.out 1>text.txt 2>error.txt`的命令，这样就可以实现文本输出和错误输出分离到两个文件内，直接进行查看就可以。
+
+## 6.2.合并输出标准输出和标准错误
+
+如果想要文本输出和错误输出全部放进一个文件了，则可以使用命令`./a.out > all.txt 2>&1`（整个命令可以这么理解，`./a.out > all.txt`将文本输出从标准输出重定向为文件`all.txt`，此时该文件的`fd`就是`1`，而后面又将`2>&1`就把标准输出重定向为`1`，也就是说标准错误现在也指向`all.txt`了，这样两个输出就可以同时输入到一个文件了）。
+
+>   补充：重定向也可以使用`cat < source.txt > copy.txt`来拷贝文件。
+
+## 6.3.模拟实现perror()
+
+而`perror()`实际上我们也可以设计一个。
+
+```cpp
+void MyPerror(const char* msg)
+{
+    fprintf(stderr, "%s: %s\n", msg, strerror(erron));//后面这个函数就是打印错误信息
+}
+```
+
+# 7.缓冲区
 
 我们之前提到过缓冲区，实际就是一段内存空间。
 
@@ -747,86 +748,9 @@ int main()
 
 而效率提高的地方就在于`IO`执行的次数变少（访问磁盘次数减少），在内存的操作比较多（放入`buffer[]`中）。
 
-# 7.标准文件
-
-两个都是输出到显示器，那么两者有什么区别呢？让我们来先看一段代码。
-
-```c++
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-using namespace std;
-int main()
-{
-    printf("hello printf 1\n");//->stdio
-    fprintf(stdout, "hello fprintf 1\n");
-    perror("hello perror 2");//->stder
-
-    const char* s1 = "hello write 1\n";
-    write(1, s1, strlen(s1));
-
-    const char* s2 = "hello write 2\n";
-    write(2, s2, strlen(s2));
-
-    cout << "hello cout 1" << endl;
-    cerr << "hello cerr 2" << endl; 
-    return 0;
-}
-```
-
-这份`C++`代码的运行结果和重定向结果如下：
-
-```bash
-$ g++ main.cpp
-$ ./a.out
-hello printf 1
-hello fprintf 1
-hello perror 2: Success
-hello write 1
-hello write 2
-hello cout 1
-hello cerr 2
-
-$ ./a.out > limou.txt
-hello perror 2: Success
-hello write 2
-hello cerr 2
-
-$ cat limou.txt
-hello write 1
-hello printf 1
-hello fprintf 1
-hello cout 1
-```
-
-可以看出`1`和`2`对于的都是显示器文件，但是两个是不同的，可以认为一个显示器文件被打开了两次。`1/2`描述符都指向显示器文件。因此做重定向的时候我们会发现，如果`1`被`dup2()`了，不代表`2`会被`dup2()`。
-
-这就是两者的最大区别，这样我们就终于可以理解，为什么开发者不自己使用类似`printf()`和`if()`，而使用`preeor()`这样的函数来做一个错误检查的输出了。
-
-如果程序在运行的过程中出现了问题，使用类似`preeor()`、`cerr()`等函数会更加方便。
-
-并且如果希望一般的文本输出和错误输出分离开查看的话，可以使用类似`./a.out > text.txt 2>error.txt`的命令，这样就可以实现文本输出和错误输出分离到两个文件内，直接进行查看就可以。
-
-如果想要文本输出和错误输出全部放进一个文件了，则可以使用命令`./a.out > all.txt 2>&1`。
-
-重定向也可以使用`cat < source.txt > copy.txt`来拷贝文件。
-
-而`perror()`实际上我们也可以设计一个
-
-```cpp
-void myperror(const char* msg)
-{
-    fprintf(stderr, "%s: %s\n", msg, strerror(erron));//后面这个函数就是打印错误信息
-}
-```
-
 # 10.模拟实现C文件接口
 
-了解了`Linux`中文件的系统调用和缓冲区之后，就可以模拟实现`C`的文件接口了
+了解了`Linux`中文件的系统调用和缓冲区之后，就可以尝试使用系统调用，来模拟实现`C`的文件接口了。
 
 ---
 
