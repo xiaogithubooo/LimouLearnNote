@@ -5,7 +5,7 @@
 
 因此`C++`从其他语言借鉴了`lambda`表达式语法，让我们可以无需提前创建类，提高代码可读性。
 
-# 1.lambda表达式语法
+# 1.lambda表达式的语法
 
 `lambda`表达式的格式为：`[capture-list](parameters)mutable->return-type{statement}`
 
@@ -19,7 +19,7 @@
 
 因此最简单的`lambda`函数为`[]{}`，这个`lambda`函数不能做任何事情。
 
-# 2.lambda表达式运用
+# 2.lambda表达式的运用
 
 让我们尝试使用`lambda`表达式来书写一个`Add()`。
 
@@ -110,7 +110,7 @@ auto func6 = [&, x](){};//除了 x 参数是传值捕捉，其他都是引用捕
 auto func7 = [this](){};//捕获当前的 this 指针
 ```
 
-# 3.lambda表达式误解
+# 3.lambda表达式的误解
 
 1.   `lambda`表达式的捕获列表只能捕获父域的变量，如果在父域内没有对应的变量，则会编译报错。注意，这个父域是对于`lambda`内部的来说的，包含`lambda`表达式所处的表达式
 
@@ -307,3 +307,9 @@ auto func7 = [this](){};//捕获当前的 this 指针
          return 0;
      }
      ```
+
+# 4.lambda表达式的疑问
+
+我们的确可以使用`lambda`表达式解决了使用`sort(v.begin(), v.end(), less)`的问题，但是我们还有一种情况会使用仿函数，就是在使用`map`的时候会写出`map<string, int, 仿函数类类型>`，对最后的仿函数需要将`string`转化为`key`，但是仿函数的类型我们尚且可以知道，那么`lambda`怎么办呢？
+
+`lambda`的类型比较难以获取，并且还是匿名的，尽管有些其他的办法获取类型，但是我们更加推荐使用包装类`function{}`，这些我们下一篇介绍。
