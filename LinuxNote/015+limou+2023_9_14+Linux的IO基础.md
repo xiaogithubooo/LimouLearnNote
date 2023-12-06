@@ -534,37 +534,62 @@ void MyPerror(const char* msg)
 
 ## 4.2.缓冲区刷新
 
+我们直到，缓冲区需要根据一定的条件才可以进行刷新，也就是刷新策略：
+
 1. 立刻刷新（即时缓冲）
 
-2. 写一行用换行就刷新（行刷新）
+2. 写出一行数据后，遇到换行就立刻刷新（行刷新）
 
 3. 占满缓冲区就刷新（全刷新）
 
-但是有一些特殊情况也会刷新缓冲区：用户强制刷新（`fflush()`）、进程退出等。
+但是有一些特殊情况也会刷新缓冲区：用户强制刷新（`fflush()`）、进程退出时等等。
 
-> 补充：一般显示器采用行刷新（符合阅读习惯），磁盘采用全缓冲（提高效率需求）。
+> 补充`1`：一般显示器采用行刷新（符合阅读习惯），磁盘采用全缓冲（提高效率需求）。
+>
+> 补充`2`：一般显示器时行刷新，因此使用`printf()`不断打印，但是不做换行，就只能等到缓冲区被填满才会输出，这个等待缓冲的过程可能比较久。
+>
+> ```cpp
+> #include <stdio.h>
+> #include <unistd.h>
+> int main()
+> {
+>     while(1)
+>     {
+>         printf("%s", "abcdefghijklmnopqrstuvwxyz");
+>         sleep(1);
+>     }
+>     return 0;
+> }
+> ```
+>
+> 这个代码运行起来后，可能还需要很久才能看到输出（也就是缓存区满的时候）。
 
 ## 4.3.缓冲区提供
 
-但是缓冲区这段内存空间是谁提供的呢？
+但是缓冲区这段内存空间是谁提供的呢？是操作系统么？我们通过一份奇怪的代码来证明一下。
 
 ```c
 //mian.c
-int mian()
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+int main()
 {
-    //C语言接口
-    printf("hello printf()\n");
-    fprintf(stdout, "hello fprintf()\n");
-    const char* s = "hello fputs()\n");
+    //C 语言接口
+    printf("C:hello printf()\n");
+    fprintf(stdout, "C:hello fprintf()\n");
+    const char* s = "C:hello fputs()\n";
     fputs(s, stdout);
-    //OS系统接口
-    const char* str = "hello write()\n");
-    write(1, ss, strlen(ss));   
+    
+    //OS 系统接口
+    const char* str = "Sys:hello write()\n";
+    write(1, str, strlen(str));   
 
     fork();
     return 0;
 }
-//保存通过gcc生成a.out
+//保存通过 gcc 生成 a.out
 ```
 
 如果直接运行`./a.out`，那么输出`4`行字符串确实没毛病。
@@ -576,7 +601,7 @@ hello fputs()
 hello write()
 ```
 
-但是如果将内容重定向到同级的另外一份空的文本文件`/.a.out > text.txt`，就会发现会多出很多语句，并且顺序也很奇怪，这是为什么呢？
+但是如果将内容重定向到同级的另外一份空的文本文件`/.a.out > text.txt`，就会发现文件内会多出很多语句，并且顺序也很奇怪，这是为什么呢？
 
 ```bash
 hello write()
@@ -588,47 +613,68 @@ hello fprintf()
 hello fputs()
 ```
 
-这是因为我们之前提到的缓冲区是由语言来维护的（准确的说是`C`标准库）。
+其实，我们目前提到的缓冲区都是是由语言来维护的语言级缓冲区（准确的说是`C`标准库）。
 
-首先，我们可以选择在进程里使用`C`提供的函数来写入缓冲区，再由缓冲区自己调用`write()`写入系统。也可以直接调用`write()`那就会直接写入到系统。
+在代码中，我们可以选择在进程里使用`C`提供的函数来写入`C`维护的缓冲区，再由该缓冲区自己调用`write()`写入系统。当然，也可以选择直接调用`write()`直接写入到系统。
 
-我们之前是在显示器上刷新缓冲区的（行刷新）因此父进程运行一段代码，遇到`\n`就会刷新一次（这就是一种数据的改动），然后再创建子进程。对于子进程来说，父进程缓冲区内的数据已经被输出了，也就没有缓冲区的数据需要写时拷贝（继承父进程的数据）了，因此只有`4`行的输出，子进程没有任何的输出。
+我们之前是在显示器上刷新缓冲区的（行刷新）因此父进程运行一段代码，遇到`\n`就会刷新一次（这就是一种数据的改动），然后再创建子进程。对于子进程来说，父进程缓冲区内的数据已经被输出了，也就没有缓冲区的数据需要写时拷贝（继承父进程的数据）了，因此只有`4`行的输出，子进程则没有任何的输出。
 
-而当我们将输出重定向的时候，就是向磁盘中的文件写入，在`fork()`之前：
+而当我们将输出重定向的时候，就是向磁盘中的文件写入（这是一种修改）：
 
-1. 前面的函数被执行完了，但是不代表缓冲区的数据已经被刷新了，这是因为现在是将缓冲区的数据刷新到到磁盘（全刷新），因此代码语句中的`\n`变得没有效果了，父进程在缓冲区中的数据会保存着不会立刻输出
+1. 在`fork()`之前，前面的函数被执行完了，但是不代表缓冲区的数据已经被刷新了。这是因为现在是将缓冲区的数据刷新到到磁盘（行刷新变成全刷新），因此代码语句中的`\n`变得没有效果了，父进程的打印在输出缓冲区中的数据会一直保存着，不会立刻输出
 
-2. 而缓冲区的数据也是父进程的数据，在`fork()`之后，由于父进程在结束进程的时候需要刷新缓冲区的文件（这就是一种数据的改动）。为了避免子进程被父进程影响，创建子进程的时候，父进程缓冲区内的数据会发生一次写时拷贝（让子进程继承）
+2. 而缓冲区的数据也是父进程的数据，在`fork()`之后，由于父进程在结束进程的时候需要刷新缓冲区的文件（这就是一种数据的改动）。为了避免子进程被父进程影响，创建子进程的时候，父进程缓冲区内的数据会被子进程发生一次写时拷贝（让子进程继承缓冲区的数据）
 
-3. 最后在父子进程都结束进程后，由于进程结束必须要刷新所有缓冲区的数据，因此就会出现两份相同的输出（但是谁先退出这是不清楚的）
+3. 最后在父子进程都结束进程后，由于进程结束必须要刷新所有缓冲区的数据，因此就会出现两份相同的输出（但是谁先退出这是不清楚的，因此我们无法确定两次相同的输出谁是父输出，谁是子输出）
 
-因此我们可以在`fork()`代码的前面再加一条`fflush()`来避免创建子进程的时候发生写时拷贝，进而实现正常打印四条输出。
+我们可以在`fork()`代码的前面再加一条`fflush()`来避免创建子进程的时候发生写时拷贝，进而实现正常打印四条输出。
 
 ```c
 //mian.c
-int mian()
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+int main()
 {
-    //C语言接口
-    printf("hello printf()\n");
-    fprintf(stdout, "hello fprintf()\n");
-    const char* s = "hello fputs()\n");
+    //C 语言接口
+    printf("C:hello printf()\n");
+    fprintf(stdout, "C:hello fprintf()\n");
+    const char* s = "C:hello fputs()\n";
     fputs(s, stdout);
-    //OS系统接口
-    const char* str = "hello write()\n");
-    write(1, ss, strlen(ss));   
+    
+    //OS 系统接口
+    const char* str = "Sys:hello write()\n";
+    write(1, str, strlen(str));   
     fflush(stdout);
     fork();
     return 0;
 }
 ```
 
-但是为什么`fflush()`只输进去了一个参数呢，缓冲区的所在地呢？实际上`struct FILE{//...};`结构体不仅仅保存了文件描述符`fd`，还封装了`fd`对应的大量的语言级缓冲区结构。在一些`stdio.h` 实现里`FILE`是由`IO_FILE`封装的。因此在`FILE{//...};`内部我们可以看到类似`_IO_read_ptr`、`_IO_read_end`等缓冲区相关的关键字。
+```cpp
+$ ./a.out > text
+$ cat text
+Sys:hello write()
+C:hello printf()
+C:hello fprintf()
+C:hello fputs()
+```
 
-而对于操作系统来说，每一个`file{//...};`内也有一个内核缓冲区，所以我们使用`write()`的时候，也是将数据放进了系统级别的缓冲区。但是从上述代码输出来看，为什么就没有发生写时拷贝呢？醒醒吧，是子进程要使用父进程中有可能会被修改的数据时才发生写时拷贝，而`write()`放入操作系统缓冲区，而不是在进程里操作写入，由操作系统来定义刷新。因此进程之间的写实拷贝和这里无关，写实拷贝是在进程里创建子进程的时候发生的（但是这里系统级别的缓冲区我们只能先说到这里，没有办法继续展开了...）。
+而为什么`fflush()`只输进去了一个参数呢，缓冲区的所在地呢？实际上`stdout`的数据类型是`struct FILE{//...};`，该结构体不仅仅保存了文件描述符`fd`，还封装了`fd`对应的大量的语言级缓冲区结构。
 
-那么其他语言，例如：`C++`语言又是怎么做到的呢？对`<<`进行重载，然后内部实现的时候将数据拷贝到`buffer`里就可以，后面再进行刷新即可（这里可以查看一下`cout`的实现，找找看里面是否存在`fd`）。
+在一些`stdio.h` 实现里`FILE`是由`IO_FILE`封装的。因此在`FILE{//...};`内部我们可以看到类似`_IO_read_ptr`、`_IO_read_end`等缓冲区相关的关键字，这些就是维护缓冲区的关键字。因此，我们只需要传递一个参数就足够`fflush()`刷新了。
 
-最终结论：在`C`语言中，读写用的语言级别缓冲区由`C`库来维护，并且就在`FILE{//...};`内部描述缓冲区的属性。
+而对于操作系统来说，每一个`file{//...};`内理应也有一个内核级缓冲区，我们使用`write()`的时候，也应该是将数据放进了系统级别的缓冲区。但是从上述代码输出来看，为什么就没有发生写时拷贝呢？
+
+醒醒吧，是子进程要使用父进程中有可能会被父进程修改的数据时，才会发生子进程的写时拷贝，而使用`write()`，就会将数据交给操作系统的内核缓冲区，而不是在进程里的语言级缓冲区，由操作系统来定义刷新，因此进程之间的写时拷贝和这里无关。
+
+那么其他语言，是怎么维护缓冲区的呢？例如：`C++`语言对`<<`进行重载，然后内部实现的时候将数据拷贝到`buffer`里就可以，后面再进行刷新即可（这里可以查看一下`cout`的实现，找找看里面是否存在`fd`）。
+
+最终我们可以得到两个结论：
+
+1.   在`C`语言中，读写用的语言级别缓冲区由`C`库来维护，并且就在`FILE{//...};`内部描述缓冲区的属性，因此使用`C`的文件`IO`接口时需要时刻注意这方面的问题
+2.   而语言级缓冲区会提高语言级调用的`IO`效率，系统级缓冲区就会提高系统调用的`IO`效率
 
 ## 4.4.缓冲区模拟
 
@@ -758,13 +804,157 @@ int main()
 
 而效率提高的地方就在于`IO`执行的次数变少（访问磁盘次数减少），在内存的操作比较多（放入`buffer[]`中）。
 
-# 10.模拟实现C文件接口
+# 5.模拟实现C文件接口
 
 了解了`Linux`中文件的系统调用和缓冲区之后，就可以尝试使用系统调用，来模拟实现`C`的文件接口了。
 
----
+```cpp
+#pragma noce
+#define BUFFER_SIZE 4096
+#define FLUSH_NONE 1
+#define FLUSH_LINE (1 << 1)
+#define FLUSH_ALL (1 << 1)
 
-# 9.文件系统
+typedef struct MyFILE
+{
+    int _fileno;                    //文件描述符
+    int _flag;                      //刷新策略标记
+    char _buffer[BUFFER_SIZE];      //缓冲区
+    int _end;                       //end - 0 为缓冲区大小
+} MyFILE;
+
+MyFILE* Myfopen(const char* path, const char* mode);
+int Mywrite(const char* s, int num, MyFILE* stream);
+int Myfflush(MyFILE* stream); 
+int Myfclose(MyFILE* stream);
+```
+
+```cpp
+#include "file.h"
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define DFL_MOOE 0666
+
+MyFILE* Myfopen(const char* path, const char* mode)
+{
+    int fd = 0;
+    int flag = 0;
+    if (strcmp(mode, "r") == 0)
+    {
+        flag |= O_RDONLY;
+    }
+    else if (strcmp(mode, "w") == 0)
+    {
+        flag |= (O_CREAT | O_TRUNC | O_WRONLY);
+    }
+    else if (strcmp(mode, "a") == 0)
+    {
+        flag |= (O_CREAT | O_WRONLY | O_APPEND);
+    }
+    else
+    {
+        //Do nothing
+    }
+
+    if (flag & O_CREAT)//创建文件
+    {
+        fd = open(path, flag, DFL_MOOE);
+    }
+    else
+    {
+        fd = open(path, flag);
+    }
+
+    if (fd < 0)
+    {
+        errno = 2;//设置错误（代表文件打开失败）
+        return NULL;
+    }
+
+    MyFILE* fp = (MyFILE*)malloc(sizeof(MyFILE));
+    if (!fp)
+    {
+        errno = 3;//设置错误（代表空间申请失败）
+        return NULL;
+    }
+
+    fp->_flag = FLUSH_LINE;//默认行刷新
+    fp->_end = 0;//默认缓冲区没有数据
+    fp->_fileno = fd;//设置文件标识符
+
+    return fp;
+}
+
+int Mywrite(const char* s, int num, MyFILE* stream)//num 是写入的字符个数
+{
+    //写入数据
+    memcpy(stream->_buffer + stream->_end, s, num);
+    stream->_end += num;
+    
+    //判断刷新
+    if ((stream->_flag & FLUSH_LINE) 
+    &&  (stream->_end > 0)
+    &&  (stream->_buffer[stream->_end - 1] == '\n')
+    )
+    {
+        Myfflush(stream);
+    }
+    return num;
+}
+
+int Myfflush(MyFILE* stream)
+{
+    if (stream->_end > 0)
+    {
+        write(stream->_fileno, stream->_buffer, stream->_end - 0);
+        stream->_end = 0;
+    }
+    //fsync(stream->_fileno);//可选，我们之前都是对自己设计的语言级缓冲区进行刷新，这个系统调用是刷新内核级缓冲区的
+
+    return 0;
+}
+
+int Myfclose(MyFILE* stream)
+{
+    Myfflush(stream);//先刷新，防止缓冲区内还有数据
+    return close(stream->_fileno);
+}
+```
+
+```cpp
+#include "file.h"
+#include <stdio.h>
+
+int main()
+{
+    MyFILE* fp = Myfopen("./limou.txt", "w");
+    if(!fp)
+    {
+        perror("Myfopen()");
+        return 1;
+    }
+
+    int cnt = 20;
+    const char* msg = "Hello, I am limou3434.\n";
+    while(cnt--)
+    {
+        Mywrite(msg, strlen(msg), fp);
+        sleep(1);
+    }
+
+    Myfclose(fp);
+
+    return 0;
+}
+```
+
+# 6.文件系统
 
 首先我要注意到我们之前学习的文件都是被打开的文件（被进程访问），那么哪些存储在磁盘中的没有被打开的文件呢？  这些文件又有哪些需要注意的地方呢？
 
