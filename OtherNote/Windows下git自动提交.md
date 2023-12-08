@@ -59,3 +59,22 @@ pause
 ## 5.2.问题二：有乱码问题
 
 请检查系统的字符编码规则和存储代码的文本文件的字符编码规则。
+
+# 6.拓展
+
+## 6.1.多终端运行
+
+一个终端响应指令还是太忙了，既然可以多开终端，那为什么不考虑在多个终端使用相同的指令提高效率呢？
+
+```cmd
+@echo off
+
+set repos=("D:\GitWork\limou-learn-note" "D:\GitWork\limou-c-test-code" "D:\GitWork\limou-blog-web" "D:\GitWork\limou_c_and_cpp_learn")
+
+for %%r in %repos% do (
+  start cmd /c "cd %%~r && git pull && git add --all && git commit -m '脚本自动更新所有仓库' && git push"
+)
+
+pause
+```
+
