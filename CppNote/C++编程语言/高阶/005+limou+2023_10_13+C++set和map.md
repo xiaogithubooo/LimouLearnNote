@@ -1,34 +1,86 @@
-[TOC]
+`C++` 主要分为两种容器，一种是 `vector`、`list` 这类的序列式容器，主要存储数据。另一种是 `map`、`set` 这类关联式容器，目的不单纯是为了存储，"关联" 是指通过键来关联和访问容器中的元素。
 
 # 1.set 简介
 
-`set` 是 `C++` 的容器，底层使用了平衡搜索树的红黑树（`Red-Black Tree`）。使用起来很简单，就是需要注意不能有重复的元素。并且不允许通过迭代器直接修改元素，这会导致搜索树的结构被破坏。
+```cpp
+template<
+    class Key,
+    class Compare = std::less<Key>,
+    class Allocator = std::allocator<Key>
+> class set;
+```
 
-合理使用该容器可以达到排序和去重的目的。
+`set` 是 `C++` 的容器，底层使用了平衡搜索树的红黑树（`Red-Black Tree`）。这里我给一份 [set 接口文档](https://zh.cppreference.com/w/cpp/container/set) 供您参考，其他容器差不多，使用起来很简单。
 
-除了普通的 `set` 还有一个 `multiset`，插入的时候允许键值冗余的平衡搜索二叉树，使用这个容器可以只达到排序的目的。其他的功能和 `set` 差不多，但是使用 `count()` 接口的时候会出现些许不同（返回一个键值的出现次数）如果使用 `find()` 会按照中序的顺序查找。
+由于二叉树的性质，导致这个容器有以下的特点：
+
+1.   不能直接插入有重复的元素，这是定义导致的，一旦这么做就会插入失败，但是代码不会报错，只会返回一个键值对 `std::pair<iterator, bool>`，内部是一个迭代器类型和布尔类型，返回的键值对中布尔值被设置为 `false`
+
+     >   补充：`pair` 实际就是一个类，可以存储两个值，一个叫 `key` 值，一个叫 `value` 值，一个 `pair` 对象就可以管理一对键值对，这很有用，这里给您一个 [pair 类说明文档](https://zh.cppreference.com/w/cpp/utility/pair) 供您参考，您可前去一看。
+
+2.   不允许通过迭代器直接修改元素，这会导致搜索树的结构被破坏
+
+3.   合理使用迭代器时，该容器可以达到排序和去重的目的（实际上是走了一个中序遍历）
+
+4.   `set`的删除接口`erase()`有时不直接返回真和假，而是返回元素个数，这是为了和`multiset`同步
+
+>   补充：除了 `set` 以外还有一个 `multiset`，是一颗允许插入键值冗余的平衡搜索二叉树，使用这个容器可以达到排序的目的。其他的功能和 `set` 差不多，但是使用 `count()` 接口的时候会出现些许不同（返回一个键值的出现次数），而使用 `find()` 会按照中序的顺序查找，同样这里我也给出一份 [map 接口文档](https://zh.cppreference.com/w/cpp/container/multiset) 供您参考。
+>
+>   ```cpp
+>   template<
+>       class Key,
+>       class Compare = std::less<Key>,
+>       class Allocator = std::allocator<Key>
+>   > class multiset;
+>   ```
 
 # 2.map 简介
 
-而 `map` 是存储键值对的关联容器，依靠 `pair<Key, T>` 键值对结构对象来构造二叉树（或者使用函数模板 `make_pair()` 的自动推导和构造，而且一般是作为内联），底层也是红黑树。
-
-需要注意 `find()` 函数的返回值是一个迭代器，指向要查找的键值对，如果找到了指定的键，则返回指向该键值对的迭代器。如果未找到指定的键，则返回指向 `map` 末尾元素的迭代器 `end()`。
-
-不过 `map` 有个别具一格的 `[]` 重载（`multimap` 则不支持，因为对应多个 `value`），可以根据 `key` 值，查找对应的 `value` 值。其中 `insert()` 的返回值也很特殊，是一个 `pair<iterator, bool>` 类型。
-
 ```cpp
-V& operator[]<const K& key>
-{
-    pair<iterator, bool> ret = insert(make_pair(key, V()));//插入的时候有两种可能：成功或者失败，成功返回一个<当前迭代器,true>，失败返回一个<当前迭代器,false>
-    return ret.first->second;//找到迭代器中的值
-}
+template<
+    class Key,
+    class T,
+    class Compare = std::less<Key>,
+    class Allocator = std::allocator<std::pair<const Key, T>>
+> class map;
 ```
 
-这就使得 `[]` 有多种可能性：
+而 `map` 是存储键值对的关联容器，依靠 `pair<Key, T>` 键值对结构对象来构造二叉树（或者使用函数模板 `make_pair()` 的自动推导和构造，而且一般是作为内联），底层也是红黑树，这里我依旧给了一份 [接口文档](https://zh.cppreference.com/w/cpp/container/map)。
 
-1.   通过 `key` 查找对应的 `value`
-2.   修改 `key` 对应的 `value` 值
-3.   插入从未出现过的 `key` 值，默认 `value=V()`
+1.    其中 `find()` 函数的返回值是一个迭代器，指向要查找的键值对，如果找到了指定的键，则返回指向该键值对的迭代器（如未找到指定的键，则返回指向 `map` 迭代器 `end()`）
+
+2.   不过 `map` 有个别具一格的 `[]` 重载，可以根据 `key` 值，查找和修改对应的 `value` 值
+
+3.   其中 `insert()` 的返回值也很特殊，是一个 `pair<iterator, bool>` 类型
+
+     >   ```cpp
+     >   V& operator[]<const K& key>
+     >   {
+     >      pair<iterator, bool> ret = insert(make_pair(key, V()));//插入的时候有两种可能：成功或者失败，成功返回一个 <当前迭代器, true>，失败返回一个<当前迭代器, false>
+     >      return *(ret.first).second;//解引用取得迭代器所指的结点，然后返回该结点的 value
+     >   }
+     >   ```
+     >
+     >   这就使得 `[]` 有多种可能性：
+     >
+     >   1.   通过 `key` 查找对应的 `value`
+     >   2.   修改 `key` 对应的 `value` 值
+     >   3.   插入从未出现过的 `key` 值，默认 `value=V()`
+     >
+     >   而前面的`set`的插入接口也是类似的原理，甚至我们还可以再进一步简化代码：
+     >
+     >   ```cpp
+     >   V& operator[]<const K& key>
+     >   {
+     >      return *((insert(make_pair(key, V()))).first).second;
+     >   }
+     >   ```
+     >
+     >   因此，如果第一次看到这样的实现，大概会被吓一跳，这种嵌套过多的代码可以借助额外的变量（匿名对象有名化）来增强代码可读性。
+
+值得注意的是，`map`在别的语言中还有一个更加形象的名字：字典，`python`采用术语“字典”描述这一种数据结构，并且内嵌进自己的默认语法。
+
+>   补充：同理 `map` 也有一个 `multimap` 的版本，这里是 [multimap 类说明文档](https://zh.cppreference.com/w/cpp/container/multimap)，尤其需要注意的一点是：`multimap` 不支持 `[]` 重载，因为对应了多个 `value`，无法确定是哪一个结点。
 
 # 3.AVL 树
 
@@ -1244,7 +1296,7 @@ namespace limou
 
 # 5.set 和 map 的实现
 
-下面我们就利用我们已有的结果简单封装出一个 `set` 和 `map`，在很多库中的实现模板如下：
+下面我们就利用我们已有的红黑树简单封装出一个 `set` 和 `map`，
 
 ## 5.1.红黑树模板
 
