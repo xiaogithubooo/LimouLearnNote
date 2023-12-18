@@ -1,5 +1,7 @@
 # limou-learn-note
 
+[![Fork me on Gitee](https://gitee.com/limou3434/limou-learn-note/widgets/widget_6.svg)](https://gitee.com/limou3434/limou-learn-note)
+
 ## 1.仓库作者和联系方式
 
 ### 1.1.作者
@@ -25,5 +27,4 @@
 1.   记录，并提炼自己脑海中的技术逻辑，构建属于自己的知识框架。
 2.   开源与他人分享自己的技术路线
 
-<a href='https://gitee.com/limou3434/limou-learn-note'><img src='./assets/widget_1.svg+xml' alt='Fork me on Gitee'></img></a>
-
+[![star](https://gitee.com/limou3434/limou-learn-note/badge/star.svg?theme=dark)](https://gitee.com/limou3434/limou-learn-note/stargazers)[![fork](https://gitee.com/limou3434/limou-learn-note/badge/fork.svg?theme=dark)](https://gitee.com/limou3434/limou-learn-note/members)
