@@ -25,6 +25,4 @@
 1.   记录，并提炼自己脑海中的技术逻辑，构建属于自己的知识框架。
 2.   开源与他人分享自己的技术路线
 
-[![star](./assets/star.svg+xml)](https://gitee.com/limou3434/limou-learn-note/stargazers)
-
-[![fork](./assets/fork.svg+xml)](https://gitee.com/limou3434/limou-learn-note/members)
+https://gitee.com/limou3434/limou-learn-note/badge/fork.svg?theme=dark](https://gitee.com/limou3434/limou-learn-note/members)
