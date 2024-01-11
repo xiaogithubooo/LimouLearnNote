@@ -22,3 +22,5 @@
 2.   开源与他人分享自己的技术路线
 
 [![star](https://gitee.com/limou3434/limou-learn-note/badge/star.svg?theme=dark)](https://gitee.com/limou3434/limou-learn-note/stargazers) [![fork](https://gitee.com/limou3434/limou-learn-note/badge/fork.svg?theme=dark)](https://gitee.com/limou3434/limou-learn-note/members)
+
+## 4.这是一段编辑文本，用于测试...
