@@ -1,4 +1,6 @@
-# 1.string 简介
+==类要修改一下==
+
+# 1.string 的简介
 
 `string` 其实不算 `STL` 的一部分（`STL` 的诞生的比 `string` 晚），但是和 `STL` 一起学习会更加容易融会贯通。
 
@@ -12,23 +14,38 @@ typedef basic_string<char> string;
 
 > 补充：`basic_string` 的实例化除了 `string（单字节）`，还有 `wstring(宽字符、双字节)`、`u16string(16位字符，双字节)`、`u32string(32位字符，四字节)`，它们各自维护的类型是 `char`、`wchar_t`、`char16_t`、`char32_t`，这些是属于编码的问题，不过最常用的还是 `string` 类。
 
-# 2.string 类成员概要
+# 2.string 的使用
 
-这里我给 `string` 类大致的成员变量和成员函数，我将在后面详细介绍使用方法和一些细节：
+这里我给 `string` 类大致的成员变量、成员函数、非成员重载，我将在后面详细介绍使用方法和一些细节：
 
 ```c++
-//string 类的大概成员变量
+//string 类的大概成员
 class string
 {
 public:
     //1.构造函数
+    string();
     //2.析构函数
+    ~string();
     //3.赋值重载
+    operator= ();
     //4.修改器
+    push_back();
+    pop_back();
+    insert();
+    erase();
+    operator+=();
+    swap();
     //5.迭代器
+    begin(); end();
+    rbegin(); rend();
     //6.元素访问
+    operator[] (); at();
+    front(); back();
     //7.容积
+    size(); length(); capacity();
     //8.运算符
+    operator> (); operator< (); operator== (); operator!= ();
 private:
     char* _str; //指向由 new 开辟出来的动态空间，该空间存储字符串
     size_t _size; //string 对象对应字符串的大小/长度（不包含 '\0'）
@@ -39,6 +56,7 @@ private:
 static const size_t npos = -1;
 
 //9.非成员函数重载
+operator<< (); operator>> ();
 ```
 
 >   补充：上述类只是伪代码，更加详细的说明和描述您可以去 [cplusplus-string](https://legacy.cplusplus.com/reference/string/string/) 上查询...
@@ -164,7 +182,7 @@ int main()
 }
 ```
 
->   补充：这里摘去了构造函数 `string (const char* s, size_t n);`
+>   补充：这里摘去了构造函数 `string (const char* s, size_t n);`...
 
 ### 2.1.2.析构函数
 
@@ -222,7 +240,7 @@ int main()
 | Append to string             | `string& operator+=(const string& str);`         |
 | Swap string values           | `void swap(string& str);`                        |
 
->   补充：这里摘去了 `append()`、`assign()`、`replace()`
+>   补充：这里摘去了 `append()`、`assign()`、`replace()`...
 
 ### 2.1.5.迭代器
 
@@ -234,6 +252,7 @@ int main()
 
 ## 2.2.非成员函数重载
 
+---
 
 # 5.迭代器（Iterators）
 
