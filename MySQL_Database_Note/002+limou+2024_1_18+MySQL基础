@@ -1,4 +1,4 @@
-# 1.连接数据库
+# 1.数据库连接/退出
 
 `MySQL` 本质是一个网络服务，因此需要连接主机 `IP` 地址
 
@@ -13,7 +13,333 @@ mysql -h 127.0.0.1 -P 3306 -u root -p
 -   `-u`：指明登录用户
 -   `-p`：指明需要输入的密码
 
-# 2.退出数据库
+而使用 `quit` 就可以退出数据库（貌似使用 `exit` 也可以？）
 
-使用 `quit` 就可以退出数据库（貌似使用 `exit` 也可以？）
+# 2.数据库基础操作
 
+连接上数据库后，可以使用类似编程语言的数据库语法来操作数据库。
+
+## 2.1.查询数据库
+
+```bash
+# 查询数据库
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.05 sec)
+```
+
+这些数据库都在哪里呢？我们可以查看 `my.cnf` 的 `datadi` 字段，其值为 `MySQL` 的数据存放路径 `/var/lib/mysql`。
+
+```bash
+# my.cnf 的文本片段
+# ...
+datadir=/var/lib/mysql                                  
+socket=/var/lib/mysql/mysql.sock
+# ...
+```
+
+我们打开这个目录来看看：
+
+```bash
+# 查看 /var/lib/mysql 目录
+[root] # pwd
+/var/lib/mysql
+
+[root] # ls
+auto.cnf         ib_buffer_pool  mysql               public_key.pem
+ca-key.pem       ibdata1         mysql.sock          server-cert.pem
+ca.pem           ib_logfile0     mysql.sock.lock     server-key.pem
+client-cert.pem  ib_logfile1     performance_schema  sys
+client-key.pem   ibtmp1          private_key.pem
+```
+
+## 2.2.创建数据库
+
+```bash
+# 创建数据库
+mysql> create database my_database;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| my_database        |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+```
+
+我们依旧打开目录 `/var/lib/mysql` 来看看：
+
+```bash
+# 查看 /var/lib/mysql 目录
+[root] # ls
+auto.cnf         ib_buffer_pool  my_database         private_key.pem
+ca-key.pem       ibdata1         mysql               public_key.pem
+ca.pem           ib_logfile0     mysql.sock          server-cert.pem
+client-cert.pem  ib_logfile1     mysql.sock.lock     server-key.pem
+client-key.pem   ibtmp1          performance_schema  sys
+
+[root] # ls
+db.opt 
+```
+
+我们可以看到，该目录会多了一个 `my_database` 目录（内部只有一个 `db.opt` 文件），因此在 `Linux` 下，所谓的建立数据库就是创建一个目录。
+
+## 2.3.选择数据库
+
+```bash
+# 选择数据库
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| my_database        |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use my_database;
+Database changed
+```
+
+## 2.4.建立数据表
+
+```bash
+# 建立数据表
+mysql> use my_database;
+Database changed
+mysql> create table student(
+    -> name varchar(32),
+    -> age int,
+    -> gender varchar(2)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+```
+
+建立表后，此时查看 `/var/lib/mysql/my_database` 目录，就会发现多了几个文件。
+
+```bash
+# 查看 /var/lib/mysql/my_database 目录
+[root] # cd /var/lib/mysql/my_database
+[root] # ls
+db.opt  student.frm  student.ibd
+```
+
+## 2.5.向表内插入数据
+
+```bash
+# 向表内插入多个数据
+mysql> insert into student (name, age, gender) values ('limou', 18, '男'); 
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student (name, age, gender) values ('dimou', 17, '女');
+
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student (name, age, gender) values ('iimou', 20, '女');
+
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student (name, age, gender) values ('eimou', 8, '男');
+Query OK, 1 row affected (0.00 sec)
+```
+
+## 2.6.查询表内数据项
+
+```bash
+# 查询表内数据项
+mysql> select * from student;
++-------+------+--------+
+| name  | age  | gender |
++-------+------+--------+
+| limou |   18 | 男     |
+| dimou |   17 | 女     |
+| iimou |   20 | 女     |
+| eimou |    8 | 男     |
++-------+------+--------+
+4 rows in set (0.00 sec)
+```
+
+>   补充：根据文件的变化我们可以知道，对数据库的操作可以屏蔽底层的细节操作，程序员只需要通过客户端，就可以对数据进行增删查改，剩下的所有工作都交给数据库来处理。
+
+# 3.服务器、数据库、数据表
+
+我们需要了解之前做的事情之间的联系：
+
+```mermaid
+flowchart LR
+
+Client["Client(客户端)"]
+MySQL["MySQL"]
+Database_1[("Database_1")]
+Database_2[("Database_2")]
+Database_3[("Database_3")]
+table_1("table_1")
+table_2("table_2")
+table_3("table_3")
+table_4("table_4")
+table_5("table_5")
+table_6("table_6")
+
+Client --> MySQL --> Database_1 & Database_2 & Database_3
+Database_1 --> table_1 & table_2
+Database_2 --> table_3
+Database_3 --> table_4 & table_5 & table_6
+
+App_1["App_1"] -.->|"使用"| Database_1
+App_2["App_2"] -.->|"使用"| Database_2
+App_3["App_3"] -.->|"使用"| Database_3
+```
+
+-   安装数据库，就是在机器上安装一个数据库管理系统软件（在后台以“守护进程”的模式运行），该程序可以管理多个数据库，一般一个应用使用一个数据库
+-   为了保存应用中实体的数据，一般会在数据库中创建多个数据表
+
+# 4.逻辑存储结构
+
+在逻辑结构上，数据库内的数据以二维表结构来存储数据（物理结构上不一样）。
+
+# 5.MySQL 整体架构
+
+`MySQL` 是可以移植的库，可以在任意操作系统上运行（主流场景是 `Linux`），对于一个 `MySQL` 服务端来说，主要有下面的模块组成：
+
+```mermaid
+flowchart TD
+
+client_connection["Client Connection(客户端连接)"]
+client_connection -->|"通过服务端"| MySQL_Server
+
+subgraph "MySQL_Server"
+    direction LR
+	services_and_utilities["services & utilities(服务端和应用程序)"]
+	connection_pool["Connection pool(连接池)"]
+	sql_Interface["SQL_Interface(SQL 界面)"]
+	parser["parser(语法分析器)"]
+	optimizer["Optimizer(优化器)"]
+	caches["Caches(高速缓存)"]
+	optimizer & caches["Caches(高速缓存)"]
+end
+
+pluggable_storage_engines["Pluggable Storage Engines(存储引擎)"]
+MySQL_Server --> pluggable_storage_engines
+```
+
+>   补充：这里的存储引擎有点类似于驱动程序，不同的存储引擎接受上层传达下来的经过转化的 `SQL` 语句，然后进行解释做对应的操作。也就是说，“存储引擎是数据库管理系统如何存储数据、如何为存储数据建立索引、如何更新数据、如如何查询数据等技术的具体实现方法”。
+>
+>   而针对不同的数据会采用不同的存储引擎方案，这在效率上有明显的差别（而 `MySQL` 的核心就是插件式存储引擎，支持多种存储引擎）。
+>
+>   我们可以通过语句来查看数据库中存储引擎
+>
+>   ```bash
+>   # 打印所有的存储引擎信息
+>   mysql> show enginess;
+>   ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'enginess' at line 1
+>   mysql> show engines;
+>   +--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+>   | Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |
+>   +--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+>   | InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |
+>   | MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |
+>   | MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |
+>   | BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |
+>   | MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |
+>   | CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |
+>   | ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |
+>   | PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |
+>   | FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |
+>   +--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+>   9 rows in set (0.00 sec)
+>   ```
+>
+>   这样打印可能屏幕空间不够，可以使用 `\G` 选项辅助打印
+>
+>   ```bash
+>   # 使用 `\G` 选项辅助打印所有的存储引擎信息
+>   mysql> show engines \G
+>   *************************** 1. row ***************************
+>         Engine: InnoDB
+>        Support: DEFAULT
+>        Comment: Supports transactions, row-level locking, and foreign keys
+>   Transactions: YES
+>             XA: YES
+>     Savepoints: YES
+>   *************************** 2. row ***************************
+>         Engine: MRG_MYISAM
+>        Support: YES
+>        Comment: Collection of identical MyISAM tables
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 3. row ***************************
+>         Engine: MEMORY
+>        Support: YES
+>        Comment: Hash based, stored in memory, useful for temporary tables
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 4. row ***************************
+>         Engine: BLACKHOLE
+>        Support: YES
+>        Comment: /dev/null storage engine (anything you write to it disappears)
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 5. row ***************************
+>         Engine: MyISAM
+>        Support: YES
+>        Comment: MyISAM storage engine
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 6. row ***************************
+>         Engine: CSV
+>        Support: YES
+>        Comment: CSV storage engine
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 7. row ***************************
+>         Engine: ARCHIVE
+>        Support: YES
+>        Comment: Archive storage engine
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 8. row ***************************
+>         Engine: PERFORMANCE_SCHEMA
+>        Support: YES
+>        Comment: Performance Schema
+>   Transactions: NO
+>             XA: NO
+>     Savepoints: NO
+>   *************************** 9. row ***************************
+>         Engine: FEDERATED
+>        Support: NO
+>        Comment: Federated MySQL storage engine
+>   Transactions: NULL
+>             XA: NULL
+>     Savepoints: NULL
+>   9 rows in set (0.00 sec)
+>   ```
+>
+>   大部分情况下，常用的存储引擎也就两个：`InnoDB` 和 `MyISAM`，并且前者比后者更加常用，我们以后再深入研究。
+
+# 6.SQL 语句分类
+
+1.   **DDL 数据定义语句**：用于维护存储数据的结构（建表、修改表结构...）
+1.   **DML 数据操作语句**：用于数据操作（插入数据、删除数据...）
+1.   **DCL 数据控制语句**：用于数据控制，主要是用于权限管理、事务管理（赋予权限、取消权限）
