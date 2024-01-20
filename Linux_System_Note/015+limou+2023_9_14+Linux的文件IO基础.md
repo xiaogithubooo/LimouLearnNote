@@ -1,4 +1,4 @@
->   前要：本次我想给您带来关于 `IO` 和文件的知识，而文件在本系列中分为内存上的文件和磁盘上的文件
+>   前要：本次我想给您带来关于 `IO` 和文件的知识，而文件在本系列中分为内存上的文件和磁盘上的文件。
 
 # 1.文件概念
 
@@ -1186,9 +1186,7 @@ end
 
 2. `r` 权限（读）：有了读权限才可以显示目录中文件的名字和属性，可是 `inode space` 中是没有存储文件名的，因此就需要读取目录的 `inode number` 才可以根据键值关系来获得文件名，而根据 `inode number` 又可以查找对应的 `number space`，进而得到文件的属性。总结来说，就需要有读取到 `inode number` 的读权限。
 
-3. `x` 权限（执行）：待补充...
-
-那么对于操作系统来说，创建一个文件的时候，系统做了什么呢？
+3. `x` 权限（执行）：控制用户是否可以通过该目录的 `inode number` 进入该目录
 
 ## 6.3.系统创建/删除/查看文件
 
@@ -1221,8 +1219,6 @@ end
 
     `ls`、`cat` 等指令的时候，`ls` 首先找到目录以及目录的 `inode` 编号，找到所有的文件名和对应的文件 `inode` 编号，然后感觉对应的 `inode` 位图找到所有的属性然后和文件名字拼接输出即可，而 `cat` 也是类似的只不过是根据文件属性找到对应块的文件内容...
     
-    并且查找文件时，往往也会涉及到进程的工作路径等等（毕竟进程某种角度上来看也代表着用户的操作）
-    
     >   补充 `1`：如果不断访问一个目录，`Linux` 就会利用 `struct dentry{/*...*/};` 数据结构，将常用的文件名字和路径导入到内存中，加快访问速度，这个了解下就行...
     >
     >   补充 `2`：实际上 `inode number` 并不难找，问题是如何找到一开始的分区，不同分区的内的 `inode number` 有可能相同，这该如何确定 `inode number` 在哪个分区呢？
@@ -1246,18 +1242,24 @@ end
     >   /dev/sr0         19M   19M     0 100% /iso
     >   ```
     >
-    >   在我的云服务器下 `/dev/vda1        50G   18G   30G  37% /` 就把分区 `/dev/vda1 ` 挂载到 `/` 下，也就是说，整个系统都只使用了一个分区（买得是比较便宜的服务器）。
+    >   在我的云服务器下显示这一行 `/dev/vda1        50G   18G   30G  37% /` 就是表明把分区 `/dev/vda1 ` 挂载到 `/` 下，也就是说，整个系统都只使用了一个分区（买得是比较便宜的服务器）。
     >
     >   因此所谓的挂载就是把目录的数据结构和文件系统的数据结构拿指针关联起来，因此访问某一个分区，就访问对应挂载的目录即可。
+    >
+    >   而进程在打开某个文件的时候，内部 `PCB` 保存了工作目录（含有分区），就去根据这个地址逐步映射到最终文件的 `inode space`，找到文件的属性填充到内存中的 `struct file{/*...*/}` 中，把对应的块中的内容也预加载进缓冲区即可。
 
 # 10.软硬链接
 
+## 10.1.软硬链接的创建
+
 经过上述的铺垫，我们可以来理解软硬链接了，首先我们先来尝试创建链接：
 
-1.   `ln -s <链接文件> <链接名词>` 可以创建软链接
-2.   `ln <链接文件> <链接名词>` 可以创建硬链接
+1.   `ln -s <目标文件> <链接名>` 可以创建软链接，`s` 就是 `soft` 的意思
+2.   `ln <目标文件> <链接名>` 可以创建硬链接
 
-两者有什么差别呢？软链接有自己独立的 `inode`，并且不会增加文件的硬链接数。而硬链接 `inode` 和对应的文件 `inode` 是一样的（这意味着硬链接不是一个独立的文件），并且会增加硬链接数。
+## 10.2.软件链接的区别
+
+两者有什么差别呢？软链接有自己独立的 `inode`，并且不会增加文件的硬链接数。而硬链接 `inode` 和对应的文件 `inode` 是一样的（这意味着硬链接不是一个独立的文件），并且会增加硬链接数（是对文件的一种引用计数）。
 
 ```bash
 $ ls -li
@@ -1273,15 +1275,35 @@ total 4
 1840849 -rw-rw-r-- 1 limou limou    0 Oct  1 22:42 text_3
 ```
 
-软链接类似于 `Windows` 下的快捷方式，可以更加快捷使用某些程序和工具（软链接内部文件内容实际上就是存储了指向目标的路径）。
+软链接类似于 `Windows` 下的快捷方式，是一个独立的文件，可以更加快捷使用某些程序和工具，而软链接内部文件内容实际上就存储了指向目标文件的路径（`WIndows` 下打开快捷方式的属性就会看得更清楚）。
 
-硬链接只是在指定的目录下，建立了文件名和 `inode` 的映射而已，也就是给文件重命名。实际上硬链接数就是引用计数的应用。
+硬链接只是在指定的目录下，新建立了文件名和 `inode number` 的映射存入到当前目录里而已（因为硬链接的 `inode number` 和目标文件的 `inode number` 是一样的），也可以说是给文件重命名，实际上硬链接数就是文件在引用计数的应用。
 
-当我们删除文件的时候，引用计数减 `1`，只有引用计数为 `0` 的时候，该文件才会被彻底删除，而硬链接可以增加引用计数。
+当我们删除文件的时候，引用计数减 `1`，只有引用计数为 `0` 的时候（没有文件名和 `inode number` 映射时），该文件才会被彻底删除，而创建硬链接的时候，引用计数加 `1`。
 
-我们可以尝试使用 `unlink <文件名>` 指令来减少某个文件的引用计数，达到 `rm` 的效果（系统调用也有一个加 `unlink()` 的函数）。
+我们甚至可以尝试使用 `unlink <文件名>` 指令来减少某个文件的引用计数，达到 `rm` 的效果（系统调用也有一个加 `unlink()` 的函数）并且我更推荐这种删除方法。
 
-并且文件自己就是自己的硬链接。对于刚刚被创建出来的目录，其硬链接数默认为 `2`，一个是自己本身，另外一个是目录内部的 `.`，这个 `.` 用于使用相对路径，其实际上是目录的一个硬链接。因此使用 `.` 就是使用目录。而 `..` 就是目录的父目录的硬链接。
+而对于刚刚被创建出来的目录，其硬链接数默认为 `2`：
+
+1.   一个是自己本身（自己就是自己的硬链接）
+2.   另一个是目录内部的 `.`，这个 `.` 用于使用相对路径，其实际上是目录的一个硬链接。因此使用 `.` 就是使用目录（而 `..` 就是目录的父目录的硬链接）
+
+而如果我们在空目录内再新建一个子目录，那空目录的硬链接数可以达到 `3`。
+
+下面我们利用一个简单的 `C++` 代码进行对软硬链接的模拟：
+
+```cpp
+//使用 C++ 代码来模拟软硬链接原理
+int main()
+{
+    int file = 10; //文件本体
+    int* pfile = &file; //pfile 就类似 file 的软连接
+    int& File = file; //File 就类似 file 的硬链接
+    return 0;
+}
+```
+
+>   补充：用户无法对目录建立硬链接...
 
 # 11.动静态库
 
@@ -1289,14 +1311,22 @@ total 4
 
 ### 8.1.1.静态库制作
 
-实际上，我们可以把 `function.h` 文件和经过 `gcc -c function.c -o function.o` 的文件给别人，就可以给别人使用您编写的函数，如果将多个 `.o` 文件打包起来，就是“形成静态库”的过程，使用 `ar` 命令即可完成打包。
+实际上，我们可以把 `function.h` 文件和经过 `gcc -c function.c -o function.o`  后的文件给别人，就可以给别人使用您编写的函数。如果将多个 `.o` 文件打包起来，就是“形成静态库”的过程，使用 `ar` 命令即可完成打包。
 
 ```bash
 ar -rc <目标静态库名，lib开头的一个库名，后缀就是.a> <.o文件列表># r 替换 c 创建
 ```
 
 ```bash
-$ cat function1.c function1.h function2.c function2.h test.c
+$ cat function1.h function1.c function2.h function2.c test.c
+
+
+#pragma once
+#include <stdio.h>
+#include <time.h>
+extern void Print(const char* str);
+
+
 #include "function1.h"
 extern void Print(const char* str)
 {
@@ -1306,8 +1336,7 @@ extern void Print(const char* str)
 
 #pragma once
 #include <stdio.h>
-#include <time.h>
-extern void Print(const char* str);
+extern int Add(int i);
 
 
 #include "function2.h"
@@ -1318,11 +1347,6 @@ int Add(int i)
 }
 
 
-#pragma once
-#include <stdio.h>
-extern int Add(int i);
-
-
 #include "function1.h"
 #include "function2.h"
 int main()
@@ -1331,6 +1355,7 @@ int main()
     printf("%d\n", Add(50));
     return 0;
 }
+
 $ gcc -c function1.c -o function1.o
 $ gcc -c function2.c -o function2.o
 $ ls
@@ -1339,30 +1364,14 @@ function2.c function2.h function2.o
 test.c
 
 $ ar -rc libfunction.a function1.o function2.o
-$ ls
-function1.c function1.h function1.o
-function2.c function2.h function2.o
-test.c libfunction.a
-
 $ rm function1.c function2.c function1.o function2.o
-$ ll
-total 16
-function1.h function2.h
-libfunction.a test.c
-
-$ mkdir include
-$ mv function1.h function2.h include
-$ mkdir lib
-$ mv libfunction.a lib
-$ mkidr mylib
-$ mv include lib mylib
 $ ls
-mylib  test.c
+function1.h function2.h test.c libfunction.a
 ```
 
 ### 8.1.2.静态库使用
 
-一般制作库后，有一个目录为 `include` 专门放头文件，还有一个目录为 `lib` 专门放静态库文件。打包好两个文件后就可以发布了，因此可以有三种使用方法：
+一般制作库后，有一个目录为 `include` 专门放头文件，还有一个目录为 `lib` 专门放静态库文件。打包好两个文件后就可以发布了，有三种常见的使用方法：
 
 1.   直接修改系统文件：`gcc` 头文件的默认搜索路径是 `/usr/include`，而 `gcc` 库文件的默认搜索路径是 `/lib64` 或者 `/usr/lib64`，我们直接将我们做的头文件和库拷贝进去即可。在使用我们的库时，可以在 `main()` 所在文件使用 `<>` 引用头文件，也可以使用 `""`，然后使用 `gcc <使用静态库的源文件> -l <静态库去掉lib和.a>` 即可（整个过程实际上就是安装库的过程，但是这个做法不推荐，容易污染别人的头文件和库文件）
 
