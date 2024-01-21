@@ -1,5 +1,3 @@
-==类要修改一下==
-
 # 1.string 的简介
 
 `string` 其实不算 `STL` 的一部分（`STL` 的诞生的比 `string` 晚），但是和 `STL` 一起学习会更加容易融会贯通。
@@ -36,16 +34,17 @@ public:
     erase();
     operator+=();
     swap();
-    //5.迭代器
-    begin(); end();
-    rbegin(); rend();
-    //6.元素访问
+    //5.元素访问
     operator[] (); at();
     front(); back();
+    //6.迭代器
+    begin(); end();
+    rbegin(); rend();
     //7.容积
     size(); length(); capacity();
     //8.运算符
     operator> (); operator< (); operator== (); operator!= ();
+    
 private:
     char* _str; //指向由 new 开辟出来的动态空间，该空间存储字符串
     size_t _size; //string 对象对应字符串的大小/长度（不包含 '\0'）
@@ -56,10 +55,11 @@ private:
 static const size_t npos = -1;
 
 //9.非成员函数重载
-operator<< (); operator>> ();
+operator<< (); 
+operator>> ();
 ```
 
->   补充：上述类只是伪代码，更加详细的说明和描述您可以去 [cplusplus-string](https://legacy.cplusplus.com/reference/string/string/) 上查询...
+>   补充：上述类只是伪代码，更加详细的说明和描述您可以去 [cplusplus-string](https://legacy.cplusplus.com/reference/string/string/) 或 [C++官网](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5) 上查询...
 
 ## 2.1.成员函数
 
@@ -240,531 +240,7 @@ int main()
 | Append to string             | `string& operator+=(const string& str);`         |
 | Swap string values           | `void swap(string& str);`                        |
 
->   补充：这里摘去了 `append()`、`assign()`、`replace()`...
-
-### 2.1.5.迭代器
-
-### 2.1.6.元素访问
-
-### 2.1.7.容积
-
-### 2.1.8.运算符
-
-## 2.2.非成员函数重载
-
----
-
-# 5.迭代器（Iterators）
-
-如果需要遍历一个 `string` 对象需要怎么做呢？目前我们有多种方法可以遍历。
-
-| 类别    | 可读可修改                                                                         | 可读不可修改                                                                                               |
-| ----- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| 正向迭代器 | `iterator begin() noexcept;` <br> `iterator end() noexcept;`                    | `const_iterator begin() const noexcept;` <br> `const_iterator end() const noexcept;`                   |
-| 反向迭代器 | `reverse_iterator rbegin() noexcept; ` <br> `reverse_iterator rend() noexcept;` | `const_reverse_iterator rbegin() const noexcept;` <br> `const_reverse_iterator rend() const noexcept;` |
-
-| 类别         | 函数声明                                                                                                   |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
-| 普通对象的常量迭代器 | `const_iterator cbegin() const noexcept;` <br> `const_iterator cend() const noexcept;`                   |
-| 常量对象的常量迭代器 | `const_reverse_iterator crbegin() const noexcept;` <br> `const_reverse_iterator crend() const noexcept;` |
-
-其中 `iterator` 是一个类模板：
-
-```c++
-template <class T>//这里假设 T 实例化为 string 
-class iterator 
-{ 
-    //1.正向迭代器
-    //迭代器的成员函数和操作符重载定义
-    iterator begin() noexcept;//可以找到 string 对象的头
-    const_iterator begin() const noexcept;//可以找到 const string 对象的头
-    iterator end() noexcept;//可以找到 string 对象的尾
-    const_iterator end() const noexcept;//可以找到 const string 对象的尾
-
-//2.反向迭代器
-    reverse_iterator rbegin() noexcept;
-    const_reverse_iterator rbegin() const noexcept;
-    reverse_iterator rend() noexcept;
-    const_reverse_iterator rend() const noexcept;
-    //...
-};
-```
-
-## 5.1.正向迭代器：begin()和 end()
-
-### 5.1.1.for 遍历
-
-这里会使用 `string` 类的成员函数 `size()`，这个函数专门计算 `string` 对象的大小，这在后面讲解 `string` 类的成员函数时，还会进行讲解。
-
-```c++
-#include <iostream>
-#include <string>
-int main()
-{
-    std::string str("abcd");
-    for (int i = 0; i < str.size(); i++)
-    {
-        std::cout << str[i] << " ";//[] 运算符重载
-    }
-    return 0;
-}
-```
-
-还需要注意的是，`[]` 运算符重载使得 `string` 对象能够像数组一样遍历，我们之后还会再提一次。
-
-### 5.1.2.迭代器
-
-迭代器的行为十分类似指针（但是不是指针）使得 `string` 对象可以像数组一样被使用：
-
-```c++
-#include <iostream>
-#include <string>
-int main()
-{
-    std::string str("abcd");
-    std::string::iterator it = str.begin();//这里如果类型名字太长，可以使用 auto 来自动推导
-    while (it != str.end())//这里不推荐使用'<'符号
-    {
-        std::cout << *it << " ";
-        (*it)++;
-        it++;
-    }
-    std::cout << std::endl << str << std::endl;
-    return 0;
-}
-```
-
-在 `while (it != str.end())` 这里不推荐使用 `<` 符号，尽管在 `string` 对象里使用或许不会出错，但是在其他类里可能就不满足了。（之前说过迭代器的行为类似指针，因此 `string` 的底层很有可能就是指针，因此使用 `<` 不会出太多错）
-
-但是迭代器不仅仅是 `string` 类使用，基本所有库里的类都可以使用迭代器遍历，迭代器有几种便利之处：
-
-1. 通用，在一些不支持 `[]` 重载的结构也可使用迭代器
-
-2. 是无需考虑差 `1` 问题
-
-3. 屏蔽底层实现细节，可以直接使用
-
-而其他类底层的迭代器是靠纯指针实现的，例如：链表，因此使用 `<` 会有风险。
-
-实际上迭代器就是 `C++` 封装的一种体现。
-
-### 5.1.3.范围 for
-
-```c++
-#include <iostream>
-#include <string>
-
-int main() 
-{
-    std::string str = "Hello";
-    //使用范围 for 循环遍历字符串中的每个字符
-    for (auto ch : str) 
-    {
-        std::cout << ch << " ";
-    }
-    return 0;
-}
-```
-
-实际上范围 `for` 的底层代码就是迭代器，只不过范围 `for` 封装得更加厉害罢了（在一些编译器内部调试的时候可以切到范围 `for` 的汇编语句来检验两者关系）。
-
-## 5.2.反向迭代器：rbegin()和 rend()
-
-```c++
-#include <iostream>
-#include <string>
-
-int main()
-{
-    std::string str("abcd");
-    std::string::reverse_iterator rit = str.rbegin();
-    while (rit != str.rend())
-    {
-        std::cout << *rit << " ";
-        (*rit)++;
-        rit++;//注意依旧是++，而不是--
-    }
-    std::cout << std::endl << str << std::endl;
-    return 0;
-}
-```
-
-## 5.3.常量迭代器
-
-常量迭代器也没有什么声明的，只是将上述两种迭代器从“可读可写”设置为“只可读不可写”，这点我们就不再深入讲解了。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    //const string str1 = "abcdef";
-    //auto it = str1.begin();
-    //while (it != str1.end())
-    //{
-    //    cout << (*it)++ << " ";
-    //
-    //    it++;
-    //}
-    //cout << endl;
-    string str2 = "abcdef";
-    auto cit = str2.cbegin();
-    while (cit != str2.cend())
-    {
-        cout << *cit << " ";
-        cit++;
-    }
-    cout << endl;
-    return 0;
-}
-```
-
-# 6.容积（Capacity）
-
-| 类别         | 函数声明                                                                                                        |
-|:---------- | ----------------------------------------------------------------------------------------------------------- |
-| 获取长度和容量    | `size_t size() const noexcept;` <br> `size_t length() const noexcept;` <br> `size_t capacity() const noexcept;` |
-| 改变长度和容量    | `void resize (size_t n);` <br> `void resize (size_t n, char c);` <br> `void reserve (size_t n = 0);`            |
-| 获取环境最大容量数值 | `size_t max_size() const noexcept;`                                                                         |
-| 清理对象内容     | `void clear() noexcept;`                                                                                    |
-| 判空         | `bool empty() const noexcept;`                                                                              |
-
-## 6.1.size()和 length()和 capacity()
-
-首先我们有一个问题，为什么会有两个计算长度的成员函数呢？这是因为 `string` 类得诞生比 `STL` 早，最开始设计的是 `length()`，后来出现了 `STL` 才开始使用了（并且建议使用）`size()`。两个都可以计算 `string` 对象内部字符串长度，在功能上是等效的。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str("abcdefghijklmn");
-    cout << str.size() << endl;
-    cout << str.length() << endl;
-    return 0;
-}
-```
-
-> 补充：如果查看其他的结构会发现都是使用 `size()`，而没有 `length()`
-
-而另外一个函数 `capacity()` 则可以求得当前 `string` 对象的容量。
-
-## 6.2.clear()
-
-这个成员函数会对 string 对象的字符串作清理，但是不会释放空间，同时原 `string` 的容量不变，对象的 `siez()` 值置为空。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str("abcdefghijklmn");
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl;
-    str.clear();
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.length() << endl;
-
-    return 0;
-}
-```
-
-## 6.3.max_size()
-
-这个成员函数用于告知用户该环境下的 `string` 对象最多可以申请到多少字节的空间。
-
-但是这个值是写死的，只是在不同环境下会不同罢了，因此基本没怎么用到这个。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str1("abcdefghijklmn");
-    cout << str1.max_size() << endl;
-    string str2("abcdefghijklmn");
-    cout << str2.max_size() << endl;
-    return 0;
-}
-```
-
-## 6.4.resize()
-
-`resize()` 可以将 `string` 对象的大小（即：`size()` 的值），有以下集几种情况：
-
-1. 如果 `n` 小于 `string` 对象原有的大小，则删除 `n` 个字符以外的字符（这个操作比较危险）
-
-2. 如果 `n` 大于 `string` 对象原有的大小，则尾插任意字符（默认表现为空字符 `\0`）扩充到当前的内容，使得大小达到 `n`。因此如果有填充某个字符串的需求，也是可以用这个函数的
-
-3. 如果指定了字符 `c`，则多开辟的空间初始化为字符 `c`
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    //1.创建一个 "abcde" 为内容的 string 对象，size()值为 5，capacity()默认值为 15
-    string str("abcde");
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-    //2.调整 size()值为 20 的 string 对象，而在 VS2022 中表现为填充 15 个空字符'\0'，而空字符是没有打印出来的
-    str.resize(20);
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    //3.调整 size()值为 30 的 string 对象，因此：前 5 个字符为 "abcde"，后面有 15 个'\0'，并且还有 10 个'c'字符，整体打印出 "abcdecccccccccc"
-    str.resize(30, 'c');
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    //4.缩小 size()值，并且可以看到，扩容的空间依旧有效
-    str.resize(5);
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    return 0;
-}
-```
-
-## 6.5.reserve()
-
-这个函数请求改变容量，要求将 `string` 对象调整到大小为 `n` 的容量（或者比 `n` 更大）这个函数对字符串的长度没有影响，也不能改变它的内容。
-
-如果使用者做了缩小容量的操作，并且影响到原有 `string` 对象字符串的存储时，该函数会拒绝请求（即：`non-binding` 无约束力的）。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    //1.创建一个 "abcde" 为内容的 string 对象，size()值为 5，capacity()默认值为 15
-    string str("abcde");
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-    //2.调整 capacity()值为 20 的 string 对象
-    str.reserve(20);
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    //3.调整 capacity()值为 30 的 string 对象
-    str.reserve(30);
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    //4.减小 capacity()值为 4 的 string 对象（失败请求）
-    str.reserve(4);
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    //4.增大 capacity()值为 10 的 string 对象
-    str.reserve(10);
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    return 0;
-}
-```
-
-> 注意：函数名 `reserve` 有时候会和单词 `reversal`（反转）搞混，这个注意一下就行……
-
-## 6.6.empty()
-
-该函数返回字符串是否为空（即：`size()` 是否为 0)，这个函数不会以任何方式修改字符串的值。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str("abcdef");
-    cout << str.empty() << endl;
-    str.resize(0);//为空返回 true
-    cout << str.empty() << endl;
-    return 0;
-}
-```
-
-## 6.7.shrink_to_fit()
-
-`shrink to fit` 这个词的意思就是“缩小以适应”，该函数请求减少容量 `capacity` 来适应大小 `size`，当然这只是一种请求（即：`non-binding` 无约束力的）。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str("abcde");
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-    str.reserve(1000);//明明大小只有 5，容量确高达 1000 多，浪费资源
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    str.shrink_to_fit();//使用该函数请求缩小容量（非强制）
-    cout << str << endl;
-    cout << str.size() << endl;
-    cout << str.capacity() << endl << endl;
-
-    return 0;
-}
-```
-
-# 7.访问元素（Element access）
-
-## 7.1.operator []
-
-```c++
-//重载形式
-char& operator[] (size_t pos);
-const char& operator[] (size_t pos) const;
-```
-
-`pos` 的起始位置为 `0`，这意味这和数组的使用形式类似。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str("abcdef");
-    for (int i = 0; str[i]; i++)
-    {
-        cout << str[i] << " ";
-    }
-    return 0;
-}
-```
-
-如果 `pos` 等于 `string` 对象的 `size` 值，这个符号重载函数就会返回一个指向空字符的引用，该字符位于 `string` 对象最后一个字符之后（这个字符不可被修改，只所以可以被允许访问的其中一个原因就是方便写循环终止条件，就像上面的循环例子）。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str("abcdef");
-    cout << "空字符->[" << str[str.size()] << "]" << endl;//可以看到空字符没有办法打印出来
-    return 0;
-}
-```
-
-## 7.2.at()
-
-```c++
-//重载声明
-char& at (size_t pos);
-const char& at (size_t pos) const;
-```
-
-该函数可以获取字符串中的字符，返回一个 `pos` 指向字符的引用，该函数自动检查 `pos` 是否是 `string` 对象中合法的字符索引，非法则抛出异常。
-
-那么 `at()` 和 `[]` 有什么区别呢？答案在于自动检查出现非法时，例如下面的代码：
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    try
-    {
-        string str("abcdef");
-        cout << "str = " << str << endl;
-        cout << "str.size() = " << str.size() << endl;
-        //cout << " str[7] = " << str[7] << endl;//第一情况
-        //cout << " at(7) = " << str.at(7) << endl;//第二情况
-    }
-    catch (const std::out_of_range& e)//出现异常时执行下面代码
-    {
-        cout << "error" << endl;
-    }
-    return 0;
-}
-```
-
-使用 `[]` 的报错和使用 `at` 的报错不一样。总的来说，抛异常会更加安全（并且抛异常是面向对象语言的一个显著特征）具体的抛异常细节我们以后再来学习……
-
-## 7.3.back()
-
-```c++
-//重载声明
-char& back();
-const char& back() const;
-```
-
-该函数返回最后一个有效字符的引用（不是指空字符），此函数不能再空 `string` 对象上调用。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str1("abcdef");
-    cout << "str1 = " << str1 << endl;
-    cout << "str1.size() = " << str1.size() << endl;
-    cout << "str1.back() = " << str1.back() << endl;
-    string str2("");
-    cout << "str2 = " << str2 << endl;
-    cout << "str2.size() = " << str2.size() << endl;
-    //cout << " str2.back() = " << str2.back() << endl;//会出现报错
-    return 0;
-}
-```
-
-## 7.4.front()
-
-```c++
-char& front();
-const char& front() const;
-```
-
-类似 `end()` 的使用，不过获取到字符是开头的字符。
-
-```c++
-#include <iostream>
-#include <string>
-using namespace std;
-int main()
-{
-    string str1("abcdef");
-    cout << "str1 = " << str1 << endl;
-    cout << "str1.size() = " << str1.size() << endl;
-    cout << "str1.front() = " << str1.front() << endl;
-    string str2("");
-    cout << "str2 = " << str2 << endl;
-    cout << "str2.size() = " << str2.size() << endl;
-    //cout << " str2.front() = " << str2.front() << endl;//直接会出现报错
-    return 0;
-}
-```
-
-# 8.修改器（Modifiers）
-
-## 8.1.operator+=()
+#### 2.1.4.1.operator+=()
 
 用得比较多。
 
@@ -775,7 +251,7 @@ string& operator+= (const char* s);
 string& operator+= (char c);
 ```
 
-## 8.2.append()
+#### 2.1.4.2.append()
 
 尾插，即便有很多重载，但是用的比较少，这里只给出声明，您可以自己玩玩看。
 
@@ -797,7 +273,7 @@ string& append (InputIterator first, InputIterator last);
 string& append (initializer_list<char> il);
 ```
 
-## 8.3.push_back ()
+#### 2.1.4.3.push_back ()
 
 尾插单字符，爷用的比较少，您也可以自己玩玩。
 
@@ -857,7 +333,7 @@ int main()
 }
 ```
 
-## 8.4.instert()
+#### 2.1.4.4.instert()
 
 ```c++
 //重载声明
@@ -948,7 +424,7 @@ int main()
 }
 ```
 
-## 8.5.erase()
+#### 2.1.4.5.erase()
 
 ```c++
 string& erase (size_t pos = 0, size_t len = npos);//全部删除（默认）
@@ -974,7 +450,7 @@ str.erase();
 cout << str << endl;
 ```
 
-## 8.6.replace()
+#### 2.1.4.6.replace()
 
 ```c++
 //string (1)    
@@ -1046,13 +522,503 @@ int main()
 }
 ```
 
-## 8.7.swap()
+#### 2.1.4.7.swap()
 
 ```c++
 void swap (string& str);
 ```
 
 成员交换函数，效率比全局的要高，就是前面代码使用的那一个函数。后面介绍的全局 `swap()` 调用的就是这个成员函数。
+
+>   补充：这里摘去了 `assign()`...
+
+### 2.1.5.元素访问
+
+#### 2.1.5.1.operator []
+
+```c++
+//重载形式
+char& operator[] (size_t pos);
+const char& operator[] (size_t pos) const;
+```
+
+`pos` 的起始位置为 `0`，这意味这和数组的使用形式类似。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str("abcdef");
+    for (int i = 0; str[i]; i++)
+    {
+        cout << str[i] << " ";
+    }
+    return 0;
+}
+```
+
+如果 `pos` 等于 `string` 对象的 `size` 值，这个符号重载函数就会返回一个指向空字符的引用，该字符位于 `string` 对象最后一个字符之后（这个字符不可被修改，只所以可以被允许访问的其中一个原因就是方便写循环终止条件，就像上面的循环例子）。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str("abcdef");
+    cout << "空字符->[" << str[str.size()] << "]" << endl;//可以看到空字符没有办法打印出来
+    return 0;
+}
+```
+
+#### 2.1.5.2.at()
+
+```c++
+//重载声明
+char& at (size_t pos);
+const char& at (size_t pos) const;
+```
+
+该函数可以获取字符串中的字符，返回一个 `pos` 指向字符的引用，该函数自动检查 `pos` 是否是 `string` 对象中合法的字符索引，非法则抛出异常。
+
+那么 `at()` 和 `[]` 有什么区别呢？答案在于自动检查出现非法时，例如下面的代码：
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    try
+    {
+        string str("abcdef");
+        cout << "str = " << str << endl;
+        cout << "str.size() = " << str.size() << endl;
+        //cout << " str[7] = " << str[7] << endl;//第一情况
+        //cout << " at(7) = " << str.at(7) << endl;//第二情况
+    }
+    catch (const std::out_of_range& e)//出现异常时执行下面代码
+    {
+        cout << "error" << endl;
+    }
+    return 0;
+}
+```
+
+使用 `[]` 的报错和使用 `at` 的报错不一样。总的来说，抛异常会更加安全（并且抛异常是面向对象语言的一个显著特征）具体的抛异常细节我们以后再来学习……
+
+#### 2.1.5.3.back()
+
+```c++
+//重载声明
+char& back();
+const char& back() const;
+```
+
+该函数返回最后一个有效字符的引用（不是指空字符），此函数不能再空 `string` 对象上调用。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str1("abcdef");
+    cout << "str1 = " << str1 << endl;
+    cout << "str1.size() = " << str1.size() << endl;
+    cout << "str1.back() = " << str1.back() << endl;
+    string str2("");
+    cout << "str2 = " << str2 << endl;
+    cout << "str2.size() = " << str2.size() << endl;
+    //cout << " str2.back() = " << str2.back() << endl;//会出现报错
+    return 0;
+}
+```
+
+#### 2.1.5.4.front()
+
+```c++
+char& front();
+const char& front() const;
+```
+
+类似 `end()` 的使用，不过获取到字符是开头的字符。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str1("abcdef");
+    cout << "str1 = " << str1 << endl;
+    cout << "str1.size() = " << str1.size() << endl;
+    cout << "str1.front() = " << str1.front() << endl;
+    string str2("");
+    cout << "str2 = " << str2 << endl;
+    cout << "str2.size() = " << str2.size() << endl;
+    //cout << " str2.front() = " << str2.front() << endl;//直接会出现报错
+    return 0;
+}
+```
+
+### 2.1.6.迭代器
+
+这里应该是我们第一次使用迭代器，迭代器实际上是方便遍历容器的一种方案，让程序员不再关注底层细节就可以编译一个容器（实际上迭代器就是 `C++` 封装的一种体现）。
+
+在没有学习迭代器之前，如果我们需要遍历一个 `string` 对象需要怎么做呢？目前我们最常用的方法就是使用循环语句。
+
+#### 2.1.6.1.for 遍历
+
+```cpp
+//使用 for 语句遍历字符串对象
+#include <iostream>
+#include <string>
+int main()
+{
+    std::string str("abcd");
+    for (int i = 0; i < str.size(); i++)
+    {
+        std::cout << str[i] << " "; //[] 运算符重载
+    }
+    return 0;
+}
+```
+
+>   补充：这里使用了 `string` 类的成员函数 `size()`，这个函数专门计算 `string` 对象的大小，这在后面讲解 `string` 类的成员函数时，还会进行讲解。
+
+#### 2.1.6.2.迭代器遍历
+
+迭代器的行为十分类似指针（但其底层实现不一定是指针）使得 `string` 对象可以像数组一样被使用：
+
+```c++
+//使用迭代器遍历字符串对象
+#include <iostream>
+#include <string>
+int main()
+{
+    std::string str("abcd");
+    std::string::iterator it = str.begin();//这里如果类型名字太长，可以使用 auto 来自动推导
+    while (it != str.end())//这里不推荐使用'<'符号
+    {
+        std::cout << *it << " ";
+        (*it)++;
+        it++;
+    }
+    std::cout << std::endl << str << std::endl;
+    return 0;
+}
+```
+
+>   补充：在 `while (it != str.end())` 这里不推荐使用 `<` 符号，我们之前说过，迭代器的行为类似指针，而实际上 `string` 迭代器的底层很有可能就是指针，因此在这里使用 `<` 是可能被允许的，但最好不要这么做。这是因为，其他类底层的迭代器不一定是靠纯指针实现的，例如：链表，因此使用 `<` 会有风险。
+
+我们甚至可以使用反向迭代器来快速反向遍历。
+
+```cpp
+//使用反向迭代器遍历字符串对象
+#include <iostream>
+#include <string>
+
+int main()
+{
+    std::string str("abcd");
+    std::string::reverse_iterator rit = str.rbegin();
+    while (rit != str.rend())
+    {
+        std::cout << *rit << " ";
+        (*rit)++;
+        rit++;//注意依旧是++，而不是--
+    }
+    std::cout << std::endl << str << std::endl;
+    return 0;
+}
+```
+
+迭代器不仅仅是 `string` 类使用，基本所有库里的类都可以使用迭代器遍历，迭代器有几种便利之处：
+
+1. 通用，在一些不支持 `[]` 重载的结构也可使用迭代器
+
+2. 是无需考虑差 `1` 问题
+
+3. 屏蔽底层实现细节，可以直接使用
+
+针对不同的对象和使用方法，迭代器可以分为下面几类迭代器。
+
+| 类别       | 可读可修改                                                   | 可读不可修改                                                 |
+| ---------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 正向迭代器 | `iterator begin() noexcept;` <br> `iterator end() noexcept;` | `const_iterator begin() const noexcept;` <br> `const_iterator end() const noexcept;` |
+| 反向迭代器 | `reverse_iterator rbegin() noexcept; ` <br> `reverse_iterator rend() noexcept;` | `const_reverse_iterator rbegin() const noexcept;` <br> `const_reverse_iterator rend() const noexcept;` |
+
+| 类别                 | 函数声明                                                     |
+| -------------------- | ------------------------------------------------------------ |
+| 普通对象的常量迭代器 | `const_iterator cbegin() const noexcept;` <br> `const_iterator cend() const noexcept;` |
+| 常量对象的常量迭代器 | `const_reverse_iterator crbegin() const noexcept;` <br> `const_reverse_iterator crend() const noexcept;` |
+
+其中 `iterator` 是一个类模板：
+
+```cpp
+//iterator 类
+template <class T>
+class iterator 
+{ 
+    //1.正向迭代器
+    //迭代器的成员函数和操作符重载定义
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept; 
+    
+    //2.反向迭代器
+    reverse_iterator rbegin() noexcept;
+    const_reverse_iterator rbegin() const noexcept;
+    reverse_iterator rend() noexcept;
+    const_reverse_iterator rend() const noexcept;
+    //...
+};
+```
+
+#### 2.1.6.3.范围 for 遍历
+
+```c++
+//使用范围 for 遍历字符串对象
+#include <iostream>
+#include <string>
+
+int main() 
+{
+    std::string str = "Hello";
+    //使用范围 for 循环遍历字符串中的每个字符
+    for (auto ch : str) 
+    {
+        std::cout << ch << " ";
+    }
+    return 0;
+}
+```
+
+实际上范围 `for` 的底层代码就是迭代器，只不过范围 `for` 封装得更加厉害罢了（在一些编译器内部调试的时候可以切到范围 `for` 的汇编语句来检验两者关系）。因此，只要对应的容器类支持迭代器，就自动支持范围 `for` 的使用。
+
+### 2.1.7.容积
+
+| 类别                 | 函数声明                                                     |
+| :------------------- | ------------------------------------------------------------ |
+| 获取长度和容量       | `size_t size() const noexcept;` <br>`size_t length() const noexcept;` <br>`size_t capacity() const noexcept;` |
+| 改变长度和容量       | `void resize (size_t n);` <br>`void resize (size_t n, char c);` <br>`void reserve (size_t n = 0);` |
+| 获取环境最大容量数值 | `size_t max_size() const noexcept;`                          |
+| 清理对象内容         | `void clear() noexcept;`                                     |
+| 判空                 | `bool empty() const noexcept;`                               |
+
+#### 2.1.7.1.size() 和 length() 和 capacity()
+
+首先我们有一个问题，为什么会有两个计算长度的成员函数呢？这是因为 `string` 类得诞生比 `STL` 早，最开始设计的是 `length()`，后来出现了 `STL` 才开始使用了（并且建议使用）`size()`。两个都可以计算 `string` 对象内部字符串长度，在功能上是等效的。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str("abcdefghijklmn");
+    cout << str.size() << endl;
+    cout << str.length() << endl;
+    return 0;
+}
+```
+
+> 补充：如果查看其他的结构会发现都是使用 `size()`，而没有 `length()`
+
+而另外一个函数 `capacity()` 则可以求得当前 `string` 对象的容量。
+
+#### 2.1.7.2.clear()
+
+这个成员函数会对 string 对象的字符串作清理，但是不会释放空间，同时原 `string` 的容量不变，对象的 `siez()` 值置为空。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str("abcdefghijklmn");
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl;
+    str.clear();
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.length() << endl;
+
+    return 0;
+}
+```
+
+#### 2.1.7.3.max_size()
+
+这个成员函数用于告知用户该环境下的 `string` 对象最多可以申请到多少字节的空间。
+
+但是这个值是写死的，只是在不同环境下会不同罢了，因此基本没怎么用到这个。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str1("abcdefghijklmn");
+    cout << str1.max_size() << endl;
+    string str2("abcdefghijklmn");
+    cout << str2.max_size() << endl;
+    return 0;
+}
+```
+
+#### 2.1.7.4.resize()
+
+`resize()` 可以将 `string` 对象的大小（即：`size()` 的值），有以下集几种情况：
+
+1. 如果 `n` 小于 `string` 对象原有的大小，则删除 `n` 个字符以外的字符（这个操作比较危险）
+
+2. 如果 `n` 大于 `string` 对象原有的大小，则尾插任意字符（默认表现为空字符 `\0`）扩充到当前的内容，使得大小达到 `n`。因此如果有填充某个字符串的需求，也是可以用这个函数的
+
+3. 如果指定了字符 `c`，则多开辟的空间初始化为字符 `c`
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    //1.创建一个 "abcde" 为内容的 string 对象，size()值为 5，capacity()默认值为 15
+    string str("abcde");
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+    //2.调整 size()值为 20 的 string 对象，而在 VS2022 中表现为填充 15 个空字符'\0'，而空字符是没有打印出来的
+    str.resize(20);
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    //3.调整 size()值为 30 的 string 对象，因此：前 5 个字符为 "abcde"，后面有 15 个'\0'，并且还有 10 个'c'字符，整体打印出 "abcdecccccccccc"
+    str.resize(30, 'c');
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    //4.缩小 size()值，并且可以看到，扩容的空间依旧有效
+    str.resize(5);
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    return 0;
+}
+```
+
+#### 2.1.7.5.reserve()
+
+这个函数请求改变容量，要求将 `string` 对象调整到大小为 `n` 的容量（或者比 `n` 更大）这个函数对字符串的长度没有影响，也不能改变它的内容。
+
+如果使用者做了缩小容量的操作，并且影响到原有 `string` 对象字符串的存储时，该函数会拒绝请求（即：`non-binding` 无约束力的）。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    //1.创建一个 "abcde" 为内容的 string 对象，size()值为 5，capacity()默认值为 15
+    string str("abcde");
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+    //2.调整 capacity()值为 20 的 string 对象
+    str.reserve(20);
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    //3.调整 capacity()值为 30 的 string 对象
+    str.reserve(30);
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    //4.减小 capacity()值为 4 的 string 对象（失败请求）
+    str.reserve(4);
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    //4.增大 capacity()值为 10 的 string 对象
+    str.reserve(10);
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    return 0;
+}
+```
+
+> 注意：函数名 `reserve` 有时候会和单词 `reversal`（反转）搞混，这个注意一下就行……
+
+#### 2.1.7.6.empty()
+
+该函数返回字符串是否为空（即：`size()` 是否为 0)，这个函数不会以任何方式修改字符串的值。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str("abcdef");
+    cout << str.empty() << endl;
+    str.resize(0);//为空返回 true
+    cout << str.empty() << endl;
+    return 0;
+}
+```
+
+#### 2.1.7.7.shrink_to_fit()
+
+`shrink to fit` 这个词的意思就是“缩小以适应”，该函数请求减少容量 `capacity` 来适应大小 `size`，当然这只是一种请求（即：`non-binding` 无约束力的）。
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    string str("abcde");
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+    str.reserve(1000);//明明大小只有 5，容量确高达 1000 多，浪费资源
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    str.shrink_to_fit();//使用该函数请求缩小容量（非强制）
+    cout << str << endl;
+    cout << str.size() << endl;
+    cout << str.capacity() << endl << endl;
+
+    return 0;
+}
+```
+
+### 2.1.8.运算符
+
+## 2.2.非成员函数重载
+
+这里有两个比较麻烦的函数...
+
+
+
+
 
 # 9.字符串运算（String operations）
 
