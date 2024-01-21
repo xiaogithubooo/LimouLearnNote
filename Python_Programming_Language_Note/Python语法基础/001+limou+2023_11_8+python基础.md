@@ -261,6 +261,15 @@ limou3434limou3434limou3434
 
 ## 9.2.Excel 操作
 
+### 9.2.1.所需模块
+
+使用 `pip` 安装模块 `openpyxl`。
+
+### 9.2.2.方法概览
+
+1.   创建表格文件：`Workbook.create_sheet()`
+2.   打开表格文件：`load_workbook('文件名', )`
+
 ## 9.3.Word 操作
 
 ## 9.4.CSV 操作
