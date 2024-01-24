@@ -393,6 +393,8 @@ print(wb.sheetnames)
 
 此外还可以使用 `Worksheet.cell()` 方法，该方法使用整型行数和整型列数访问一个单元格（个人更加常用），并且可以使用参数 `value` 来填充单元格数据。
 
+>   补充：如果希望数字转化为字母，可以使用 `openpyxl.utils.get_column_letter()`，反过来则可以使用 `openpyxl.utils.column_index_from_string()`
+
 而访问单元格的值必须使用 `Cell.value` 属性才能获取到对应值（当然，也可以通过这个属性来修改单元格存储的数据）。
 
 ```python
