@@ -1,0 +1,76 @@
+<mxfile host="Electron" modified="2024-01-24T06:28:10.870Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="PbjXKtvY4a2m-HpbV4Vv" version="22.1.2" type="device">
+  <diagram name="第 1 页" id="ABTM-sAJT_RgifywPAnr">
+    <mxGraphModel dx="331" dy="339" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="10000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-1" value="驱动" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1160" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-7" value="锚点" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1140" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-8" value="父文件夹" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1150" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-9" value="文件名" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1140" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-10" value="主干名" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1160" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-11" value="后缀名" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="330" y="1160" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-13" value="C:" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1190" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-14" value="C:\" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1210" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-15" value="dir" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1210" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-16" value="test" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1210" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-17" value="py" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1210" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-19" value="." style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="320" y="1210" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-23" value="锚点/根" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1280" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-24" value="父文件夹" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1280" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-25" value="文件名" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1280" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-28" value="\" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1310" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-30" value="dir" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
+          <mxGeometry x="230" y="1310" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-31" value="test" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1310" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-32" value="py" style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1310" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-33" value="." style="whiteSpace=wrap;html=1;fontStyle=1;fontFamily=Comic Sans MS;strokeWidth=2;fontSize=8;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
+          <mxGeometry x="320" y="1310" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-34" value="&lt;font face=&quot;Comic Sans MS&quot; style=&quot;font-size: 9px;&quot;&gt;&lt;b style=&quot;font-size: 9px;&quot;&gt;类 Linux/Unix 或 MacOS&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="210" y="1255" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vkOLtRYS2ULus6jTA5ll-35" value="&lt;font face=&quot;Comic Sans MS&quot; style=&quot;font-size: 9px;&quot;&gt;&lt;b style=&quot;font-size: 9px;&quot;&gt;Windows 系列平台&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="225" y="1115" width="100" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

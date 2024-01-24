@@ -259,13 +259,251 @@ limou3434limou3434limou3434
 
 ## 9.1.普通文件操作
 
+### 9.1.1.文件路径
+
+文件的路径实际上是一件很困扰的时间（各种平台有时候规则不一样，有时候还需要考虑字符转义的问题），因此我直接推荐使用模块 `pathlib`，当然，如果您不介意的话，可以使用 `os.path` 做较为低级的路径操作...
+
+>   文档：https://docs.python.org/3/library/pathlib.html#module-pathlib
+>
+>   源代码：https://github.com/python/cpython/blob/3.12/Lib/pathlib.py
+
+#### 9.1.1.1.路径对象
+
+在 `pathlib` 的文档中有这样一张类继承图片，让我来为您细细介绍该继承图：
+
+![../_images/pathlib-inheritance.png](./assets/pathlib-inheritance.png)
+
+- **Path(具体路径类)**：是 `pathlib` 中的具体路径类，它继承自 `PurePath`。`Path` 类除了能够执行纯路径的抽象操作外，还能够进行与文件系统交互的实际文件和目录操作，比如创建文件、删除文件、读取文件内容等。
+
+  ```python
+  """使用具体路径类"""
+  from pathlib import Path
+  
+  concrete_path = Path("some/path/file.txt")
+  concrete_path.touch()  # 在文件系统中创建文件
+  print("File Exists:", concrete_path.exists())
+  ```
+
+- **PurePath(纯路径类)**：主要用于对路径字符串本身进行抽象的操作，比如：连接路径的不同部分、提取路径的各个部分等。是对路径的纯粹抽象，不牵涉到实际的文件或目录
+
+  ```python
+  """使用纯路径类"""
+  from pathlib import PurePath
+  
+  pure_path = PurePath("some/path")
+  print("Pure Path Parts:", pure_path.parts)
+  ```
+
+  所以，当你只需要对路径进行抽象的操作时，使用 `PurePath` 足够了。但如果你需要进行实际的文件系统操作，就应该使用 `Path`，在本系列文章中，更多使用 `Path` 类。
+
+- **PosixPath** 和 **WindowsPath** 这两个类分别是 `Path` 的子类，用于提供特定于操作系统的行为。`PosixPath` 用于类 `Unix` 操作系统，而 `WindowsPath` 用于 `Windows` 操作系统。通常你可以直接使用 `Path`，`pathlib` 会根据你的操作系统选择适当的子类。
+
+- **PurePosixPath** 和 **PureWindowsPath**：类似于 `PosixPath` 和 `WindowsPath`，这两个类是 `PurePath` 的子类，提供了特定于操作系统的路径抽象。
+
+#### 9.1.1.2.纯路径对象操作
+
+可以通过 `PurePath` 对象来拼接目录形成字符串，并且在不同平台下生成对应的字符串，考虑分别在 `Windows11` 和 `Centos7` 下运行以下代码：
+
+```python
+"""拼接字符路径"""
+import os
+from pathlib import PurePath
+from pathlib import PureWindowsPath
+from pathlib import PurePosixPath
+
+print("当前工作目录为:", os.getcwd())
+print(PurePath( 'FatherDir', 'SonDir', 'setup.py'))
+print(PureWindowsPath( 'FatherDir', 'SonDir', 'setup.py'))
+print(PurePosixPath( 'FatherDir', 'SonDir', 'setup.py'))
+```
+
+在 `Windows11` 下运行结果为：
+
+```cmd
+# Windows11 下运行结果
+> python pathTest.py
+当前工作目录为: C:\Users\Limou_p350ml9\Desktop\Test
+fatherDir\sonDir\setup.py
+fatherDir\sonDir\setup.py
+fatherDir/sonDir/setup.py
+```
+
+在 `Centos7` 下运行结果为：
+
+```bash
+# Centos7 下运行结果
+$ python3 pathTest.py
+当前工作目录为: /home/ljp/LimouGitFile/limou-c-test-code/2024归档/my_code_2024_1_24
+FatherDir/SonDir/setup.py
+FatherDir\SonDir\setup.py
+FatherDir/SonDir/setup.py
+```
+
+因此一般我们都是使用 `PurePath` 对象让 `pathlib` 在不同平台下自动转化为适应不同平台的路径字符串，只有在某些特定的场合下才会使用另外两个子类...
+
+>   注意：后续代码为避免不必要的混乱，我只在 `Windows11` 下运行关于 `PurePath` 对象的代码，关于在 `Centos7` 或者其他平台下的运行结果大同小异，只不过格式不太一样，您可以自己验证一下...
+
+>   补充：如果使用没有任何参数的 `PurePath()`，则会返回指向当前目录的 `.` 符号。
+
+对于这三个类，都可以用以下方法构成一个 `PurePath` 对象：
+
+1.   可以传入字符串，并用逗号进行连接
+2.   也可以采用传入 `Path` 对象来连接（甚至部分 `Path` 对象，部分字符串，关于 `Path` 对象的创建我们后面提及）
+3.   或者直接传入我们在代码文件所处文件获取到的路径字符串作为参数，`pathlib` 会自动做转化处理（关于这些处理您可以前去文档看看，我不再阐述细节）
+
+```python
+"""多种形成 PurePath 对象的方法"""
+import os
+from pathlib import PurePath
+from pathlib import Path
+
+# 创建路径字符串
+print("当前工作目录为:", os.getcwd())
+
+print(PurePath( 'FatherDir', 'SonDir', 'setup.py' )) # 传入多个字符串进行拼接
+print(PurePath( Path('FatherDir'), Path('SonDir'), Path('setup.py') )) # 传入多个 Path 对象进行拼接
+print(PurePath( Path('FatherDir'), 'FatherDir', 'SonDir', 'setup.py' )) # 传入部分 Path 对象和字符串对象
+print(PurePath( os.getcwd() )) # 传入从本平台获取到的字符串
+```
+
+>   补充：文档在这里还提及了一个警告，如果 `foo` 是一个符号链接（例如 `Linux` 下的软链接），指向另一个目录，那么 `PurePosixPath('foo/../bar')` 的简化结果不应该简单地变成 `PurePosixPath('bar')`。这是因为符号链接可能引入了路径的实际结构，而简单地去除 `foo/../` 可能会导致错误的路径。
+
+并且在某些平台下，文件路径是不区分大小写的（例如 `Windows11`，该平台对目录名和文件名的大小写并不敏感），也因此会影响到路径对象比较的结果（这点在排序路径字符串上就会明显体现出来）。
+
+```python
+"""路径的比较"""
+from pathlib import PurePath
+from pathlib import PureWindowsPath
+from pathlib import PurePosixPath
+
+print(PurePosixPath('foo') == PurePosixPath('FOO')) # 在一些类 Unix/Linux 平台下对大小写敏感 
+print(PureWindowsPath('foo') == PureWindowsPath('FOO')) # 在 Windows 系列平台下，基本对大小写不敏感
+
+print(PurePosixPath('FOO') in { PurePosixPath('foo') })
+print(PureWindowsPath('FOO') in { PureWindowsPath('foo') })
+
+print(PurePosixPath('C:') < PurePosixPath('d:'))
+print(PureWindowsPath('C:') < PureWindowsPath('d:'))
+```
+
+除了可以对路径对象进行比较，还可以使用 `/` 操作符，该字符在任何支持的平台下均适用，可以用来连接两个 `PurePath` 对象，比直接使用 `PurePath()` 构造一个路径对象更加方便。
+
+不过该运算符有一个使用前提，要求操作符的左操作数本身是一个 `PurePath` 对象，右操作数既可以是字符串，也可以是 `PurePath` 对象，最后的运算结果是一个 `PurePath` 对象。
+
+```python
+"""拼接路径对象"""
+from pathlib import PurePath
+
+p = PurePath('/home')
+q = PurePath('limou')
+
+print(p)
+print(p / 'dimou' / 'test.py')
+print(p / q)
+```
+
+该运算符在创建多个子路径的时候非常好用。
+
+如果需要访问路径对象中路径字符串的各个部分，则可以使用 `PurePath.parts` 属性来获取各个部分组成的元组。
+
+```python
+# 获取路径的每个部分
+import os
+from pathlib import PurePath
+
+p = PurePath(os.getcwd())
+print(p.parts) # 得到元组 ('C:\\', 'Users', 'Limou_p350ml9', 'Desktop', 'Test')
+```
+
+另外，您最好了解一下不同平台对于路径字符串的不同部分的解释。
+
+![image-20240124142823628](./assets/image-20240124142823628.png)
+
+我们可以通过以下属性来获取这些部分（如果对应平台下没有某些部分，则对应属性的值为空字符串）：
+
+-   `drive`：获取驱动
+-   `root`：获取根
+-   `anchor`：获取锚点
+-   `parents`：获取父路径序列，可使用下标访问不同范围的父路径（在 `3.10` 版本中支持切片和负索引），也可以直接使用 `parent` 属性获得最小范围的父路径
+-   `name`、`stem`、`suffixe`：获取文件名、获取主干名、获取最后一个后缀名
+-   `suffixes`：获取后缀名列表（因为有的文件具有多个后缀名）
+
+```python
+"""获取路径的各个部分"""
+from pathlib import PurePath
+from pathlib import PureWindowsPath
+from pathlib import PurePosixPath
+
+# 获取驱动器
+print("获取驱动器")
+print(PureWindowsPath('c:/Program Files/').drive)
+print(PureWindowsPath('//host/share/foo.txt').drive) # UNC 共享也被视为驱动器
+print(PurePosixPath('/etc').drive)
+
+# 获取根
+print("获取根")
+print(PureWindowsPath('c:/Program Files/').root)
+print(PureWindowsPath('c:Program Files/').root)
+print(PureWindowsPath('//host/share').root)
+print(PurePosixPath('/etc').root) # UNC 共享始终有一个根
+
+# 获取锚点
+print("获取锚点")
+print(PureWindowsPath('c:/Program Files/').anchor)
+print(PureWindowsPath('c:Program Files/').anchor)
+print(PurePosixPath('/etc').anchor)
+print(PureWindowsPath('//host/share').anchor)
+
+# 获取父路径
+print("获取父路径")
+p = PurePosixPath('/a/b/c/d').parent
+print(p)
+print(p.parents[0])
+print(p.parents[1])
+print(p.parents[2])
+
+# 获取文件名
+p = PurePosixPath('my/library/library.tar.gz')
+print(p.name)
+print(p.stem)
+print(p.suffix)
+print(p.suffixes)
+```
+
+上述就是关于纯路径对象的基本操作，下面来重点介绍一些关于纯路径对象的方法：
+
+1.   `as_posix()`
+2.   `as_uri()`
+3.   `is_absolute()`
+4.   `is_relative_to()`
+5.   `is_reserved()`
+6.   `joinpath(*pathsegments)`
+7.   `match(pattern, *, case_sensitive=None)`
+8.   `relative_to(other, walk_up=False)`
+9.   `with_name(name)`
+10.   `with_stem(stem)`
+11.   `with_suffix(suffix)`
+12.   `with_segments(*pathsegments)`
+
+#### 9.1.1.3.具体路径对象操作
+
+
+
+### 9.1.2.文件创建
+
+### 9.1.3.文件属性
+
+### 9.1.4.文件读写
+
+### 9.1.5.文件组织
+
 ## 9.2.Excel 操作
 
 >   文档：https://openpyxl.readthedocs.io/en/stable/tutorial.html#
 >
 >   源代码：https://foss.heptapod.net/openpyxl/openpyxl
 
-### 9.2.1.工作簿对象和工作表对象的使用
+### 9.2.1.工作簿对象和工作表对象
 
 `openpyxl` 中有一个 `Workbook` 类，可以使用 `Workbook()` 创建工作簿对象（该对象内部默认包含一个名为 `sheet` 的工作表）。
 
@@ -384,6 +622,18 @@ print(wb.sheetnames)
 >   ```
 >
 >   注意 `2`：如果后续打开现有工作簿时，以“只读或只写模式打开”，则无法复制工作表。
+
+如果您需要删除一个工作表文件，可以使用 `del` 操作符。
+
+```python
+"""删除指定的工作表"""
+from openpyxl import Workbook
+
+wb = Workbook()
+ws = wb.create_sheet('MySheet')
+del wb["Sheet"]
+print(wb.active)
+```
 
 ### 9.2.2.查询和修改单元格
 
@@ -572,6 +822,8 @@ with NamedTemporaryFile() as tmp:
 ## 9.4.CSV 操作
 
 ## 9.5.JSON 操作
+
+## 9.6.ZIP 操作
 
 # 10.程序调试
 
