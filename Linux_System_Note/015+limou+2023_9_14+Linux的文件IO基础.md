@@ -1255,13 +1255,14 @@ end
 经过上述的铺垫，我们可以来理解软硬链接了，首先我们先来尝试创建链接：
 
 1.   `ln -s <目标文件> <链接名>` 可以创建软链接，`s` 就是 `soft` 的意思
-2.   `ln <目标文件> <链接名>` 可以创建硬链接
+2.   `ln <目标文件> <链接名>` 可以直接创建硬链接
 
 ## 10.2.软件链接的区别
 
 两者有什么差别呢？软链接有自己独立的 `inode`，并且不会增加文件的硬链接数。而硬链接 `inode` 和对应的文件 `inode` 是一样的（这意味着硬链接不是一个独立的文件），并且会增加硬链接数（是对文件的一种引用计数）。
 
 ```bash
+# 查看硬链接数
 $ ls -li
 total 4
 1840738 drwxrwxr-x 2 limou limou 4096 Oct  1 22:42 dir
@@ -1303,7 +1304,16 @@ int main()
 }
 ```
 
->   补充：用户无法对目录建立硬链接...
+>   补充：实际上用户无法自己对目录建立硬链接（但是系统又给 `.` 和 `..` 开了后门，这是特殊规定），这是为什么呢？这是因为硬链接本质是指向同一个文件/目录，一旦允许对目录进行硬链接，就会导致循环查找，无法停止。
+>
+>   ```mermaid
+>   flowchart TD
+>   root --> dir1 & dir2 & dir3
+>   dir1 --> dir4 & dir5
+>   dir4 --> dir6["dir6[同时也是指向 root 的硬链接]"] & test.txt 
+>   ```
+>
+>   上图中需要查找文件 `test.txt`，假设采用深度遍历，从 `root` 查询到 `dir6` 后，又回到了 `root`，因此就陷入了死循环（查找文件的第一件事情肯定是查询目录，如果遇到文件直接对比就行，而软链接是文件也就不会被打开，因此允许软链接而不允许硬链接）。
 
 # 11.动静态库
 
@@ -1314,39 +1324,95 @@ int main()
 实际上，我们可以把 `function.h` 文件和经过 `gcc -c function.c -o function.o`  后的文件给别人，就可以给别人使用您编写的函数。如果将多个 `.o` 文件打包起来，就是“形成静态库”的过程，使用 `ar` 命令即可完成打包。
 
 ```bash
+# 制作静态库的语法形式
 ar -rc <目标静态库名，lib开头的一个库名，后缀就是.a> <.o文件列表># r 替换 c 创建
 ```
 
-```bash
-$ cat function1.h function1.c function2.h function2.c test.c
+>   补充：`Windows` 和 `Linux` 两个平台的动静态库后缀名不一样
+>
+>   1.   `Windows`：
+>
+>        (1)**静态库**：`.lib`
+>
+>        (2)**动态库**：`.dll`
+>
+>   2.   `CentOS(Linux)`：
+>
+>        (1)**静态库**：`.a`
+>
+>        (2)**动态库**：`.so`
 
+下面让我们来试试制作一个静态库：
 
+```cpp
+//编写自定义静态库源代码（Print.h）
 #pragma once
 #include <stdio.h>
 #include <time.h>
 extern void Print(const char* str);
+```
 
-
+```cpp
+//编写自定义静态库源代码（Print.c）
 #include "function1.h"
 extern void Print(const char* str)
 {
-    printf("%s[%d]\n", str, (int)time(NULL));
+    printf("%s\n", str);
 }
+```
 
-
+```cpp
+//编写自定义静态库源代码（Add.h）
 #pragma once
 #include <stdio.h>
 extern int Add(int i);
+```
 
-
+```cpp
+//编写自定义静态库源代码（Add.c）
 #include "function2.h"
 int Add(int i)
 {
-    printf("%d\n", i * i);
-    return i * i;
+    printf("%d\n", i + i);
+    return i + i;
 }
+```
 
+然后根据这些源文件和静态库制作的指令生成静态库。
 
+```shell
+# 制作静态库
+# (1)制作 .o 文件
+$ gcc -c function1.c -o function1.o # 这里的 -o 可以不加，默认生成和 .c 文件同名的 .o 文件
+$ gcc -c function2.c -o function2.o # 这里的 -o 可以不加，默认生成和 .c 文件同名的 .o 文件
+
+$ ls
+function1.c function1.h function1.o
+function2.c function2.h function2.o
+
+# (2)使用 ar 指令制作静态库（-rc 为 replace and create）
+$ ar -rc -o libfunction.a function1.o function2.o
+
+# (3)整理文件
+$ rm function1.c function2.c function1.o function2.o
+
+$ ls
+function1.h function2.h libfunction.a
+
+$ mkdir -p mylib/include
+$ mkdir -p mylib/lib
+
+$ mv function1.h ./mylib/include
+$ mv function2.h ./mylib/include
+$ mv libfunction.a ./mylib/lib
+```
+
+>   补充：上述过程中最好使用 `makefile` 来自动化生成。
+
+然后编写一份将来要调用我们制作的库文件的 `mian()` 程序。
+
+```cpp
+//主程序（main.c）
 #include "function1.h"
 #include "function2.h"
 int main()
@@ -1355,33 +1421,32 @@ int main()
     printf("%d\n", Add(50));
     return 0;
 }
-
-$ gcc -c function1.c -o function1.o
-$ gcc -c function2.c -o function2.o
-$ ls
-function1.c function1.h function1.o
-function2.c function2.h function2.o
-test.c
-
-$ ar -rc libfunction.a function1.o function2.o
-$ rm function1.c function2.c function1.o function2.o
-$ ls
-function1.h function2.h test.c libfunction.a
 ```
+
+此时由于我们写的静态属于第三方库（`gcc` 默认不识别），因此需要我们手动链接才可使用。
 
 ### 8.1.2.静态库使用
 
-一般制作库后，有一个目录为 `include` 专门放头文件，还有一个目录为 `lib` 专门放静态库文件。打包好两个文件后就可以发布了，有三种常见的使用方法：
+一般制作库后，有一个目录为 `include` 专门放头文件，还有一个目录为 `lib` 专门放静态库文件（上述代码中我就是这样做的）。打包好两个文件后就可以上线发布了，用户使用这两者即可使用内部的函数，有三种使用方法：
 
-1.   直接修改系统文件：`gcc` 头文件的默认搜索路径是 `/usr/include`，而 `gcc` 库文件的默认搜索路径是 `/lib64` 或者 `/usr/lib64`，我们直接将我们做的头文件和库拷贝进去即可。在使用我们的库时，可以在 `main()` 所在文件使用 `<>` 引用头文件，也可以使用 `""`，然后使用 `gcc <使用静态库的源文件> -l <静态库去掉lib和.a>` 即可（整个过程实际上就是安装库的过程，但是这个做法不推荐，容易污染别人的头文件和库文件）
+1.   直接修改系统文件：`gcc` 头文件的默认搜索路径是 `/usr/include`，而 `gcc` 库文件的默认搜索路径是 `/lib64` 或者 `/usr/lib64`，我们直接将我们做的头文件和库拷贝进去即可。在使用我们的库时，可以在 `main()` 所在文件使用 `<>` 引用头文件，也可以使用 `""`，然后使用 `gcc <使用静态库的源文件> -l <指定目标静态库文件，去掉lib和.a>` 即可通过使用（这个过程实际就是安装库的过程，但绝不推荐这么做，容易污染别的头文件和库文件）
 
-2.   交给用户自己链接：将打包好的 `include` 和 `lib` 文件放在包含 `main()` 源文件的同级目录下，然后使用 `gcc main.c -I <指定头文件的所在路径> -L <静态库文件的所在地>  -l <指明目标静态库文件，去掉lib和.a>`
+2.   交给用户自己链接：将打包好的 `include` 和 `lib` 文件放在包含 `main()` 源文件的同级目录下，然后直接使用 `gcc main.c -I <头文件所在的父路径> -L <静态库文件的父路径> -l <指定目标静态库文件，去掉lib和.a>`
 
      ```bash
+     # 在代码中使用静态库
      $ gcc test.c -I ./mylib/include -L ./mylib/lib -l function
      $ ls
-     a.out  mylib  test.c
+     a.out mylib test.c
+     
+     $ ./a.out
+     I am limou.
+     100
      ```
+
+>   补充：如果我们使用指令 `ldd <可执行文件>` 是不会指出依赖哪一个静态库的，因为该指令只会指出依赖了哪些动态库，而静态库早就把内部代码拷贝进可执行文件里了。
+
+>   总结：实际上您可以认为静态库是程序员编译源文件中的一种“偷懒行为”，只是在输入指令的长度上变短了（因为实际项目很可能会有多个头文件和对应实现，一个一个写太麻烦了，还有写错的可能），效率并没有提升多少...
 
 ## 8.2.动态库的制作和使用
 
@@ -1391,23 +1456,21 @@ function1.h function2.h test.c libfunction.a
 
 ### 8.2.2.动态库使用
 
-动态库和可执行文件可以分批加载到内存，并且加载一次动态库就可以被系统内所有的进程使用（静态库有可能会出现多份相同的代码和数据）。
+-   静态库不需要自己加载到内存，因为程序在编译链接的时候就把库中的代码直接链接到可执行文件中，相当于方法直接拷贝给程序了，这些方法直接跟随进程一起加载到内存即可，进程运行起来后，静态库就没有用处了（整个程序的运行过程中都不会用到静态库了）。
 
-先配置环境变量 `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<动态库的所在路径>`。
+-   而动态库和可执行文件可以分批加载到内存，并且加载一次动态库就可以被系统内所有的进程使用，而静态库就有可能会出现多份相同的代码和数据。
 
-然后使用命令 `$ gcc <包含main.c的源代码> -I <头文件的所在路径> -L <库文件的所在路径> -l <使用的动态库名字，去掉lib和.so>` 最后一个选项如果指定的动静态库同名，则默认使用动态库，如果只有静态库则会使用静态库。不过可以使用 `-static` 强制使用静态库。
+使用动态库也有两种常见的方法：
 
-然后直接运行生成的可执行程序就可以了。
+1.   先配置环境变量 `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<动态库的所在路径>`。然后使用命令 `$ gcc <包含main.c的源代码> -I <头文件的所在路径> -L <库文件的所在路径> -l <使用的动态库名字，去掉lib和.so>` 最后一个选项如果指定的动静态库同名，则默认使用动态库，如果只有静态库则会使用静态库。不过可以使用 `-static` 强制使用静态库，然后直接运行生成的可执行程序就可以了
 
-但是这个环境变量是临时性的，如果关闭了终端就会清除，这是因为该环境变量是内存级别的环境变量。
+     >   补充：`gcc` 在默认情况下，都是有动态库就用动态库。若特定库只有静态库可用，就会允许动静态库同时混杂链接的情况。而如果只有动态库且没有静态库，却强制使用 `-static` 那么该库就不会被直接链接。
 
-也有一劳永逸的方法，在 `Linux` 的 `/etc/ld.so.conf.d/`，在这里创建一个 `.conf` 文件，在内部写入动态库的路径保存即可。这样就可以永久保存动态库的搜索路径，以后关闭终端也不会丢失该路径信息。
+2.   上述环境变量是具有临时性的，如果关闭了终端就会清除，这是因为该环境变量是内存级别的环境变量。但也有一劳永逸的方法，在 `Linux` 的 `/etc/ld.so.conf.d/`，在这里创建一个 `.conf` 文件，在内部写入动态库的路径保存即可。这样就可以永久保存动态库的搜索路径，以后关闭终端也不会丢失该路径信息。
 
->   补充：这里有一个有趣的现象，如果运行带有动态库的程序成功后，删除掉之前创建的 `.conf` 文件，还是可以运行程序，这是因为路径还在系统缓存中保存着。
+     >   补充：这里有一个有趣的现象，如果运行带有动态库的程序成功后，删除掉之前创建的 `.conf` 文件，还是可以运行程序，这是因为路径还在系统缓存中保存着。
 
-那还有没有更简单的办法呢？有的，建立一个动态库的软链接，存放在 `/lib64` 下，然后直接运行程序即可。
-
-最后推荐几个好玩的库 `ncurses` 字符界面库、`boost` 准标准库
+3.   那还有没有更简单的办法呢？有的，建立一个动态库的软链接，存放在 `/lib64` 下，然后直接运行程序即可（相当于动态库的安装）。
 
 >   补充：源文件路径和工作路径
 >
@@ -1415,9 +1478,9 @@ function1.h function2.h test.c libfunction.a
 >
 >   1. `exe` 指向的是该进程对应源文件在磁盘上的路径
 >
->   2. `cwd` 指向当前的工作路径，这也就是为什么直接用追加读写模式的时候可以在源文件同级的目录下新建文件 
+>   2. `cwd` 指向当前的工作路径，这也就是为什么直接用追加读写模式的时候可以在源文件同级的目录下新建文件（能直接使用某些动态库和静态库的原理也类似）
 >
->   ```c
+>   ```cpp
 >   //写入文件
 >   #include <stdio.h>
 >   #include <string.h>
@@ -1444,3 +1507,5 @@ function1.h function2.h test.c libfunction.a
 >       return 0;
 >   }
 >   ```
+
+>   总结：使用动态库就不仅仅是手动输入指令上的“偷懒”了，还提高了程序运行的效率，更好利用了资源空间。
