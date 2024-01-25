@@ -39,7 +39,7 @@
 `python` 的注释只要有三种：一种行级注释、两种块级注释
 
 ```python
-# 三种注释
+"""三种注释"""
 # 行级注释，可以注释一行
 
 '''
@@ -65,7 +65,7 @@
 ## 5.1.条件语句
 
 ```python
-# 使用 if 语句
+"""使用 if 语句"""
 if 条件1(布尔语句1):
     # 某些需要被执行的代码 1
 elif 条件2(布尔语句2):
@@ -77,13 +77,13 @@ else:
 ## 5.2.循环语句
 
 ```python
-# 使用 while 语句
+"""使用 while 语句"""
 while 条件(布尔语句):
     # 某些需要被执行的代码块
 ```
 
 ```python
-# 使用 for 语句
+"""使用 for 语句"""
 for 循环变量 in range(start, end, step): # [start, end)
     # 某些需要被执行的代码块    
 ```
@@ -99,7 +99,7 @@ for 循环变量 in range(start, end, step): # [start, end)
 `Python` 中的任何 `.py` 文件都可以称为一个 **模块**（`module`），模块可以用来组织函数和类等，在其他程序中引入这些模块中的功能，有利于代码的管理与复用。
 
 ```python
-# 导入模块的语法格式
+"""导入模块的语法格式"""
 import 模块1名称, 模块2名称, 模块3名称
 模块1名称.模块1内函数名称()
 
@@ -117,7 +117,7 @@ form 模块名称5 import 模块5内函数名称
 ## 6.2.定义函数
 
 ```python
-# 定义函数的语法形式
+"""定义函数的语法形式"""
 def functionName(变元1, 变元2, 变元3=缺省值):
     """函数说明"""
     # 某些代码块
@@ -134,7 +134,7 @@ functionName(变元2=参数2, 变元1=参数1) # 函数调用
 注意函数和全局变量的结合使用：
 
 ```python
-# 全局变量结合函数的使用
+"""全局变量结合函数的使用"""
 def function(num):
     global number # 3.告知 python 该变量为全局变量
     print(number) # 4.打印 10
@@ -175,7 +175,7 @@ print(number) # 7.经过 function() 的修改，打印 0
 使用 `+=` 操作符可以将两个字符串连接起来，前后操作数均为字符串。
 
 ```python
-# 字符串连接
+"""字符串连接"""
 str1 = 'limou'
 str2 = '3434'
 str1 += str2
@@ -191,7 +191,7 @@ limou3434
 使用 `*=` 可以复制字符串，左操作数为字符串，右
 
 ```python
-# 字符串复制
+"""字符串复制"""
 str = 'limou3434'
 str *= 3
 print(str)
@@ -210,7 +210,7 @@ limou3434limou3434limou3434
 1.   获取单个字符
 
      ```python
-     # 字符串获取（获取字符）
+     """字符串获取（获取字符）"""
      str = 'limou3434'
      print(str[2])
      
@@ -226,7 +226,7 @@ limou3434limou3434limou3434
      (2)`index(查找子串 sub, start, end)`：没查找到则抛出异常
 
      ```python
-     # 字符串获取（获取字符串）
+     """字符串获取（获取字符串）"""
      str = 'limou3434'
      print(str.find('3434', 0)) # 从 0 下标开始寻找子串 '3434'
      print(str.find('3434', len(str)-2)) # 从 7 下标开始寻找子串 '3434'
@@ -259,15 +259,13 @@ limou3434limou3434limou3434
 
 ## 9.1.普通文件操作
 
-### 9.1.1.文件路径
-
 文件的路径实际上是一件很困扰的时间（各种平台有时候规则不一样，有时候还需要考虑字符转义的问题），因此我直接推荐使用模块 `pathlib`，当然，如果您不介意的话，可以使用 `os.path` 做较为低级的路径操作...
 
 >   文档：https://docs.python.org/3/library/pathlib.html#module-pathlib
 >
 >   源代码：https://github.com/python/cpython/blob/3.12/Lib/pathlib.py
 
-#### 9.1.1.1.路径对象
+### 9.1.1.路径对象
 
 在 `pathlib` 的文档中有这样一张类继承图片，让我来为您细细介绍该继承图：
 
@@ -300,7 +298,9 @@ limou3434limou3434limou3434
 
 - **PurePosixPath** 和 **PureWindowsPath**：类似于 `PosixPath` 和 `WindowsPath`，这两个类是 `PurePath` 的子类，提供了特定于操作系统的路径抽象。
 
-#### 9.1.1.2.纯路径对象操作
+实际上上述类都是将字符串包装起来而已，如果需要取得上述路径对象的包装部分，直接使用 `str()` 即可获取被包装起来的字符串部分。
+
+### 9.1.2.纯路径对象操作
 
 可以通过 `PurePath` 对象来拼接目录形成字符串，并且在不同平台下生成对应的字符串，考虑分别在 `Windows11` 和 `Centos7` 下运行以下代码：
 
@@ -472,30 +472,263 @@ print(p.suffixes)
 
 上述就是关于纯路径对象的基本操作，下面来重点介绍一些关于纯路径对象的方法：
 
-1.   `as_posix()`
-2.   `as_uri()`
-3.   `is_absolute()`
-4.   `is_relative_to()`
-5.   `is_reserved()`
-6.   `joinpath(*pathsegments)`
-7.   `match(pattern, *, case_sensitive=None)`
-8.   `relative_to(other, walk_up=False)`
+1.   `as_posix()`：转化为 `posix` 风格的路径
+2.   `as_uri()`：将本地绝对路径转化为标准的 `URI` 格式，该格式适用于 `Web` 获取其他网络上引用文件（如果不是绝对路径则会引发错误）
+3.   `is_absolute()`：判断路径是否为绝对路径
+4.   `is_relative_to()`：检查一个路径是否相对于其他路径
+5.   `is_reserved()`：检查文件名是否为保留字
+6.   `joinpath(*pathsegments)`：连接路径对象中的路径字符（主要是在代码中动态连接，但是用 `/` 实际更好一些...）
+7.   `match(pattern, *, case_sensitive=None)`：检查通配符匹配是否正确
 9.   `with_name(name)`
 10.   `with_stem(stem)`
 11.   `with_suffix(suffix)`
-12.   `with_segments(*pathsegments)`
 
-#### 9.1.1.3.具体路径对象操作
+上述函数没什么好讲解的，直接看我下面的代码运行例子即可：
+
+```python
+"""使用 PurePath 各个方法"""
+import os
+from pathlib import PurePath
+from pathlib import PureWindowsPath
+from pathlib import PurePosixPath
+p1 = PurePath(os.getcwd())
+p2 = PurePath('dir1', 'dir2', 'text.txt')
+print(p1)
+print(p2)
 
 
+# 转化为 posix 风格的字符串
+print(p1.as_posix())
+print(p1.as_posix())
 
-### 9.1.2.文件创建
 
-### 9.1.3.文件属性
+# 将本地绝对路径转化为标准的 URI 格式
+print(p1.as_uri())
+# print(p2.as_uri()) # 抛出错误
 
-### 9.1.4.文件读写
 
-### 9.1.5.文件组织
+# 判断路径是否为绝对路径
+if p1.is_absolute():
+    print("是绝对路径")
+if not p2.is_absolute():
+    print("是相对路径")
+
+
+# 检查一个路径是否相对于其他路径
+# (1)创建两个 Path 对象
+path1 = PurePath("/path/to/your/")
+path2 = PurePath("/path/to/your/file.txt")
+# (2)使用 is_relative_to() 方法检查是否相对于另一个路径
+result = path2.is_relative_to(path1) # path2 是相对于 path1 确定的
+print("Is Path 2 relative to Path 1?", result)
+
+# 检查文件名是否为保留字
+print(PureWindowsPath('nul').is_reserved())
+print(PurePosixPath('nul').is_reserved())
+
+
+# 连接路径对象中的路径字符
+print(PurePosixPath('/etc').joinpath('passwd'))
+print(PurePosixPath('/etc').joinpath(PurePosixPath('passwd')))
+print(PurePosixPath('/etc').joinpath('init.d', 'apache2'))
+print(PureWindowsPath('c:').joinpath('/Program Files'))
+
+
+# 检查通配符匹配是否正确
+print(PurePath('a/b.py').match('*.py'))
+pattern = PurePath('*.py')
+print(PurePath('a/b.py').match(str(pattern))) # 我使用的版本较低，貌似在新版本中这里可以直接使用路径对象的参数而不用转化为字符串
+print(PurePath('/a/b/c.py').match('a/*.py'))
+print(PurePosixPath('b.py').match('*.PY')) # 遵循不同平台下的大小写规则匹配
+print(PureWindowsPath('b.py').match('*.PY'))
+
+
+# 更改路径的部分
+p = PureWindowsPath('c:/Downloads/pathlib.tar.gz')
+print(p.with_name('setup.py'))
+p = PureWindowsPath('c:/Downloads/draft.txt')
+print(p.with_stem('final'))
+p = PureWindowsPath('c:/Downloads/pathlib.tar.gz')
+print(p.with_suffix('.bz2'))
+```
+
+>   补充：上述有一个方法 `is_reserved()` 有提及一个“保留字”的概念，实际上类似编程语言中“不允许用户以关键字作为变量命名”的规则类似，有些平台也保留一些字符，不允许用户以这些字符作为文件名/目录名（下面例子尝试在 `windows` 中创建文件夹 `COM`，但是创建失败）。
+>
+>   ![recording](./assets/recording.gif)
+
+>   注意：貌似有两个方法太新了，在我的模块版本中没法使用，您有兴趣可以前往了解一下 `relative_to()` 和 `with_segments()`...
+
+### 9.1.3.具体路径对象操作
+
+具体路径（`Path`）是纯路径类（`PurePath`）的子类，因此继承了后者提供的所有操作，但是除此之外还提供了对路径对象进行系统调用的方法，因此 `Path` 对象会比 `PurePath` 对象更加常用。
+
+当然，有些方法略有区别，不是直接粗暴继承下来，还新增了检查对象是否适应平台的功能。
+
+```python
+"""不允许创建和平台不对应的路径对象"""
+from pathlib import Path
+from pathlib import WindowsPath
+from pathlib import PosixPath
+
+print(Path('setup.py'))
+# print(PosixPath('setup.py')) # 由于我使用的 Windows 平台，所以这个对象不被允许创建
+print(WindowsPath('setup.py'))
+```
+
+因此通常情况下，为了代码的可移植性，建议使用路径对象 `Path`。
+
+下面除了 `Path` 继承下来的方法（因为除了创建会检查平台以外其他基本差不多），我们介绍一些该子类专有的方法：
+
+-   `cwd()`、`home()`：返回工作目录、家目录
+
+    ```python
+    """寻找工作路径和家路径"""
+    from pathlib import Path
+    print(Path.cwd())
+    print(Path.home())
+    ```
+
+-   `stat()`：查询文件的属性
+
+    ```python
+    """查询文件的属性"""
+    from pathlib import Path
+    p = Path('pathTest.py')
+    print(p.stat().st_size)
+    print(p.stat().st_mtime)
+    print(p.stat().st_mode)
+    # 还可以查询其他属性，具体去看下文档
+    ```
+
+-   `exists()`：查询文件/目录是否真实存在
+
+    ```python
+    """查找文件/目录是否存在"""
+    from pathlib import Path
+    print(Path('.').exists())
+    print(Path('pathTest.py').exists())
+    print(Path('/etc').exists())
+    print(Path('nonexistentfile').exists())
+    ```
+
+-   `chmod()`：修改文件权限
+
+    ```python
+    """更改文件模式和权限"""
+    from pathlib import Path
+    p = Path('pathTest.py')
+    p.chmod(0o777) # 设置文件为所有用户都有完整权限
+    p.stat().st_mode # 注意不同平台对权限的理解可能不太一样，这点需要用户自己把控
+    ```
+
+-   一些对目录操作的方法：
+
+    (1)`mkdir()`：创建空目录
+
+    (2)`rmdir()`：删除空目录（递归删除目录及其内容可用 `shutil.rmtree()`，该方法是 `shutil` 模块的，貌似 `pathlib` 没有直接提供类似方法）
+
+    ```python
+    """创建目录/删除目录"""
+    from pathlib import Path
+    # 创建一个路径对象
+    path = Path('C:/Users/Limou_p350ml9/Desktop/Test/NewFolder')
+    # 创建目录
+    path.mkdir()
+    # 删除目录
+    path.rmdir() # 目录必须为空
+    ```
+
+-   一些对文件操作的方法：
+
+    (1)`touch()`：创建文件
+
+    (2)`unlink()`：减少文件的链接数（相当于删除文件）
+
+    (3)`write_text()`/`write_bytes()`：写入文件（前者按文本，后者按字节）
+
+    (4)`read_text()`/`read_bytes()`：读取文件（前者按文本，后者按字节）
+
+    (5)`rename()`：文件重命名（也可以达到移动文件到其他路径的目的）
+
+    ```python
+    """创建文件/删除文件/写入文件/读取文件/比较文件"""
+    from pathlib import Path
+    file_path = Path(r"C:/Users/Limou_p350ml9/Desktop/Test/new_file.txt")
+    # 创建文件
+    file_path.touch()
+    # 删除文件
+    file_path.unlink()
+    
+    # 读取/写入文件
+    p = Path(r"C:\Users\Limou_p350ml9\Desktop\Test\test_1.txt")
+    p.write_text('Text file contents') # 以字节写入可用 write_bytes()
+    print(p.read_text()) # 以字节读取可用 read_bytes()
+    
+    # 重命名文件（该方法还可以用来当作移动文件使用）
+    p = Path('foo')
+    p.open('w').write('some text')
+    
+    target = Path('bar')
+    p.rename(target)
+    ```
+
+-   `iterdir()`、`glob()`：获取所有指定目录下的子目录和子文件列表，后者则在指定目录下使用通配符查询匹配的文件或目录
+
+    ```python
+    """获取当前目录下的所有子目录和子文件"""
+    from pathlib import Path
+    p = Path(r"C:\Users\Limou_p350ml9\Desktop\Test")
+    for child in p.iterdir(): 
+        print(child)
+    ```
+
+    ```python
+    """返回匹配指定模式的文件路径表"""
+    from pathlib import Path
+    pattern = Path(r"C:\Users\Limou_p350ml9\Desktop\Test")
+    matched_files = pattern.glob("*.txt")
+    for file_path in matched_files:
+        print(file_path)
+    # glob() 方法通过匹配指定目录下所有以 .txt 结尾的文件，返回一个生成器
+    # 通过迭代生成器，我们可以获取匹配到的每个文件的路径并进行处理
+    ```
+
+-   `absolute()`、`resolve()`：返回对应文件/目录的绝对路径
+
+    ```python
+    from pathlib import Path
+    # 返回绝对路径
+    p = Path('pathTest.py')
+    print(p.absolute())
+    
+    # 下面的方法可以解析符号链接
+    p = Path('.')
+    print(p.resolve())
+    p = Path('..')
+    print(p.resolve())
+    ```
+
+-   `is_dir()`、`is_file()`：检查路径是否指向目录或文件
+
+    ```python
+    """检查路径是否指向目录或路径"""
+    from pathlib import Path
+    p = Path(r":\Users\Limou_p350ml9\Desktop\Test\pathTest.py")
+    print(p.is_dir())
+    print(p.is_file())
+    ```
+
+-   `samefile()`：可以判断两个文件或目录的指向是否相同
+
+    ```python
+    """判断是否指向相同的文件"""
+    from pathlib import Path
+    p = Path('pathTest.py')
+    q = Path('test_1.txt')
+    print(p.samefile(q))
+    ```
+
+>   注意：还有一些比较细碎的方法，这里不再展开您可以直接查阅文档...
 
 ## 9.2.Excel 操作
 
@@ -724,7 +957,7 @@ for col in ws.iter_cols(min_row=1, max_col=3, max_row=2):
 >   补充：如果您仅仅需要工作表中的值，则可以使用 `Worksheet.values` 属性，这将迭代工作表中所有行，您可以使用嵌套的 `for` 语句来返回所有单元格的值。
 >
 >   ```python
->   # 仅遍历工作表文件的所有值
+>   """仅遍历工作表文件的所有值"""
 >   from openpyxl import Workbook
 >   wb = Workbook()
 >   ws = wb.active
@@ -787,7 +1020,7 @@ wb.save('document_template.xltx')
 如果您想要将文件保存到流中，例如：在使用 `Pyramid`、`Flask` 或 `Django` 等 `Web` 应用程序时，您只需提供 `tempfile.NamedTemporaryFile()` 所创建出的对象即可。
 
 ```python
-# 传递流
+"""传递流"""
 from tempfile import NamedTemporaryFile
 from openpyxl import Workbook
 
@@ -830,11 +1063,11 @@ with NamedTemporaryFile() as tmp:
 ## 10.1.异常
 
 ```python
-# 异常的语法形式
+"""异常的语法形式"""
 ```
 
 ```python
-# 使用异常
+"""使用异常"""
 def function(number):
     try:
         return 10 / number
