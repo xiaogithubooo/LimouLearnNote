@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-02-07T07:53:17.730Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="ryxEUPWMeRDZvgsyJ9ND" version="22.1.2" type="device">
+<mxfile host="Electron" modified="2024-02-09T14:34:13.632Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="NnjIK5fsmKUST0HGlkl8" version="22.1.2" type="device">
   <diagram id="5OxW3cBELfkocQmgd8ur" name="第 1 页">
-    <mxGraphModel dx="403" dy="280" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="50000" pageHeight="50000" math="0" shadow="0">
+    <mxGraphModel dx="593" dy="608" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="50000" pageHeight="50000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -846,14 +846,47 @@
         <mxCell id="J9RImlqA3bytwdumoZye-210" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;如果释放下列链表，就会发生内存泄漏...&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="J9RImlqA3bytwdumoZye-214" vertex="1">
           <mxGeometry x="499.5" y="290" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="fooE4y1opsWlOAfDbLME-160" value="信号是否未决？" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="fooE4y1opsWlOAfDbLME-160" value="信号是否未决？" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="40630" y="8530" width="90" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="fooE4y1opsWlOAfDbLME-161" value="信号是否被阻塞？" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="fooE4y1opsWlOAfDbLME-161" value="信号是否被阻塞？" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="40741" y="8530" width="109" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="fooE4y1opsWlOAfDbLME-162" value="信号是否被递达？" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="fooE4y1opsWlOAfDbLME-162" value="信号是否被递达？" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="40871" y="8530" width="109" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-160" value="struct_sockaddr" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41515.5" y="9240" width="124.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-161" value="struct_sockaddr_in" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41680" y="9240" width="124.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-162" value="struct_sockaddr_un" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41840" y="9240" width="124.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-163" value="16 位地址类型" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41515.5" y="9280" width="124.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-164" value="16 位地址类型：AF_INET" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41680" y="9280" width="124.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-165" value="16 位地址类型:AF_UNIX" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41840" y="9280" width="124.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-166" value="14 字节地址数据" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41515.5" y="9320" width="124.5" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-167" value="16 位端口号" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41680" y="9320" width="124.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-168" value="32 位 IP 地址" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41680" y="9370" width="124.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-169" value="8 字节填充" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41680" y="9420" width="124.5" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="GGMJcQiHz_g53LnlbPtZ-170" value="108 字节路径名" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="41840" y="9320" width="124.5" height="200" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
