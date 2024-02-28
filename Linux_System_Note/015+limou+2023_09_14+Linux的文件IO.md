@@ -498,16 +498,18 @@ int mian(int argc, char* argv[])
 using namespace std;
 int main()
 {
-    printf("hello printf 1\n");//-> stdio
+    // C
+    printf("hello printf 1\n"); // -> stdout
     fprintf(stdout, "hello fprintf 1\n");
-    perror("hello perror 2");//-> stder
+    perror("hello perror 2"); // -> stderr
 
+    // Linux
     const char* s1 = "hello write 1\n";
     write(1, s1, strlen(s1));
-
     const char* s2 = "hello write 2\n";
     write(2, s2, strlen(s2));
 
+    // C++
     cout << "hello cout 1" << endl;
     cerr << "hello cerr 2" << endl; 
     return 0;
