@@ -1,10 +1,8 @@
 # limou-learn-note
 
-[![Fork me on Gitee](https://gitee.com/limou3434/limou-learn-note/widgets/widget_6.svg)](https://gitee.com/limou3434/limou-learn-note)
-
 ## 1.联系方式
 
-`limou3434` 的 `qq` 邮箱：898738804@qq.com
+`limou3434` 的 `qq` 邮箱：898738804@qq.com，有任何问题都可以和我联系。
 
 ## 2.仓库内容
 
@@ -22,5 +20,3 @@
 
 1.   提炼脑海中的技术逻辑，构建自己的知识框架
 2.   与他人分享自己的技术路线和学习心得
-
-[![star](https://gitee.com/limou3434/limou-learn-note/badge/star.svg?theme=dark)](https://gitee.com/limou3434/limou-learn-note/stargazers) [![fork](https://gitee.com/limou3434/limou-learn-note/badge/fork.svg?theme=dark)](https://gitee.com/limou3434/limou-learn-note/members)
