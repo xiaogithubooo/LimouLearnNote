@@ -14,18 +14,21 @@
 想要 `Git` 管理本地的文件，只需要输入指令：
 
 ```bash
-$ cd 某个目录 $ git init 
 #进入某个目录后执行初始化命令
+$ cd 某个目录
+$ git init 
 ```
 
 指令输入并且回车后 `Git` 将会创建一个 `.git` 子目录，该子目录包含 `Git` 仓库需要的必须文件，这些文件是 `Git` 仓库的骨干，有关 `Git` 所有的秘密基本都在这里面。
 
 如果没有进行这个初始化，则没有办法在 `bash` 中对该目录使用 `git` 的其他命令（注意不可以把其他现有的 `.git` 直接复制到这个还未被 `Git` 跟踪的目录，这样做会使得 `Git` 仓库的状态出现问题）
 
-> 补充 1：如果不想要被 Git 进行版本控制，最简单的办法是将.git 文件直接删除，当然在我们学过 `git` 后不建议这么做……
+> 补充 1：如果不想要被 `Git` 进行版本控制，最简单的办法是将 .`git` 文件直接删除，当然在我们学过 `git` 后不建议这么做...
+>
 > 补充 2：关于 `.git` 的内容可以简单了解一下，可以看看下面的示例：
-> 
+>
 > ```bash
+> # .git 内的内容
 > $ ls -al
 > total 329
 > drwxr-xr-x 1 Limou 197121      0 Aug 17 21:58 ./
@@ -50,18 +53,47 @@ $ cd 某个目录 $ git init
 比如在 `Github` 或者 `Gitee` 上克隆下来一个 `Git` 仓库（或者叫“项目”），执行以下指令：
 
 ```bash
-$ git clone github该项目的传输协议[自定义文件名字]
+$ git clone github该项目的传输协议 [自定义文件名字]
 ```
 
 如果你想在克隆远程仓库的时候，想要自定义本地仓库的名字，可以通过额外的参数指定新的目录名（若没有指定该参数，一般默认为该项目仓库在服务器上的名字）。
 
-其中 Git 支持多种数据传输协议（我们可以先用 `https` 来学习，比较简单并且好理解）
+其中 `Git` 支持多种数据传输协议（我们可以先用 `https` 来学习，比较简单并且好理解）
 
 1. 可使用 `https://` 协议
 
 2. 可使用 `git://` 协议
 
 3. 可使用 `SSH` 传输协议
+
+>   补充：其他协议的使用可能需要一些网络基础知识和额外配置操作，因此我们推荐直接使用 `http` 协议，其他您以后再来了解，这里演示一个 `gitee` 如何使用 `git clone` 和 `http` 来克隆仓库的例子，您可以尝试按照这个例子，把我的笔记仓库给克隆下来，方便您本地阅读。
+>
+>   首先打开 [这个链接](https://gitee.com/limou3434/limou-learn-note)，找到我的仓库地址，然后复制一串 `http` 链接。
+>
+>   ![image-20240315145157673](./assets/image-20240315145157673.png)
+>
+>   ![image-20240315145027205](./assets/image-20240315145027205.png)
+>
+>   得到这个仓库的 `http` 链接后（如果您使用的是 `github` 也有类似的链接，可以找一找），打开一个空文件夹（您找得到位置的文件夹...）在内部右键选择 `Open Git Bach here`，也就是在该文件夹处打开一个命令行窗口（这个窗口可以执行的指令和 `Linux` 的指令几乎相同）。
+>
+>   ![image-20240315145855794](./assets/image-20240315145855794.png)
+>
+>   在 `bash` 中执行以下的命令：
+>
+>   ```cmd
+>   # 克隆仓库文件到本地电脑
+>   
+>   $ git clone https://gitee.com/limou3434/limou-learn-note.git
+>   
+>   # 如果出现类似下面的错误
+>   # Cloning into 'limou-learn-note'...
+>   # fatal: unable to access 'https://gitee.com/limou3434/limou-learn-note.git/': SSL # certificate problem: unable to get local issuer certificate
+>   # 则可以尝试使用命令 git config --global http.sslVerify false 后再次执行 git clone https://gitee.com/limou3434/limou-learn-note.git 指令
+>   
+>   # 可能需要等待一会...
+>   ```
+>
+>   完成克隆后，
 
 # 2.Git 仓库配置
 
