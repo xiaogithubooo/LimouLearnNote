@@ -97,5 +97,277 @@ table_1 -->|"映射"| orm_1["ORM_1"] -->|"实例化"| record_1["record_1"] & rec
 
 我们来尝试在内存中创建一个“数据表/`ORM` 模型”，并且和数据库上的数据表进行同步（没有对应的数据表就进行创建），然后进行 `SQL` 语句中常用的 `CRUD(增删查改)` 操作。
 
+```python
+# ORM 的 CRUD 操作
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+# 通过当前文件名创建 Flask 对象
+app = Flask(__name__)
+
+# 配置 app.config 内连接数据库的信息
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://"
+    f"{os.getenv('EIMOU_DATABASE_USER')}:{os.getenv('EIMOU_DATABASE_PASSWORD')}@"
+    f"{os.getenv('EIMOU_DATABASE_HOST')}:3306/{os.getenv('EIMOU_DATABASE_NAME')}"
+    "?charset=utf8mb4"
+)
+
+# 通过 Flask 对象创建 SQLAlchemy 对象
+db = SQLAlchemy(app)
+
+# 创建模板
+class User(db.Model):
+    __tablename__ = "user" # 设置数据库的名字
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # id 字段，必须使用方法来设置类属性，否者无法映射到数据表的字段，只能是一个普通的类属性
+    username = db.Column(db.String(100), nullable=False) # 用户名字段
+    password = db.Column(db.String(100), nullable=False) # 用户密码字段
+
+# 同步创建
+with app.app_context():
+    # (1)检查模型：create_all() 会检查 SQLAlchemy ORM 模型以确定哪些表需要被创建
+    # (2)创建缺失表：对于每个需要创建的表，create_all() 会在数据库中生成相应的 SQL 语句来创建该表
+    db.create_all() # 同步数据库
+    
+# 路由和视图函数的定义
+@app.route('/')
+def index():
+    return 'Switch paths to operate databases...'
+
+# 添加记录
+@app.route('/add/<string:username>/<string:password>')
+def add_user(username, password):
+    user = User(username=username, password=password)
+    db.session.add(user)
+    db.session.commit() # 这里的提交和 MySQL 的事务有关，这里不过多解释，您学了 MySQL 事务就明白为什么需要提交
+    return "Add succeed!"
+
+# 查询记录（主键查询）
+@app.route('/primary_key_query/<int:id>')
+def primary_key_query_user(id):
+    a_user = User.query.get(id) # User.query 是继承来的类属性，get() 则是根据主键查找，返回的结果就是 User 对象，可以当作字典来使用
+    return f"Query succeed: {a_user.id}-{a_user.username}-{a_user.password}!"
+
+# 查询记录（子句查询）
+@app.route('/query/<string:name>')
+def query_user(name):
+    user_array = User.query.filter_by(username=name) # User.query 是继承来的类属性，get() 则是根据主键查找，但是返回的是一个 Query 对象，相当于一个对象数组，可以做切片操作
+    all = {}
+    for a_user in user_array:
+        all[a_user.username] = a_user.password
+    return f"Query succeed: {all}!"
+
+# 修改记录
+@app.route('/updata/<string:name>/<string:password>')
+def updata(name, password):
+    a_user = User.query.filter_by(username=name).first() # 也可以使用 a_user = User.query.filter_by(username=name)[0] 但是记录不存在时会发生报错
+    a_user.password = password
+    db.session.commit()
+    return f"Updata succeed!"
+
+# 删除记录
+@app.route('/delete/<int:id>')
+def delete(id):
+    user = User.query.get(id)
+    db.session.delete(user)
+    db.session.commit()
+    return "Delete succeed!"
+
+# 启动 Web 后端服务
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+那最重要的外键怎么做到呢（这是关系数据库最重要的功能之一）？可以通过 `SQLAlchemy` 对象的 `ForeignKey('外表.外键字段')` 来实现。
+
+```python
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+# 通过当前文件名创建 Flask 对象
+app = Flask(__name__)
+
+# 配置 app.config 内连接数据库的信息
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://"
+    f"{os.getenv('EIMOU_DATABASE_USER')}:{os.getenv('EIMOU_DATABASE_PASSWORD')}@"
+    f"{os.getenv('EIMOU_DATABASE_HOST')}:3306/{os.getenv('EIMOU_DATABASE_NAME')}"
+    "?charset=utf8mb4"
+)
+
+# 通过 Flask 对象创建 SQLAlchemy 对象
+db = SQLAlchemy(app)
+
+# 创建模板
+class User(db.Model):
+    __tablename__ = "user"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # id
+    username = db.Column(db.String(100), nullable=False) # 用户名字段
+    password = db.Column(db.String(100), nullable=False) # 用户密码字段
+
+class Article(db.Model):
+    __tablename__ = "article"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # id
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User', backref='art') # 反向给 User 添加 art 引用
+
+# 同步创建
+with app.app_context():
+    # (1)检查模型：create_all() 会检查 SQLAlchemy ORM 模型以确定哪些表需要被创建
+    # (2)创建缺失表：对于每个需要创建的表，create_all() 会在数据库中生成相应的 SQL 语句来创建该表
+    db.create_all() # 同步数据库
+    
+# 路由和视图函数的定义
+@app.route('/')
+def index():
+    return 'Switch paths to operate databases...'
+
+# 添加记录
+@app.route('/add/<string:username>/<string:password>')
+def add_user(username, password):
+    user = User(username=username, password=password)
+    db.session.add(user)
+    db.session.commit() # 这里的提交和 MySQL 的事务有关，这里不过多解释，您学了 MySQL 事务就明白为什么需要提交
+    return "Add succeed!"
+
+# 查询记录（主键查询）
+@app.route('/primary_key_query/<int:id>')
+def primary_key_query_user(id):
+    a_user = User.query.get(id) # User.query 是继承来的类属性，get() 则是根据主键查找，返回的结果就是 User 对象，可以当作字典来使用
+    return f"Query succeed: {a_user.id}-{a_user.username}-{a_user.password}!"
+
+# 查询记录（子句查询）
+@app.route('/query/<string:name>')
+def query_user(name):
+    user_array = User.query.filter_by(username=name) # User.query 是继承来的类属性，get() 则是根据主键查找，但是返回的是一个 Query 对象，相当于一个对象数组，可以做切片操作
+    all = {}
+    for a_user in user_array:
+        all[a_user.username] = a_user.password
+    return f"Query succeed: {all}!"
+
+# 修改记录
+@app.route('/updata/<string:name>/<string:password>')
+def updata(name, password):
+    a_user = User.query.filter_by(username=name).first() # 也可以使用 a_user = User.query.filter_by(username=name)[0] 但是记录不存在时会发生报错
+    a_user.password = password
+    db.session.commit()
+    return f"Updata succeed!"
+
+# 删除记录
+@app.route('/delete/<int:id>')
+def delete(id):
+    user = User.query.get(id)
+    db.session.delete(user)
+    db.session.commit()
+    return "Delete succeed!"
+
+# 设置外表
+@app.route('/set')
+def set():
+    article = Article(title='myblog', content='I learned a little about python...', author_id=5)
+    db.session.add(article)
+    db.session.commit() # 这里的提交和 MySQL 的事务有关，这里不过多解释，您学了 MySQL 事务就明白为什么需要提交
+    return f"Set succeed!"
+
+# 启动 Web 后端服务
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+>   补充：还有一种方法，可以在绑定外键后，直接通过属性来访问外键，就是使用 `SQLAlchemy` 类的 `relationship('外表')`。这个方法返回的对象作为属性时，在类外使用对象访问这个属性，就可以找到外键对应的值。
+>
+>   这个函数还有一个 `backref='属性'` 参数，会反向给外表添加一个属性，方便外表进行关联查询本表，该属性如果被外表的实例化拿到，就是一个可迭代对象（或者叫对象数组），每一个对象都是外表的一个记录，每一个记录都是被本表关联的记录。
+>
+>   此外还有一些关于级联的操作，您可以去查询一番。
+
+这里还有一点要重新说明一下，同步模型和数据库时，使用的 `db.create_all()` 是具有局限性的。如果您感觉类的设计不够好，需要修改字段时，就无法识别到修改。
+
+因此我们基本不会使用这个函数，最好是使用模块 `flask-migrate` 的（使用 `pip install flask-migrate` 下载）。
+
+然后在代码中创建 `Migrate` 对象，即 `migrate = Migrate(app, db)`。
+
+```python
+
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+import os
+
+# 通过当前文件名创建 Flask 对象
+app = Flask(__name__)
+
+# 配置 app.config 内连接数据库的信息
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://"
+    f"{os.getenv('EIMOU_DATABASE_USER')}:{os.getenv('EIMOU_DATABASE_PASSWORD')}@"
+    f"{os.getenv('EIMOU_DATABASE_HOST')}:3306/{os.getenv('EIMOU_DATABASE_NAME')}"
+    "?charset=utf8mb4"
+)
+
+# 通过 Flask 对象创建 SQLAlchemy 对象
+db = SQLAlchemy(app)
+
+# 创建迁移对象
+migrate = Migrate(app, db)
+
+# 创建模板
+class User(db.Model):
+    __tablename__ = "user"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # id
+    username = db.Column(db.String(100), nullable=False) # 用户名字段
+    password = db.Column(db.String(100), nullable=False) # 用户密码字段
+    email = db.Column(db.String(100)) # 新增的字段，再做后面命令行操作
+    # signature = db.Column(db.String(100)) # 再次新增的字段，再做后面命令行操作
+    # age = db.Column(db.Integer) # 再再次新增的字段，再做后面命令行操作
+
+# # 同步创建（不要用这个方式）
+# with app.app_context():
+#     # (1)检查模型：create_all() 会检查 SQLAlchemy ORM 模型以确定哪些表需要被创建
+#     # (2)创建缺失表：对于每个需要创建的表，create_all() 会在数据库中生成相应的 SQL 语句来创建该表
+#     db.create_all() # 同步数据库
+    
+# 路由和视图函数的定义
+# ...
+    
+# 启动 Web 后端服务
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+然后类似 `git` 三板斧一样在命令行中使用 `Migrate` 的三个指令：
+
+-   `flask db init`：就会生成相关的 `migrations` 配置文件夹，这一步只需要执行一次
+
+-   `flask db migrate`：识别 `ORM` 模型的改动，生成迁移脚本，`migrations` 文件夹内开始有内容，这一命令可以重复执行
+
+-   `flask db upgrade`：运行迁移脚本，同步到数据库中，此时数据库就会出现一个新的表
+
+    ```shell
+    # 新增的 table
+    mysql> desc alembic_version;
+    +-------------+-------------+------+-----+---------+-------+
+    | Field       | Type        | Null | Key | Default | Extra |
+    +-------------+-------------+------+-----+---------+-------+
+    | version_num | varchar(32) | NO   | PRI | NULL    |       |
+    +-------------+-------------+------+-----+---------+-------+
+    1 row in set (0.00 sec)
+    
+    mysql> select * from alembic_version;
+    +--------------+
+    | version_num  |
+    +--------------+
+    | fc00c9773dae | # 这里的数值就是脚本名
+    +--------------+
+    1 row in set (0.02 sec)
+    ```
+
+    同时可以观察到，模板对应的数据表结构发送了改变。并且每次执行 `flask db migrate、flask db upgrade` 的时候 `version_num` 下的数值就会进行更新。
+
+>   注意：这个命令必须是和 `app.py` 同级目录下执行，这点也类似 `git`，既然很像 `git`，也一定要注意以下数据迁移的安全性，尽管这些脚本文件是可溯源的！
+
 
 
