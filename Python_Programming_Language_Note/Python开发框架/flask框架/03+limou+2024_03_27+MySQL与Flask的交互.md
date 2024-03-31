@@ -291,7 +291,6 @@ if __name__ == '__main__':
 然后在代码中创建 `Migrate` 对象，即 `migrate = Migrate(app, db)`。
 
 ```python
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
