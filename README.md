@@ -11,8 +11,8 @@
 3.   [`MySQL` 数据库基本操作](https://gitee.com/limou3434/limou-learn-note/tree/master/SQL_Database_Note)
 4.   [`python` 语言的快速上手经验和模块总结](https://gitee.com/limou3434/limou-learn-note/tree/master/Python_Programming_Language_Note)
 5.   [`Java` 语言的基础知识](https://gitee.com/limou3434/limou-learn-note/tree/master/Java_Programming_Language_Note)
-6.   [算法和编程题练习](https://gitee.com/limou3434/limou-learn-note/tree/master/Programming_Exercise_Note)
-7.   [`Web` 三大件](https://gitee.com/limou3434/limou-learn-note/tree/master/Web_Design_Note)
+6.   [`Web` 三大件](https://gitee.com/limou3434/limou-learn-note/tree/master/Web_Design_Note)
+7.   [算法和编程题练习](https://gitee.com/limou3434/limou-learn-note/tree/master/Programming_Exercise_Note)
 
 ## 3.主要目的
 
