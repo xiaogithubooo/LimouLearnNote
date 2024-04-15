@@ -1,0 +1,444 @@
+<mxfile host="Electron" modified="2024-04-15T10:02:45.172Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="h5WPelI_kBADH8Tw1p_M" version="22.1.2" type="device">
+  <diagram name="第 1 页" id="7oMCcfue97lB2IO2_yBv">
+    <mxGraphModel dx="2013" dy="1205" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="100000" pageHeight="100000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-113" value="6F0000" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="300" width="980" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-140" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1670" y="930" width="770" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=none;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-2" target="Su5WRMt0bHYKvWhULNg3-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-129" value="封装" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-4">
+          <mxGeometry x="-0.0285" y="2" relative="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;fontStyle=1;fontSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-2" target="Su5WRMt0bHYKvWhULNg3-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1770" y="380" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-20" value="HTTP协议&lt;br&gt;（逻辑上请求和响应在这里被传输）" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-16">
+          <mxGeometry x="0.0463" y="1" relative="1" as="geometry">
+            <mxPoint x="-4" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-2" value="HTTP客户端" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1645" y="360" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-3" target="Su5WRMt0bHYKvWhULNg3-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1775" y="500" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-21" value="TCP协议&lt;br&gt;（逻辑上数据段在这里被传输）" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-17">
+          <mxGeometry x="-0.037" y="6" relative="1" as="geometry">
+            <mxPoint x="4" y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-3" value="TCP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1644" y="480" width="86" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;fontStyle=1;fontSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-5" target="Su5WRMt0bHYKvWhULNg3-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1770" y="620" as="sourcePoint" />
+            <mxPoint x="1965" y="574.88" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-22" value="IP协议&lt;br&gt;（逻辑上数据报在这里被传输）" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-18">
+          <mxGeometry x="-0.0093" y="-1" relative="1" as="geometry">
+            <mxPoint x="1" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-5" value="IP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1644" y="600" width="86" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-7" target="Su5WRMt0bHYKvWhULNg3-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1775" y="740.0000000000002" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-23" value="以太网协议&lt;br&gt;（逻辑上数据帧在这里被传输）" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-19">
+          <mxGeometry x="-0.0231" y="3" relative="1" as="geometry">
+            <mxPoint x="3" y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1680" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-7" value="以太网驱动程序" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1646" y="720" width="84" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=none;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-10" target="Su5WRMt0bHYKvWhULNg3-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-134" value="分离" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-9">
+          <mxGeometry x="-0.0768" y="-1" relative="1" as="geometry">
+            <mxPoint y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-10" value="HTTP服务端" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1975" y="360" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-12" value="TCP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1975" y="480" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-14" value="IP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1978" y="600" width="87" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2015" y="800.0000000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-15" value="以太网驱动程序" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1975" y="720" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-26" value="" style="endArrow=none;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;fontStyle=1;fontSize=12;entryX=0.745;entryY=0.909;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="Su5WRMt0bHYKvWhULNg3-113">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1600" y="800" as="sourcePoint" />
+            <mxPoint x="2040" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-27" value="以太网" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-26">
+          <mxGeometry x="0.0644" y="-3" relative="1" as="geometry">
+            <mxPoint x="-17" y="-4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-28" value="" style="endArrow=none;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;fontStyle=1;fontSize=12;fontColor=#FF0000;strokeColor=#FF0000;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="2215.25" y="440" as="sourcePoint" />
+            <mxPoint x="2335.25" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;fontColor=#FF0000;strokeColor=#FF0000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2275.25" y="400" as="sourcePoint" />
+            <mxPoint x="2275.25" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-32" value="&lt;font face=&quot;Comic Sans MS&quot; style=&quot;font-size: 12px;&quot;&gt;用户层（应用程序细节）&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="2205.25" y="365" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-33" value="&lt;font face=&quot;Comic Sans MS&quot; style=&quot;font-size: 12px;&quot;&gt;内核层（网络通信细节）&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="2205.25" y="480" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-49" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fillColor=none;fontColor=#ffffff;strokeColor=#6F0000;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="1865" y="1190" width="230" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-53" target="Su5WRMt0bHYKvWhULNg3-57">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-53" target="Su5WRMt0bHYKvWhULNg3-65">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-52" value="HTTP协议" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-51">
+          <mxGeometry x="0.0463" y="1" relative="1" as="geometry">
+            <mxPoint x="-4" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-53" value="HTTP客户端" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1730" y="970" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-57" target="Su5WRMt0bHYKvWhULNg3-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-57" target="Su5WRMt0bHYKvWhULNg3-67">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-56" value="TCP协议" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-55">
+          <mxGeometry x="-0.037" y="6" relative="1" as="geometry">
+            <mxPoint x="4" y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-57" value="TCP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1730" y="1090" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-61" target="Su5WRMt0bHYKvWhULNg3-63">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-61" target="Su5WRMt0bHYKvWhULNg3-80">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="1280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-60" value="IP协议" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-59">
+          <mxGeometry x="-0.0093" y="-1" relative="1" as="geometry">
+            <mxPoint y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-61" value="IP&lt;br&gt;封装源IP和目的IP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1730" y="1210" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-63">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1775" y="1412" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-63" value="以太网驱动程序&lt;br&gt;含Mac地址" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1732.5" y="1310" width="95" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-65" target="Su5WRMt0bHYKvWhULNg3-67">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-65" value="HTTP服务端" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="2145.25" y="970" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-67" target="Su5WRMt0bHYKvWhULNg3-69">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-67" value="TCP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="2145.25" y="1090" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-68" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-69" target="Su5WRMt0bHYKvWhULNg3-71">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-69" value="IP&lt;br&gt;接受对端发的两IP" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="2145.25" y="1210" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-71">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2190" y="1410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-71" value="以太网驱动程序&lt;br&gt;含Mac地址" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="2147.88" y="1310" width="94.75" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-72" value="" style="endArrow=none;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1730" y="1410" as="sourcePoint" />
+            <mxPoint x="2241" y="1410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-73" value="以太网" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-72">
+          <mxGeometry x="0.0644" y="-3" relative="1" as="geometry">
+            <mxPoint x="-20" y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-74" value="" style="endArrow=none;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;fontColor=#FF0000;strokeColor=#FF0000;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="2290.25" y="1045" as="sourcePoint" />
+            <mxPoint x="2410.25" y="1045" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-75" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;fontColor=#FF0000;strokeColor=#FF0000;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2350.25" y="1005" as="sourcePoint" />
+            <mxPoint x="2350.25" y="1085" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-76" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;用户层（应用程序细节）&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="2270" y="970" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-77" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;内核层（网络通信细节）&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="2270" y="1085" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-80" target="Su5WRMt0bHYKvWhULNg3-69">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2040" y="1280" as="sourcePoint" />
+            <mxPoint x="1940" y="1240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-79" value="IP协议" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-78">
+          <mxGeometry x="-0.0093" y="-1" relative="1" as="geometry">
+            <mxPoint y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-80" value="IP路由器" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1930" y="1210" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-81" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-63" target="Su5WRMt0bHYKvWhULNg3-83">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1860" y="1350" as="sourcePoint" />
+            <mxPoint x="2100" y="1350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-82" value="以太网协议" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-81">
+          <mxGeometry x="-0.0231" y="3" relative="1" as="geometry">
+            <mxPoint x="3" y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-83" value="以太网驱动程序" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1915" y="1330" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-84" value="以太网驱动程序" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
+          <mxGeometry x="1990" y="1330" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-85" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-84" target="Su5WRMt0bHYKvWhULNg3-71">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2030.12" y="1349.6399999999999" as="sourcePoint" />
+            <mxPoint x="2100" y="1380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-86" value="以太网协议" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-85">
+          <mxGeometry x="-0.0231" y="3" relative="1" as="geometry">
+            <mxPoint x="3" y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-87" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-83" target="Su5WRMt0bHYKvWhULNg3-80">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1820" y="1360" as="sourcePoint" />
+            <mxPoint x="1920" y="1360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-88" value="向上交付" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-87">
+          <mxGeometry x="-0.0231" y="3" relative="1" as="geometry">
+            <mxPoint x="-17" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-89" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=open;startFill=0;endArrow=open;endFill=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-84" target="Su5WRMt0bHYKvWhULNg3-80">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1950" y="1340" as="sourcePoint" />
+            <mxPoint x="1990" y="1260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-90" value="向上交付" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-89">
+          <mxGeometry x="-0.0231" y="3" relative="1" as="geometry">
+            <mxPoint x="22" y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-91" value="发送&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1520" y="370" width="105" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-92" value="&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1585" y="490" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-93" value="HTTP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1515" y="490" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-94" value="&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1585" y="610" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-95" value="HTTP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1515" y="610" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-96" value="TIP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="610" width="55" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-97" value="&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1585" y="730" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-98" value="HTTP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1515" y="730" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-99" value="IP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1415" y="730" width="45" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-101" value="TIP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="730" width="55" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-102" value="&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2250.25" y="730" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-103" value="HTTP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2180.25" y="730" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-104" value="IP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="730" width="45" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-105" value="TIP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2125.25" y="730" width="55" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-106" value="得到&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="370" width="104.75" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-107" value="&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2150.25" y="490" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-108" value="HTTP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="490" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-109" value="&quot;hello&quot;" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2205.25" y="610" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-110" value="HTTP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2135.25" y="610" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-111" value="TIP报头" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="610" width="55" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-114" value="request" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1520" y="390" width="105" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-119" value="数据段" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1515" y="510" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-120" value="数据报" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1460.5" y="630" width="164.5" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-123" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-121" target="Su5WRMt0bHYKvWhULNg3-98">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-121" value="数据帧" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1415" y="750" width="211" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-125" value="response" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="390" width="105" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-126" value="数据段" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="510" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-127" value="数据报" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="630" width="164.5" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-128" value="数据帧" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="2080.25" y="750" width="211" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=none;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-3" target="Su5WRMt0bHYKvWhULNg3-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1689.79" y="520" as="sourcePoint" />
+            <mxPoint x="1689.79" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-131" value="封装" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-130">
+          <mxGeometry x="-0.0285" y="2" relative="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-132" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=none;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=open;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" edge="1" parent="1" source="Su5WRMt0bHYKvWhULNg3-5" target="Su5WRMt0bHYKvWhULNg3-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1689.79" y="640" as="sourcePoint" />
+            <mxPoint x="1689.79" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-133" value="封装" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-132">
+          <mxGeometry x="-0.0285" y="2" relative="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-135" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=none;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2014.57" y="520" as="sourcePoint" />
+            <mxPoint x="2014.57" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-136" value="分离" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-135">
+          <mxGeometry x="-0.0768" y="-1" relative="1" as="geometry">
+            <mxPoint y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-137" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=open;startFill=0;sketch=1;curveFitting=1;jiggle=2;endArrow=none;endFill=0;fontFamily=Comic Sans MS;fontStyle=1;fontSize=12;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2014.57" y="640" as="sourcePoint" />
+            <mxPoint x="2014.57" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-138" value="分离" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Su5WRMt0bHYKvWhULNg3-137">
+          <mxGeometry x="-0.0768" y="-1" relative="1" as="geometry">
+            <mxPoint y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Su5WRMt0bHYKvWhULNg3-139" value="路由器" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Comic Sans MS;fontColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="1950" y="1160" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

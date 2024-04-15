@@ -8,13 +8,13 @@
 
 1.   [`C/C++` 语言的基础知识](https://gitee.com/limou3434/limou-learn-note/tree/master/Cpp_Programming_Language_And_DSA_Note)（包含 `STL` 的常见容器解析和模拟）
 2.   [`Linux` 系统编程和网络](https://gitee.com/limou3434/limou-learn-note/tree/master/Linux_System_Note)
-3.   [`MySQL` 数据库基本操作](https://gitee.com/limou3434/limou-learn-note/tree/master/SQL_Database_Note)
+3.   [`MySQL` 数据库基本操作](https://gitee.com/limou3434/limou-learn-note/tree/master/MySQL_Note)
 4.   [`python` 语言的快速上手经验和模块总结](https://gitee.com/limou3434/limou-learn-note/tree/master/Python_Programming_Language_Note)
 5.   [`Java` 语言的基础知识](https://gitee.com/limou3434/limou-learn-note/tree/master/Java_Programming_Language_Note)
 6.   [`Web` 三大件](https://gitee.com/limou3434/limou-learn-note/tree/master/Web_Design_Note)
 7.   [算法和编程题练习](https://gitee.com/limou3434/limou-learn-note/tree/master/Programming_Exercise_Note)
 
-## 3.主要目的
+## 3.主要目的x
 
 1.   提炼脑海中的技术逻辑，构建自己的技术栈
 2.   无偿与他人分享自己的技术路线和学习心得
