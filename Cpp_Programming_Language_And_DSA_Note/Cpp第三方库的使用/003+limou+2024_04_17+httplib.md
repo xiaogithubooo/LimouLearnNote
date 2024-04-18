@@ -1,0 +1,422 @@
+# 1.httplib 简介
+
+`cpp-httplib`（也称为 `httplib`）是一个基于 `C++` 的轻量级 `HTTP` 框架，它提供了简单易用的 `API`，用于创建 `HTTP` 服务器和客户端。
+
+# 2.httplib 使用
+
+`httplib` 的安装也很简单，直接克隆库中的 `httplib.h` 到项目中即可（https://github.com/yhirose/cpp-httplib）。接口有点多，我先写出常用的接口声明和类声明（另外，该编译该库最好使用 `g++7.3`）。
+
+## 2.1.协议接口
+
+首先 `http` 报文内会包含：
+
+-   首部：请求方法（`GET、POST`）、`URL(<protocol>://<username>:<password>@<host>:<port>/<path>?<params>#<fragment>)`、协议版本
+-   报头：`key-value\r\n` 对
+-   空行：`\r\n`
+-   正文：请求的数据或者返回的数据
+
+而 `http` 报文还会分为请求报文和响应报文，因此在 `httplib` 中存在以下两个类（只是作为归纳的两个简化的类，实际声明可能有很大的不同）。
+
+```cpp
+//Request 类
+struct MultipartFormDataMap
+{
+    std::string name; //表单字段的名称, 用于标识表单数据
+    std::string content; //文件内容
+    std::string filename; //文件名称
+    std::string content_type; //文件类型
+};
+
+struct Request
+{
+    //(1)请求行
+    std::string method; //请求方法
+    std::string path; //资源路径（不是所有的 URL, 通常是域名之后, 查询字符之前）
+    Params params; //查询字符串
+    std::string version; //协议版本
+    
+    //(2)请求头部
+    Headers headers; //头部
+
+    //(3)请求正文
+    std::string body; //正文
+    MultipartFormDataMap files; //保存客户端上传的文件信息
+    Ranges ranges; //指定要获取资源范围, 会根据 Range 字段指定的范围来返回相应的资源内容, 一旦中断后重连, 就会从中断的位置继续下载文件, 而不需要重新下载整个文件
+    
+    bool has_header(const char *key) const;
+   	//检查请求头部是否包含指定键名的头部字段, 参数 key 是要检查的头部字段的键名
+    //如果请求头部中包含指定键名的头部字段, 则返回 true 否则返回 false
+    
+    std::string get_header_value(const char *key, size_t id = 0) const;
+    //获取请求头部中指定键名的报头字段的值, 参数 key 是要获取的字段键名, 参数 id 是可选的
+    //若头部字段有多个同名键名, 则可通过 id 来指定获取其中一个
+    //如果请求头部中存在指定键名的头部字段, 则返回该字段的值, 否则返回空字符串
+    
+    void set_header(const char *key, const char *val);
+    //用于设置请求头部中的一个新的头部字段或更新已存在的头部字段
+    
+    bool has_file(const char *key) const;
+    //用于检查请求中是否包含指定键名的文件字段(表单 name)
+    
+    MultipartFormData get_file_value(const char *key) const;
+    //用于获取请求中指定键名的文件字段的值(表单 name)
+};
+```
+
+```cpp
+//Response 类
+struct Response
+{
+    //(1)状态行
+    std::string version;    //协议版本
+    int status = -1;        //状态码
+    std::string reason;     //状态描述
+    
+    //(2)响应头部
+    Headers headers;        //响应头部
+    
+    //(3)响应正文
+    std::string body;       //响应体
+    std::string location;   //重定向地址
+
+    //设置响应头部
+    void set_header(const char *key, const char *val);
+
+    //设置响应正文
+    void set_content(const std::string &s, const char *content_type);
+};
+```
+
+## 2.2.双端接口
+
+```cpp
+//Server 类
+class Server
+{
+public:
+	//1.路由方法设置
+    //请求路由：Handler 是函数类型, 无返回值, 传入请求, 带出响应
+    using Handler = std::function<void(const Request&, Response&)>;
+    //请求路由数组：众多 Handler 类型函数的列表 std::regex 是正则表达式, 用于填充和路由方法匹配 http 请求资源路径(实际上就是请求中的 path), 以后就可以根据用户端请求的路由选择对应的路由函数进行请求处理(若没有对端就会收到 404)
+    using Handlers = std::vector<std::pair<std::regex, Handler>>;
+    
+    //(2)线程池设置
+    //线程池成员, 其工作就是接受请求, 解析请求, 在映射表中查看是否有可以执行方法, 每接到链接请求, 就会把新的客户端连接抛入线程池中,
+    std::function<TaskQueue* (void)> new_task_queue;
+
+    //(3)请求方法设置, 通过下面接口, 针对不同的请求, 把路由方法添加到 Handlers 中
+    //注册处理 GET 请求的处理程序
+    Server &Get(const std::string &pattern, Handler handler);
+    //注册处理 POST 请求的处理程序
+    Server &Post(const std::string &pattern, Handler handler);
+    //注册处理 PUT 请求的处理程序
+    Server &Put(const std::string &pattern, Handler handler);
+    //注册处理 PATCH 请求的处理程序
+    Server &Patch(const std::string &pattern, Handler handler);
+    //注册处理 DELETE 请求的处理程序
+    Server &Delete(const std::string &pattern, Handler handler);
+    //注册处理 OPTIONS 请求的处理程序
+    Server &Options(const std::string &pattern, Handler handler);
+
+    //4.启动 HTTP 服务器
+    bool listen(const char* host, int port, int socket_flags = 0);
+};
+```
+
+```cpp
+//Client 类
+class Client
+{
+public:
+    //传入对端服务器的 ip 和 port
+    Client(const std::string &host, int port);
+
+    //发送 GET 请求到指定路径, 可附带头部信息, 并返回结果
+    Result Get(const char *path, const Headers &headers);
+
+    //发送 POST 请求到指定路径, 包含纯文本主体、内容长度、内容类型
+    Result Post(const char *path, const char *body, size_t content_length, const char *content_type);
+
+    //发送 POST 请求到指定路径，包含多部分表单数据项
+    Result Post(const char *path, const MultipartFormDataItems &items); //最后一个参数是一个文件数组
+};
+```
+
+## 2.3.实际使用
+
+接下来我们尝试使用一下上述的接口。
+
+先写一个自动化脚本，方便多次代码编译。
+
+```makefile
+# makefile
+
+all: clean http_server http_client
+
+maker: http_server http_client
+
+http_server: http_server.cpp
+	g++ -o $@ $^ -std=c++11 -lpthread -O3
+
+http_client: http_client.cpp
+	g++ -o $@ $^ -std=c++11 -lpthread -O3 
+
+.PHONT: clean
+clean:
+	rm http_server http_client
+```
+
+然后编写服务端代码，支持两个接口。
+
+```cpp
+//http_server.cpp
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include "../cpp-httplib/httplib.h"
+
+int main(int argc, char const* argv[]) {
+    using namespace httplib;
+    Server svr;
+
+    svr.Get(R"(/my_get)", [](const Request& req, Response& res) {
+            std::cout << "a get request." << std::endl;
+            res.set_content("hello world!", "text/plain");
+            res.status = 200;
+        }
+    );
+
+    svr.Post(R"(/my_post)", [](const Request& req, Response& res) {
+            std::cout << "a post request." << std::endl;
+            auto ret = req.has_file("file");
+            if (!ret) 
+            {
+                std::cout << "not file upload.\n";
+                res.status = 404;
+                return;
+            }
+                
+            const auto& file = req.get_file_value("file");
+            std::cout
+                << file.filename << std::endl
+                << file.content_type << std::endl
+                << file.content << std::endl;
+        
+            std::string message = "The file is ";
+            message += file.filename;
+            message += "-";
+            message += file.content_type;
+            message += "\n";
+            message += file.content;
+            
+            res.set_content(message.c_str(), "text/plain");
+            res.status = 200;
+        }
+    );
+
+    svr.listen("0.0.0.0", atoi(argv[1]));
+    
+    return 0;
+}
+```
+
+`make maker` 编译成功后，直接运行 `./http_server 选定的端口号`。
+
+而客户端我们不着急编写，我们直接使用浏览器测试一下 `GET` 接口。
+
+![image-20240418135434119](./assets/image-20240418135434119.png)
+
+观察服务端代码的输出结果。
+
+```bash
+# 运行结果
+$ ./http_server 选定的端口号
+a get request.
+```
+
+然后再测试 `POST` 接口，看看是否可以上传文件。
+
+```html
+<!-- test.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+<body>
+    <form action="http://这里填您的服务器公网ip/这里填您给服务端代码绑定的port" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file">
+        <input type="submit" value="提交文件">
+    </form>
+</body>
+</html>
+```
+
+页面渲染如下，选择任意一个文件进行提交。
+
+![image-20240418135750328](./assets/image-20240418135750328.png)
+
+```bash
+# 运行结果
+$ ./http_server 选定的端口号
+a get request. # 这一句是之前运行的
+a post request.
+test.html
+text/html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+<body>
+    <h2>File Upload</h2>
+    <form action="http://这里填您的服务器公网ip/这里填您给服务端代码绑定的port" enctype="multipart/form-data">
+        <input type="file" name="file" id="file">
+        <input type="submit" value="Upload">
+    </form>
+</body>
+</html>
+```
+
+到这里，您基本就会初步使用这个库了。
+
+当然，如果写得完整一些则如下：
+
+```cpp
+//较完整的 http_client.cpp
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include "../cpp-httplib/httplib.h"
+
+int main(int argc, char const* argv[]) {
+    using namespace httplib;
+    Server svr;
+
+    svr.Get(R"(/my_get)", [](const Request& req, Response& res) {
+            std::cout << "a get request." << std::endl;
+            res.set_content("hello world!", "text/plain");
+            res.status = 200;
+        }
+    );
+
+    svr.Post(R"(/my_post)", [](const Request& req, Response& res) {
+            std::cout << "a post request." << std::endl;
+            auto ret = req.has_file("file");
+            if (!ret) 
+            {
+                std::cout << "not file upload.\n";
+                res.status = 404;
+                return;
+            }
+                
+            const auto& file = req.get_file_value("file");
+            std::cout
+                << file.filename << std::endl
+                << file.content_type << std::endl
+                << file.content << std::endl;
+        
+            std::string message = "The file is ";
+            message += file.filename;
+            message += "-";
+            message += file.content_type;
+            message += "\n";
+            message += file.content;
+            
+            res.set_content(message.c_str(), "text/plain");
+            res.status = 200;
+        }
+    );
+
+    svr.listen("0.0.0.0", atoi(argv[1]));
+    
+    return 0;
+}
+```
+
+另外，直接使用浏览器上传文件忽略了很多上传细节，我们来自己写一个较完整的客户端试试。
+
+```cpp
+//较完整的 http_client.cpp
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include "../cpp-httplib/httplib.h"
+
+int main(int argc, char const* argv[]) {
+    using namespace httplib;
+    Client cli(argv[1], atoi(argv[2]));
+
+    //1.发送 GET 请求
+    auto res_get = cli.Get("/my_get");
+    if (res_get->status == 200) {
+        std::cout << "get success" << std::endl;
+        std::cout << "返回响应的状态码: " << res_get->status << std::endl;
+        std::cout << "返回响应具体内容: " << res_get->body << std::endl;
+    } else {
+        std::cout << "get error" << std::endl;
+    }
+
+    //2.发送 POST 请求
+    //读取文件内容
+    std::ifstream file("example.txt", std::ios::binary);
+    if (!file.is_open()) {
+        std::cout << "open error" << std::endl;
+        return 1;
+    }
+
+    //读取文件内容到字符串
+    std::stringstream buffer;
+    buffer << file.rdbuf(); //使用 rdbuf() 获取文件流的底层缓冲区, 类似 read(), 您也可以使用 read() 的
+    std::string file_content = buffer.str();
+
+    MultipartFormData item;
+    item.name = "file"; //表单字段名
+    item.filename = "example.txt"; //作为文件名
+    item.content = file_content.c_str(); //文件内容
+    item.content_type = "text/plain"; //文件格式
+    MultipartFormDataItems items;
+    items.push_back(item);
+
+    //发送 POST 请求上传文件, 并且返回 res 响应
+    auto res = cli.Post("/my_post", items);
+
+    if (res && res->status == 200) { //注意 res 其实就是一个指向响应的智能指针
+        std::cout << "port success" << std::endl;
+        std::cout << "返回响应的状态码: " << res_get->status << std::endl;
+        std::cout << "返回响应具体内容: " << res->body << std::endl;
+    } else {
+        std::cout << "port error" << std::endl;
+    }
+
+    return 0;
+}
+```
+
+然后在客户端用的机器这边写一个 `example.txt` 文本文件，内容是 `Hello, I am limou3434`。运行两端程序后，结果如下：
+
+```bash
+# 运行结果
+$ ./http_server 5000
+a get request.
+a post request.
+example.txt
+text/plain
+Hello, I am limou3434
+
+$ ./http_client 127.0.0.1 5000
+get success
+返回响应的状态码: 200
+返回响应具体内容: hello world!
+port success
+返回响应的状态码: 200
+返回响应具体内容: The file is example.txt-text/plain
+Hello, I am limou3434
+```
+
+到这里我们会发现，所谓的上传文件实际上就是客户端读取文件内容，然后包装为请求发送给服务端，最后服务端对该文件传输做出响应而已。

@@ -230,3 +230,10 @@ i=0
 5. `-w`：不生成二位任何警告信息
 
 6. `-Wall`：生成所有的警告信息
+
+# 5.gcc/g++ 更新
+
+1.   `sudo yum install centos-release-scl-rh centos-release-scl`
+2.   `sudo yum install devtoolset-7-gcc devtoolset-7-gcc-c++`
+3.   `source /opt/rh/devtoolset-7/enable` 但是可能当前临时生效
+4.   `echo "source /opt/rh/devtoolset-7/enable" >> ~/.bashrc` 则可以永久有效
