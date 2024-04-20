@@ -1364,7 +1364,7 @@ int main()
 
 ### 11.1.1.静态库制作
 
-实际上，我们可以把 `function.h` 文件和经过 `gcc -c function.c -o function.o`  后的文件给别人，就可以给别人使用您编写的函数。如果将多个 `.o` 文件打包起来，就是“形成静态库”的过程，使用 ==`ar -rc <目标静态库名，前缀lib，后缀.a> <.o文件列表>`== 命令即可完成打包（`r` 指替换， `c` 指创建）。
+实际上，我们可以把 `function.h` 文件和经过 `gcc -c function.c -o function.o` 后的文件给别人，就可以给别人使用您编写的函数。如果将多个 `.o` 文件打包起来，就是“形成静态库”的过程，使用 ==`ar -rc <目标静态库名，前缀lib，后缀.a> <.o文件列表>`== 命令即可完成打包（`r` 指替换， `c` 指创建）。
 
 >   补充：`Windows` 和 `Linux` 两个平台的动静态库后缀名不一样
 >
@@ -1419,7 +1419,7 @@ int Add(int i)
 然后根据这些源文件和静态库制作的指令生成静态库。
 
 ```shell
-制作静态库
+# 制作静态库
 # (1)制作 .o 文件
 $ gcc -c function1.c -o function1.o # 这里的 -o 可以不加，默认生成和 .c 文件同名的 .o 文件
 $ gcc -c function2.c -o function2.o # 这里的 -o 可以不加，默认生成和 .c 文件同名的 .o 文件
@@ -1479,7 +1479,7 @@ int main()
 
      ```bash
      # 在代码中使用静态库
-     $ gcc test.c -I ./mylib/include -L ./mylib/lib -l function
+     $ gcc test.c -I ./mylib/include -L ./mylib/lib -lfunction
      $ ls
      a.out mylib test.c
      
