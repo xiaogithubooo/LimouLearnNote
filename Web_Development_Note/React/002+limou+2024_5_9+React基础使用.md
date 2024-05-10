@@ -1,4 +1,4 @@
-# 1.React 组件
+# 1.简单使用 React 组件
 
 `React` 应用程序是由 **组件(返回标签的 JS 函数)** 组成的。一个组件是 `UI` 的一部分，它拥有自己的逻辑和外观。组件可以小到一个按钮，也可以大到整个页面。
 
@@ -56,7 +56,8 @@ export default function MyApp() {
 ```
 
 ```cpp
-// styles.css
+/* styles.css */
+
 * {
   box-sizing: border-box;
 }
@@ -184,4 +185,272 @@ root.render(
 
 >   吐槽：有点像 `HTML` 的标签/元素具有了类似函数的功能，而标签/元素的属性后面也可以作为函数的参数传递给组件...
 
+# 2.HTML 转化为 JSX
+
 上面所使用的标签语法被称为 `JSX`，它是可选的，但被大多数 `React` 项目所使用（主要是很方便）。需要注意的是 `JSX` 比 `HTML` 更加严格，必须使用闭合标签。
+
+并且 `JSX` 返回多个组件时，不能返回多个 `JSX` 标签，如果需要也必须使用一个共享的父级（例如 `<>` 或 `<dir>`）来打包返回。
+
+```javascript
+// 使用空标签包裹
+function AboutPage() {
+  return (
+    <>
+      <h1>About</h1>
+      <p>Hello there.<br />How do you do?</p>
+    </>
+  );
+}
+```
+
+如果您有大量的 `HTML` 需要移植到 `JSX` 中，可以考虑[使用在线 HTML->JSX 转换器](https://transform.tools/html-to-jsx)。
+
+```html
+<!-- 转化之前 -->
+<!-- Hello world -->
+<div class="awesome" style="border: 1px solid red">
+    <label for="name">Enter your name: </label>
+    <input type="text" id="name" />
+</div>
+<p>Enter your HTML here</p>
+```
+
+```javascript
+// 转化之后
+<>
+    {/* Hello world */}
+	<div className="awesome" style={{ border: "1px solid red" }}>
+    	<label htmlFor="name">Enter your name: </label>
+		<input type="text" id="name" />
+    </div>
+	<p>Enter your HTML here</p>
+</>
+```
+
+# 3.为组件添加样式
+
+在 `React` 中可以使用 `className` 来指定一个 `CSS` 的 `class`。它与 `HTML` 的 [`class`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/class) 属性的工作方式相同：
+
+```react
+<img className="avatar" />
+```
+
+然后可以在一个单独的 `CSS` 文件中为它编写 `CSS` 规则：
+
+```css
+/* In your CSS */
+.avatar {
+    border-radius: 50%;
+}
+```
+
+`React` 并没有规定如何添加 `CSS` 文件，最简单的方式是使用 `HTML` 的 `<link>` 标签。不过也可以在 `JS` 代码中使用 `import` 的形式。
+
+# 4.显示 JS 对象
+
+`JSX` 标签还可以把 `JS` 中的对象显示到 `HTML` 中，我们来尝试以下。首先准备好一个 `.html` 文件和一个 `.css` 文件。
+
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>
+```
+
+```css
+/* styles.css */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 22px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+h4 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+h5 {
+    margin-top: 0;
+    font-size: 14px;
+}
+
+h6 {
+    margin-top: 0;
+    font-size: 12px;
+}
+
+code {
+    font-size: 1.2em;
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
+.large {
+    border: 4px solid gold;
+}
+```
+
+然后编写组件。
+
+```javascript
+// App.js
+const user = { // 这里是需要显示到 HTML 页面上的数据
+    name: 'Hedy Lamarr',
+    imageUrl: 'https://i.imgur.com/yXOvdOSs.jpg',
+    imageSize: 90,
+};
+
+export default function Profile() {
+    return (
+        <>
+        <h1>{user.name}</h1>
+        <img
+            className="avatar"
+            src={user.imageUrl} // 使用 {} 包裹 JS 对象
+            alt={'Photo of ' + user.name} // 使用 {} 包裹 JS 对象
+            style={{
+                width: user.imageSize,
+                height: user.imageSize
+            }}
+            />
+        </>
+    );
+}
+```
+
+注意这里的 `style={{ width: user.imageSize, height: user.imageSize }}`，外层 `{}` 代表插入 `JS` 表达式，内层 `{}` 代表插入的 `css` 样式对象，也就是一个 `JS` 中的 `{}` 对象...
+
+然后经过 `React` 的库来渲染。
+
+```javascript
+// index.js
+import React, { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./styles.css";
+
+import App from "./App";
+
+const root = createRoot(document.getElementById("root"));
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+```
+
+>   补充：在这个例子中，`App` 是一个默认导出（`default export`），而不是命名导出（`named export`）。当您在模块中使用 `export default` 语法时，您可以使用任何名称来导入这个默认导出的模块，而不一定非要使用与导出名称相同的名称。
+>
+>   所以，无论你使用 `import Profile from "./App";` 还是 `import App from "./App";`，都是合法的。在这里，选择使用 `App` 来引入组件，可能是因为 `App` 通常被用作应用的入口文件的命名约定。
+
+# 5.条件渲染和列表渲染
+
+`React` 没有特殊的语法来编写条件语句，因此您可以使用普通的 `JS` 代码。例如使用 [`if`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/if...else) 语句根据条件引入 `JSX`。
+
+```javascript
+// 条件渲染
+let content;
+
+if (isLoggedIn) {
+    content = <AdminPanel />;
+} else {
+    content = <LoginForm />;
+}
+
+return (
+    <div>
+    {content}
+    </div>
+);
+```
+
+如果您喜欢更为紧凑的代码则可以使用条件运算符。与 `if` 不同的是，它工作于 `JSX` 内部。
+
+```javascript
+// 条件渲染
+<div>
+	{isLoggedIn ? (
+		<AdminPanel />
+	) : (
+		<LoginForm />
+	)}
+</div>
+```
+
+当你不需要 `else` 分支时还可以使用逻辑语法.
+
+```javascript
+// 条件渲染
+<div>
+	{isLoggedIn && <AdminPanel />}
+</div>
+```
+
+而列表渲染也可以依赖 `JS` 的特性，例如 `for` 循环和 `array` 的 `map()` 函数来渲染组件列表。假设有一个产品数组。在您的组件中，使用 `map()` 函数将这个数组转换为 `<li>` 标签构成的列表。
+
+```javascript
+// 列表渲染
+const products = [
+    { title: 'Cabbage', isFruit: false, id: 1 },
+    { title: 'Garlic', isFruit: false, id: 2 },
+    { title: 'Apple', isFruit: true, id: 3 },
+];
+
+export default function ShoppingList() {
+    const listItems = products.map(product =>
+        <li key={product.id}
+            style={{
+                color: product.isFruit ? 'magenta' : 'darkgreen'
+            }}>
+            {product.title}
+        </li>
+    );
+
+    return (
+        <ul>{listItems}</ul>
+    );
+}
+```
+
+>   补充：您可以[前往 MDN 查看 map()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map)...
+
+# 6.响应事件
+
+# 7.更新界面
+
+# 8.使用 Hook
+
+# 9.组件间共享数据
+
+# 10.React 和 Jinja2 的区别
+
+虽然 `React` 和 `Jinja2` 都用于构建 `Web` 应用，但它们的角色和工作方式有很大的不同。`React` 主要负责客户端渲染，而 `Jinja2` 则主要用于服务器端渲染。通常您可以将 `React` 用于构建前端界面，而使用 `Jinja2` 用于渲染页面的框架，比如 `Flask` 或 `Django`。
