@@ -2,10 +2,11 @@
 
 [TOC]
 
->   前要：这里有一个关于操作系统发展的视频，您可以观看一下 [操作系统究竟是怎么发展而来的，你真的了解吗？](https://www.bilibili.com/video/BV1Zc411D7sG?vd_source=4772b64d7a3cb1873f14bc0153c4de68) 这个视频，
+>   资源：这里有一个关于操作系统发展的视频，您可以观看一下 [操作系统究竟是怎么发展而来的，你真的了解吗？](https://www.bilibili.com/video/BV1Zc411D7sG?vd_source=4772b64d7a3cb1873f14bc0153c4de68) 这个视频。
+>
+>   在本系列文章中，有部分内容引用了 [阮一峰所撰写的 shell 教程](https://www.ruanyifeng.com/blog/2020/04/bash-tutorial.html)，您可以前往一看。
 
-1.划时代的 OS
-==== ==== ====
+# 1.划时代的 OS
 
 1.1.第一代 60 年代 Unix 操作系统
 ----------------
