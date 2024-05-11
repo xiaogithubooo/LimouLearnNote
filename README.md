@@ -2,7 +2,7 @@
 
 ## 1.仓库作者
 
-limou3434，一名普通的技术爱好者...
+[limou-learn-note](https://gitee.com/limou3434/limou-learn-note/) 的作者为 limou3434，一名普通的技术爱好者...
 
 ## 2.联系方式
 
