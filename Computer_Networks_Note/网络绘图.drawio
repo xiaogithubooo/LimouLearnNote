@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-05-12T10:55:16.365Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="nDSMdet2dg4VZGtNVR4d" version="22.1.2" type="device">
+<mxfile host="Electron" modified="2024-05-12T15:16:56.687Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="BLD--OE3X-uFlKip_seJ" version="22.1.2" type="device">
   <diagram name="第 1 页" id="7oMCcfue97lB2IO2_yBv">
-    <mxGraphModel dx="637" dy="382" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="100000" pageHeight="100000" math="0" shadow="0">
+    <mxGraphModel dx="576" dy="401" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="100000" pageHeight="100000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -807,19 +807,19 @@
         </mxCell>
         <mxCell id="wn1u9aZSYSZ8bPjQJcBS-43" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Comic Sans MS;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1460" y="4242" as="sourcePoint" />
-            <mxPoint x="1479" y="4242" as="targetPoint" />
+            <mxPoint x="1460" y="4202" as="sourcePoint" />
+            <mxPoint x="1479" y="4202" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="wn1u9aZSYSZ8bPjQJcBS-44" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;fontFamily=Comic Sans MS;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1470" y="4240" as="sourcePoint" />
+            <mxPoint x="1470" y="4200" as="sourcePoint" />
             <mxPoint x="1470" y="4042" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="wn1u9aZSYSZ8bPjQJcBS-45" value="byte&lt;span style=&quot;&quot;&gt;&amp;nbsp;&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="wn1u9aZSYSZ8bPjQJcBS-44">
+        <mxCell id="wn1u9aZSYSZ8bPjQJcBS-45" value="标准报&lt;br&gt;文长度&lt;br&gt;20 byte" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;" vertex="1" connectable="0" parent="wn1u9aZSYSZ8bPjQJcBS-44">
           <mxGeometry x="0.0067" y="-1" relative="1" as="geometry">
-            <mxPoint x="-12" as="offset" />
+            <mxPoint x="-16" y="-1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="wn1u9aZSYSZ8bPjQJcBS-46" value="32位确认序号" style="whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;fontFamily=Comic Sans MS;" vertex="1" parent="1">
