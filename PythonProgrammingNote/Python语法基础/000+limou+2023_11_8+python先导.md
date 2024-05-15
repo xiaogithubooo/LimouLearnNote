@@ -10,7 +10,7 @@
 
 # 2.Python该如何下载
 
-
+python3.8 https://blog.csdn.net/qq_41261251/article/details/105407495
 
 # 3.Python有什么资源
 
