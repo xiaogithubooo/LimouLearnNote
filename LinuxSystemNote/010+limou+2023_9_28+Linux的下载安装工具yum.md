@@ -1,0 +1,30 @@
+# 1.安装软件基本常识
+
+在系统目录中，存在一个 `/usr` 目录，其其全称为 `Unix System Resources(系统资源)`
+
+```shell
+# 查看系统安装目录
+$ tree /usr -L 1
+/usr # 存放系统资源
+├── include # 存放系统级别的头文件
+├── src # 存放系统级别的源代码
+├── bin # 存放系统级别的可执行文件
+├── sbin # 存放系统级别的管理员可执行文件
+├── lib # 存放动态链接库
+├── lib32 # 存放 32 位动态链接库
+├── lib64 # 存放 64 位动态链接库
+├── local # 存放用户资源
+└── share # 存放系统级别的共享数据文件
+
+$ tree /usr/local/ -L 1 
+/usr/local/
+├── include
+├── src
+├── bin
+├── sbin
+├── lib
+├── etc # 自定义软件的相关配置文件
+├── man -> share/man # 自定义软件的帮助手册
+└── share
+```
+
