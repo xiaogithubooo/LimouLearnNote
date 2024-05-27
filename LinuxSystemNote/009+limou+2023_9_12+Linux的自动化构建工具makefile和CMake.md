@@ -208,7 +208,7 @@ project(MySimpleProject)
 
 # 指定 C++ 标准, 例如 C++11、C++14、C++17 等
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED YES) # 确保编译器支持指定的 C++ 标准, 如果不支持就会停止配置功能
+set(CMAKE_CXX_STANDARD_REQUIRED True) # 确保编译器支持指定的 C++ 标准, 如果不支持就会停止配置功能
 
 # 指定要构建的可执行文件和它的源代码文件
 add_executable(MyExecutable main.cpp)
