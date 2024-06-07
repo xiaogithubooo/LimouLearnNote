@@ -1,9 +1,15 @@
-<mxfile host="Electron" modified="2024-06-04T10:22:46.678Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="hODOOHkRQpK-1lNN2jE-" version="22.1.2" type="device">
+<mxfile host="Electron" modified="2024-06-07T06:04:48.920Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="60sdhbfGrW9BUpQl8qC6" version="22.1.2" type="device">
   <diagram name="第 1 页" id="7oMCcfue97lB2IO2_yBv">
-    <mxGraphModel dx="376" dy="186" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="100000" pageHeight="100000" math="0" shadow="0">
+    <mxGraphModel dx="954" dy="1902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="100000" pageHeight="100000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="Bl4-swJnegtICroQL81u-29" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="780" y="6300" width="810" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-10" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="6410" width="360" height="230" as="geometry" />
+        </mxCell>
         <mxCell id="tq_VykL4GU4uLyJ9hhh6-2" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="2338.57" y="8170" width="660" height="300" as="geometry" />
         </mxCell>
@@ -5296,6 +5302,118 @@
         </mxCell>
         <mxCell id="tq_VykL4GU4uLyJ9hhh6-213" value="&lt;font&gt;索要数据&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Comic Sans MS;" parent="1" vertex="1">
           <mxGeometry x="2719.9999999999995" y="10578" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="1121.75" y="6430" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;sketch=1;curveFitting=1;jiggle=2;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="6490" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;sketch=1;curveFitting=1;jiggle=2;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="6490" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-4" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="1064.65" y="6570" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-5" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-1" target="Bl4-swJnegtICroQL81u-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1120" y="6550" as="sourcePoint" />
+            <mxPoint x="1170" y="6500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-6" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-1" target="Bl4-swJnegtICroQL81u-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1142" y="6478" as="sourcePoint" />
+            <mxPoint x="1129" y="6502" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-7" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-2" target="Bl4-swJnegtICroQL81u-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1160" y="6478" as="sourcePoint" />
+            <mxPoint x="1172" y="6502" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-8" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="1111.75" y="6570" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-9" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-2" target="Bl4-swJnegtICroQL81u-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1114" y="6539" as="sourcePoint" />
+            <mxPoint x="1101" y="6581" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-11" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;ready_queue&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="1222.1" y="6550" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-12" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;网卡驱动(内含注册回调机制)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
+          <mxGeometry x="962.63" y="6845" width="358.25" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-13" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;epoll 模型&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="6410" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-15" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-16" target="Bl4-swJnegtICroQL81u-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1040" y="6360" as="sourcePoint" />
+            <mxPoint x="1108" y="6478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-16" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;用户使用 epoll_ctrl() 设置需要&lt;br&gt;关注的 fd 和 event 时,&lt;br&gt;就会插入红黑树中&lt;br&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="874.65" y="6470" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-17" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-4" target="Bl4-swJnegtICroQL81u-18">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1074" y="6393" as="sourcePoint" />
+            <mxPoint x="1118" y="6488" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-19" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;同时设置回调方法&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Bl4-swJnegtICroQL81u-17">
+          <mxGeometry x="0.0259" y="4" relative="1" as="geometry">
+            <mxPoint x="-27" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-18" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;void CallFunction() {&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;&amp;nbsp; &amp;nbsp; // 1. 确认发生的事件是否是被用户关心的事件&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;&amp;nbsp; &amp;nbsp; // 2. 察觉用户确实需要关注该事件,&amp;nbsp; 构建就绪描述符的结点&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;&amp;nbsp; &amp;nbsp; // 3. 向 ready_queue 推送新结点, 表明描述符对应的事件已发生&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font face=&quot;Comic Sans MS&quot;&gt;}&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="787.44" y="6675" width="380" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-20" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-18" target="Bl4-swJnegtICroQL81u-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1027" y="6500" as="sourcePoint" />
+            <mxPoint x="1083" y="6583" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-21" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;entryX=0.68;entryY=1.011;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-12" target="Bl4-swJnegtICroQL81u-18">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1102" y="6775" as="sourcePoint" />
+            <mxPoint x="1270" y="6750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-22" value="察觉就绪, 开始使用回调插入新的结点" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Bl4-swJnegtICroQL81u-21">
+          <mxGeometry x="-0.2457" relative="1" as="geometry">
+            <mxPoint x="38" y="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-23" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;exitX=0.714;exitY=-0.015;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-18" target="Bl4-swJnegtICroQL81u-11">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1129" y="6855" as="sourcePoint" />
+            <mxPoint x="1038" y="6775" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-25" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;用户使用 epoll_create() 创建&lt;br&gt;epoll 模型, 内含一个红黑树和读就绪队列&lt;br&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="966.75" y="6310" width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-26" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-25" target="Bl4-swJnegtICroQL81u-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1018" y="6540" as="sourcePoint" />
+            <mxPoint x="1079" y="6588" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-27" value="" style="endArrow=classic;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;dashed=1;" edge="1" parent="1" source="Bl4-swJnegtICroQL81u-11" target="Bl4-swJnegtICroQL81u-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1069" y="6684" as="sourcePoint" />
+            <mxPoint x="1410" y="6680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bl4-swJnegtICroQL81u-28" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;用户使用 epoll_wait() 从读就绪队列&lt;br&gt;中获取就绪的描述符&lt;br&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1365" y="6710" width="220" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
