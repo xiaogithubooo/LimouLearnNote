@@ -8,7 +8,7 @@
 >
 >   在本系列文章中，有部分内容引用了 [阮一峰所撰写的 shell 教程](https://www.ruanyifeng.com/blog/2020/04/bash-tutorial.html)，您可以前往一看。
 >
->   在系列的最末尾，我还参考了 [王道考研操作系统的视频](https://www.bilibili.com/video/BV1YE411D7nH?p=2&vd_source=c92c89dbfcf9cc30c48086469621f35b)，您也可以前去一看...旨在补充一些理论知识。
+>   我还参考了 [王道考研操作系统的视频](https://www.bilibili.com/video/BV1YE411D7nH?p=2&vd_source=c92c89dbfcf9cc30c48086469621f35b)，您也可以前去一看。旨在补充一些理论知识，但是最多当作理论知识的梳理，不能作为学习的主要依据（因为内容太少了，很多值得一提的部分没有讲出来，并且基准点不是纯粹的 `Linux` 系统，而是理论上的系统），王道一开始在讲线程进程的时候的描述就不能让我满意...
 
 # 1.划时代的 OS
 
