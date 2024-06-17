@@ -30,4 +30,14 @@
 
 ## 技术选型
 
-先使用 Qt6 的 QML 以及新现代框架 FluentUI 构建桌面程序，然后使用 POCO 网络库快速构建对应的应用程序，先实现基本的云盘存储功能，然后再加入 AI 智能存储功能。
+### 编程语言
+
+采用 [C99/Cpp20](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5) 以下标准编写基本代码逻辑，以及少量的 [Python3](https://docs.python.org/zh-cn/3/contents.html) 脚本语言。
+
+### 编码标准
+
+采用 [最佳实践 Google C++ 风格指南中文版](https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents.html)/[最佳实践 Google C++ 风格指南英文版](https://google.github.io/styleguide/cppguide.html) 和 [最佳实践 Google Python 风格指南中文版](https://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents.html)/[最佳实践 Google Python 风格指南英文版](https://google.github.io/styleguide/pyguide.html)。
+
+### 网络框架
+
+采用 [POCO](https://docs.pocoproject.org/current/) 库。
