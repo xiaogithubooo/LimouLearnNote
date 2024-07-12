@@ -10,14 +10,6 @@
 
 ---
 
->   吐槽：一些个人吐槽，可以看也可以不看...
-
->   警告：一些容易错误、遗漏的点...
-
->   区别：一些容易混淆、混乱的点...
-
->   补充：一些补充性知识，最好是看一下...
-
 # 1.接口
 
 ## 1.1.接口的使用
@@ -111,103 +103,103 @@ public class Main {
 
 ## 1.3.接口的继承
 
-一个接口可以被另外一个接口以关键字 `extends` 的形式继承（有点类似类继承，但是有很大的不同）。接口可以实现类似多继承一样的效果，但是却不会出现 `Cpp` 中多继承的棱形继承问题。
+一个接口可以被另外一个接口以关键字 `extends` 的形式继承（有点类似类继承，但是有很大的不同）。接口与类不同，允许被多继承，因此可以实现类似 `Cpp` 多继承一样的效果，但是却不会出现 `Cpp` 中多继承的棱形继承问题。
 
-`Java` 的接口为什么不会出现 `Cpp` 多继承的问题呢？`Java` 强制规定了 `class` 不允许多继承，因此避免了棱形继承。但是接口怎么做到避免呢？首先如果假设有以下代码。
+`Java` 的接口为什么不会出现 `Cpp` 多继承的问题呢？`Java` 强制规定了 `class` 不允许多继承，因此避免了棱形继承。但是接口怎么做到避免呢？首先如果假设有以下代码（以下代码是故意模仿 `Cpp` 来使用多继承的）。
 
->   ```java
->   // 一个类实现多个接口的例子
->   interface Animal {
->      int id = 0; // 隐式的 public static final
->      void eat();
->      void sleep();
->   }
->   
->   interface Cat extends Animal {
->      int id = 1; // 隐式的 public static final
->      void getCatId();
->   }
->   
->   interface Dog extends Animal {
->      int id = 2; // 隐式的 public static final
->      void getDogId();
->   }
->   
->   public class Main implements Cat, Dog  {
->      public void eat() {
->          System.out.println("eat");
->      }
->      public void sleep() {
->          System.out.println("sleep");
->      }
->      public void getCatId() {
->          // 这里 id 引用了哪个接口的 id？
->          // System.out.println(id);
->      }
->      public void getDogId() {
->          // 这里 id 引用了哪个接口的 id？
->          // System.out.println(id);
->      }
->   
->      public static void main(String[] args) {
->          Main main = new Main();
->          main.eat();
->          main.sleep();
->          main.getCatId();
->          main.getDogId();
->      }
->   }
->   ```
->
->   首先明确一点，上面这样的代码如果解开注释是无法直接通过编译的，因为会有二义性的问题（但是如果所有的接口中只有一个 `id` 那就不会出现二义性）。但和 `Cpp` 一样，二义性通常很好解决，把实现中的 `id` 改为 `接口.id` 即可。
->
->   但是会不会出现冗余呢？不会，为什么？因为 `id` 是属于接口的，而不是属于实现类中的成员（这也是说为什么接口不是类的一个主要原因之一）。因此实现类中，不会出现两个相同的属性被子类“继承”，不会占用一个对象的存储空间。
->
->   ```java
->   // 一个类实现多个接口的例子
->   interface Animal {
->      int id = 0; // 隐式的 public static final
->      void eat();
->      void sleep();
->   }
->   
->   interface Cat extends Animal {
->      int id = 1; // 隐式的 public static final
->      void getCatId();
->   }
->   
->   interface Dog extends Animal {
->      int id = 2; // 隐式的 public static final
->      void getDogId();
->   }
->   
->   public class Main implements Cat, Dog  {
->      public void eat() {
->          System.out.println("eat");
->      }
->      public void sleep() {
->          System.out.println("sleep");
->      }
->      public void getCatId() {
->          // 这里 id 引用了哪个接口的 id？
->           System.out.println(Cat.id);
->      }
->      public void getDogId() {
->          // 这里 id 引用了哪个接口的 id？
->           System.out.println(Dog.id);
->      }
->   
->      public static void main(String[] args) {
->          Main main = new Main();
->          main.eat();
->          main.sleep();
->          main.getCatId();
->          main.getDogId();
->      }
->   }
->   ```
+```java
+// 一个类实现多个接口的例子
+interface Animal {
+    int id = 0; // 隐式的 public static final
+    void eat();
+    void sleep();
+}
 
->   补充：如果接口被继承的过程中，出现相同的方法签名怎么办？实现类如果同时实现两个接口，那实现的是哪一个接口的方法签名？实际上 `Java` 在这种情况下只会需要实现一个即可。
+interface Cat extends Animal {
+    int id = 1; // 隐式的 public static final
+    void getCatId();
+}
+
+interface Dog extends Animal {
+    int id = 2; // 隐式的 public static final
+    void getDogId();
+}
+
+public class Main implements Cat, Dog  {
+    public void eat() {
+        System.out.println("eat");
+    }
+    public void sleep() {
+        System.out.println("sleep");
+    }
+    public void getCatId() {
+        // 这里 id 引用了哪个接口的 id？
+        // System.out.println(id);
+    }
+    public void getDogId() {
+        // 这里 id 引用了哪个接口的 id？
+        // System.out.println(id);
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        main.eat();
+        main.sleep();
+        main.getCatId();
+        main.getDogId();
+    }
+}
+```
+
+首先明确一点，上面这样的代码如果解开注释是无法直接通过编译的，因为会有二义性的问题（但是如果所有的接口中只有一个 `id` 那就不会出现二义性，这种情况是允许编译的）。但和 `Cpp` 一样，二义性通常很好解决，把实现中的 `id` 改为 `接口.id` 即可。
+
+但是会不会出现冗余呢？不会，为什么？因为 `id` 是属于接口的，而不是属于实现类中的成员（这也是说为什么接口不是类的一个主要原因之一）。因此实现类中，不会出现两个相同的属性被子类“继承”，不会占用一个对象的存储空间。
+
+```java
+// 一个类实现多个接口的例子
+interface Animal {
+    int id = 0; // 隐式的 public static final
+    void eat();
+    void sleep();
+}
+
+interface Cat extends Animal {
+    int id = 1; // 隐式的 public static final
+    void getCatId();
+}
+
+interface Dog extends Animal {
+    int id = 2; // 隐式的 public static final
+    void getDogId();
+}
+
+public class Main implements Cat, Dog  {
+    public void eat() {
+        System.out.println("eat");
+    }
+    public void sleep() {
+        System.out.println("sleep");
+    }
+    public void getCatId() {
+        // 这里 id 引用了哪个接口的 id？
+        System.out.println(Cat.id);
+    }
+    public void getDogId() {
+        // 这里 id 引用了哪个接口的 id？
+        System.out.println(Dog.id);
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        main.eat();
+        main.sleep();
+        main.getCatId();
+        main.getDogId();
+    }
+}
+```
+
+>   补充：如果接口被继承的过程中，出现相同的方法签名怎么办？实现类如果同时实现两个接口，那实现的是哪一个接口的方法签名？实际上 `Java` 在这种情况下只会要求实现一个即可。
 >
 >   ```java
 >   // 出现完全相同方法冲突
@@ -221,18 +213,26 @@ public class Main {
 >   
 >   interface C extends A {
 >       // 接口 C 也继承了接口 A，并且定义了一个相同签名的 foo 方法
->       void foo(); 
+>       void foo();
 >   }
 >   
 >   class MyClass implements B, C {
 >       // MyClass 实现了接口 B 和 C
->       // 由于接口 B 和 C 都继承了接口 A，并且接口 B 没有重新定义 foo 方法，
->       // MyClass 只需提供一次 foo 方法的具体实现即可。
->       
+>       // 由于接口 B 和 C 都继承了接口 A, 且接口 B 没有重新定义 foo 方法
+>       // MyClass 只需提供一次 foo 方法的具体实现即可
+>       // 因此这里通过了编译, 不然本类就需要实现两个方法才能成功编译
+>   
 >       @Override
 >       public void foo() {
 >           System.out.println("Implementing foo() in MyClass");
 >           // 具体的实现代码
+>       }
+>   }
+>   
+>   public class Main {
+>       public static void main(String[] args) {
+>           MyClass mc = new MyClass();
+>           mc.foo();
 >       }
 >   }
 >   ```
@@ -271,6 +271,14 @@ public class Main {
 >           // 具体的 String 类型参数实现
 >       }
 >   }
+>   
+>   public class Main {
+>       public static void main(String[] args) {
+>           MyClass mc = new MyClass();
+>           mc.foo(1);
+>           mc.foo("limou");
+>       }
+>   }
 >   ```
 >
 >   那如果仅仅是返回值不同呢？很抱歉，这是不被允许的，除非参数也不一样。
@@ -282,12 +290,12 @@ public class Main {
 >   }
 >   
 >   interface B extends A {
->       // 接口 B 继承了接口 A，并且没有重新定义 foo 方法
+>       // 接口 B 继承了接口 A, 且没有重新定义 foo 方法
 >   }
 >   
 >   interface C extends A {
 >       // 接口 C 也继承了接口 A，但重新定义了 foo 方法，返回值类型不同
->       double foo(double x); // 但是这里的 x 类型就不允许是 int 了
+>       String foo(int x); // 但是这里的 x 类型就不允许是 int 了, 因此代码在这里编译不通过
 >   }
 >   
 >   class MyClass implements B, C {
@@ -298,19 +306,114 @@ public class Main {
 >       @Override
 >       public int foo(int x) {
 >           System.out.println("Implementing foo(int) in MyClass");
->           // 具体的 int 类型返回值实现
->           return x;
+>           return 1;
 >       }
 >   
 >       @Override
->       public double foo(double x) {
+>       public String foo(int x) {
 >           System.out.println("Implementing foo(int) in MyClass");
->           // 具体的 double 类型返回值实现
->           return x * 1.0; // 示例简化，实际应用中可能会进行类型转换
+>           return "1";
 >       }
 >   }
 >   
+>   public class Main {
+>       public static void main(String[] args) {
+>           MyClass mc = new MyClass();
+>           mc.foo(1);
+>           mc.foo("limou");
+>       }
+>   }
 >   ```
+>
+>   另外，如果有两个接口内部的方法相同，且同时被一个类多实现，也无法通过编译。
+>
+>   ```java
+>   // 类多实现相同的接口
+>   interface A {
+>       int foo(int x);
+>   }
+>   
+>   interface B {
+>       int foo(int x);
+>   }
+>   
+>   class MyClass implements B, C { // 无法多实现
+>       @Override
+>       public int foo(int x) {
+>           System.out.println("Implementing foo(int) in MyClass");
+>           return 1;
+>       }
+>   
+>       @Override
+>       public int foo(int x) {
+>           System.out.println("Implementing foo(int) in MyClass");
+>           return 2;
+>       }
+>   }
+>   
+>   public class Main {
+>       public static void main(String[] args) {
+>           MyClass mc = new MyClass();
+>           mc.foo(1);
+>           mc.foo("limou");
+>       }
+>   }
+>   ```
+
+还有一种比较复杂的情况，就是接口和父类混合继承的情况，这是被 `Java` 所允许的。
+
+```java
+// 接口和父类混合继承
+interface Printable {
+    void print();
+}
+
+class Shape {
+    private String color;
+
+    public Shape(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void describe() {
+        System.out.println("A shape with color " + color);
+    }
+}
+
+class Rectangle extends Shape implements Printable {
+    private double width;
+    private double height;
+
+    public Rectangle(String color, double width, double height) {
+        super(color);
+        this.width = width;
+        this.height = height;
+    }
+
+    public double area() {
+        return width * height;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("Rectangle of width " + width + ", height " + height + ", color " + getColor() + ", and area " + area());
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Rectangle rect = new Rectangle("blue", 3, 4);
+        rect.print();  // 输出: Rectangle of width 3.0, height 4.0, color blue, and area 12.0
+        rect.describe();  // 输出: A shape with color blue
+    }
+}
+```
+
+>   补充：如果父类和接口中有冲突的方法，优先使用父类的（变相为实现了），有时间再研究，待补充...
 
 ## 1.4.接口的作用
 
@@ -333,11 +436,11 @@ public class Main {
 此外还有一个 **函数式接口** 的概念，如果在接口定义前加上 `@FunctionalInterface` 注解则代表接口只包含一个抽象方法的接口，通常用于支持 `Lambda` 表达式，该注解用来强制执行该特性，以确保接口只有一个抽象方法。
 
 ```java
-// 定义一个函数式接口, 用于表示可以计算面积的形状, 并且确保只有一个抽象接口
+// 定义一个函数式接口, 用于表示可计算面积的形状, 并确保只有一个抽象接口
 @FunctionalInterface
 interface Shape {
     // 抽象方法(计算面积)
-    double calculateArea();
+    double calculateArea(); // 由于注解的存在, 有且只能有一个
 
     // 默认方法(打印名称)
     default void printShape() {
