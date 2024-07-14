@@ -837,8 +837,7 @@ public class Main {
     public static void main(String[] args) {
         Timer timer = new Timer(3000, new TimePrinter()); // 创建一个定时器，每秒钟执行一次
         timer.start(); // 启动定时器
-        
-        while (true);
+        while (true); // 防止定时器还没到来程序就终止了
     }
 }
 ```
@@ -859,8 +858,7 @@ public class Main {
             Toolkit.getDefaultToolkit().beep(); // 发出一声蜂鸣声
         }); // 创建一个定时器，每秒钟执行一次
         timer.start(); // 启动定时器
-
-        while (true);
+        while (true); // 防止定时器还没到来程序就终止了
     }
 }
 ```
