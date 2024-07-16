@@ -55,7 +55,7 @@ public class Main  {
 }
 ```
 
->   补充：为什么使用接口而不是用抽象类呢？因为有些类需要规范实现多个方法，因此就需要多种接口。而抽象类对于类来说只能继承一个，因此抽象类具有局限性，但多个接口可以被同一个类实现，这点就是接口的最大有时。
+>   补充：为什么使用接口而不是用抽象类呢？因为有些类需要规范实现多个方法，因此就需要多种接口。而抽象类对于类来说只能继承一个，因此抽象类具有局限性，但多个接口可以被同一个类实现，这点就是接口的最大优势。
 
 接口本身算是比抽象类更加抽象的实现，通常在两者中会依据以下情况进行抉择：
 
@@ -435,7 +435,7 @@ public class Main {
 -   **静态方法**：接口可以包含静态方法，这些方法可以直接通过接口名称调用，不需要实例化接口的实现类
 -   **私有方法**：接口可以包含私有方法，这些方法只能在接口内部被调用，不会暴露给接口的实现类或者外部代码（但是这是 `jdk9` 特性）
 
-此外还有一个 **函数式接口** 的概念，如果在接口定义前加上 `@FunctionalInterface` 注解则代表接口只包含一个抽象方法的接口，通常用于支持 `Lambda` 表达式，该注解用来强制执行该特性，以确保接口只有一个抽象方法。
+此外还有一个 **函数式接口** 的概念，如果在接口定义前加上 `@FunctionalInterface` 注解则代表接口只包含一个抽象方法的接口，通常用于支持 `Lambda ` 表达式，该注解用来强制执行该特性，以确保接口只有一个抽象方法。
 
 ```java
 // 定义一个函数式接口, 用于表示可计算面积的形状, 并确保只有一个抽象接口
@@ -533,11 +533,11 @@ public class Main {
 >   }
 >   ```
 
-# 2.Lamda 表达式
+# 2.Lambda 表达式
 
-## 2.1.Lamda 表达式的使用
+## 2.1.Lambda 表达式的使用
 
-`Java` 的 `Lamda` 表达式的形式和 `Cpp` 不同，因此事先说明一下：**两者对于 Lamda 的理解很不一样**。
+`Java` 的 `Lamda` 表达式的形式和 `Cpp` 不同，因此事先说明一下：**两者对于 Lambda 的理解很不一样**。
 
 ```java
 // Java-Lamda
@@ -556,7 +556,42 @@ public class Main {
 
 >   警告：这种不一样不仅仅体现在定义形式上，还体现在两种语言各自对 `Lamda` 的用法上。
 
-## 2.2.Lamda 表达式的引用
+`Lambda ` 表达式在 `Java` 中的使用非常不一样，主要目的是为了转化为接口。
+
+1.   **定义接口**：首先，定义一个接口，确保该接口只包含一个抽象方法。
+
+     ```java
+     @FunctionalInterface
+     public interface MyFunctionalInterface {
+         void myMethod();
+     }
+     ```
+
+     上面的 `MyFunctionalInterface` 就是一个简单的函数接口，只有一个名为 `myMethod` 的抽象方法。
+
+2.   **使用 Lambda 表达式**：现在就可以使用 `Lambda` 表达式来实现这个接口：
+
+```java
+public class LambdaExample {
+    public static void main(String[] args) {
+        // Lambda 表达式实现 MyFunctionalInterface 接口
+        MyFunctionalInterface functionalInterface = () -> {
+            System.out.println("Executing myMethod...");
+        };
+
+        // 调用 Lambda 表达式实现的方法
+        functionalInterface.myMethod();
+    }
+}
+```
+
+在上面的示例中 `Lambda` 表达式 `() -> { System.out.println("Executing myMethod..."); }` 实现了 `MyFunctionalInterface` 接口的 `myMethod` 方法，这样就无需通过实现类来实现接口，并且使用实现类的对象来调用接口方法了。
+
+>   补充：使用 `@FunctionalInterface` 注解虽然不是强制要求，但建议在定义函数接口时使用 `@FunctionalInterface` 注解，这样编译器可以帮助检查该接口是否符合函数接口的要求（只有一个抽象方法）。
+
+>   吐槽：老实说我觉得 `Java` 对待 `Lambda` 的方式像是一个 `Cpp` 全局函数的函数定义部分，而接口就是全局函数的声明部分。
+
+## 2.2.Lambda 表达式的引用
 
 方法引用是对 `Lamda` 表达式的进一步简化，后面用到再说，待补充...
 
@@ -795,14 +830,14 @@ public class Main {
 >           Arrays.sort(datas, new DataComparator());
 >           System.out.println("升序排序结果: " + Arrays.toString(datas));
 >   
->           // 使用Lambda表达式进行降序排序
+>           // 使用Lambda 表达式进行降序排序
 >           Arrays.sort(datas, (d1, d2) -> d2.getAAddB() - d1.getAAddB()); // 实际上就是传递给了 compare 接口
 >           System.out.println("降序排序结果: " + Arrays.toString(datas));
 >       }
 >   }
 >   ```
 
->   补充：`Java` 一开始对实现 `Lamda` 犹豫不决，但是 **把 Lamda 作为接口的简易实现** 这一思路转变，使得 `Lamda` 在 `jdk8` 中被成功引入了。因此严格来说 `Java` 是没有通过 `Lamda` 表达式来增加函数类型的，`Java` 的设计者保持我们对接口概念的理解。
+>   补充：`Java` 一开始对实现 `Lamda` 犹豫不决，但是 **把 Lambda 作为接口的简易实现** 这一思路转变，使得 `Lamda` 在 `jdk8` 中被成功引入了。因此严格来说 `Java` 是没有通过 `Lamda` 表达式来增加函数类型的，`Java` 的设计者保持我们对接口概念的理解。
 >
 >   因此从某些意义上来说 `Java` 的 `Lamda` 和 `Cpp` 的 `Lamda` 是两个相似但是主要作用不太一样的东西。
 
