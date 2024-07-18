@@ -26,7 +26,7 @@
 
 ```mermaid
 graph TD;
-zynr["主要内容"];
+zynr["程序员基础"];
 
 yysf["语言算法基本知识"];
 czxt["操作系统基本知识"];
@@ -34,25 +34,10 @@ wltx["系统网络基本知识"];
 sjk["数据库的基本知识"];
 qdjs["前端技术基本知识"];
 zynr --> yysf & czxt & wltx & sjk & qdjs;
-
-yy["基本语言及语法"] --> cpp & java & python & go 
-sf["数据结构与算法"] --> 基本排序算法 & 常见算法思想
-yysf --> yy & sf
-
-czxt --> linux["Linux"] & windows["Windows"];
-linux --> jbcz1["基本操作"] & sryl1["基本原理"] & yzrj1["优质软件"]
-windows --> jbcz2["基本操作"] & sryl2["基本原理"] & yzrj2["优质软件"]
-
-wltx --> xyz["网络协议栈"] & wlaq["网络安全"];
-xyz --> 应用层 --- 传输层 --- 网络层 --- 链路层 --- 物理层
-
-sjk --> mysql["MySql"] & redis["Redis"];
-
-sdjc --> html["Html"] & css["CSS"] & js["JS"];
-qdjs --> sdjc["三大件基础"] & cskj["成熟框架"];
-cskj --> vuejs["Vue.js"] & reactor["React.js"] & electron["Electron"] & qt["Qt"] & wxxcx["微信小程序"];
 ```
 
 ## 5.注意事项
 
 追求逻辑自洽和技术栈完整，很多部分等待完善，相关内容您信一半即可... 
+
+[![Star History Chart](https://api.star-history.com/svg?repos=xiaogithubooo/LimouLearnNote&type=Date)](https://star-history.com/#xiaogithubooo/LimouLearnNote&Date)
