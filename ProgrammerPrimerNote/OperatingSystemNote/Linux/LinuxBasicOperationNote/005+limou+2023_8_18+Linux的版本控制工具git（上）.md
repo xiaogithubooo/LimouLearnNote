@@ -66,34 +66,36 @@ $ git clone github该项目的传输协议 [自定义文件名字]
 
 3. 可使用 `SSH` 传输协议
 
->   补充：其他协议的使用可能需要一些网络基础知识和额外配置操作，因此我们推荐直接使用 `http` 协议，其他您以后再来了解，这里演示一个 `gitee` 如何使用 `git clone` 和 `http` 来克隆仓库的例子，您可以尝试按照这个例子，把我的笔记仓库给克隆下来，方便您本地阅读。
->
->   首先打开 [这个链接](https://gitee.com/limou3434/limou-learn-note)，找到我的仓库地址，然后复制一串 `http` 链接。
->
->   ![image-20240315145157673](./assets/image-20240315145157673.png)
->
->   ![image-20240315145027205](./assets/image-20240315145027205.png)
->
->   得到这个仓库的 `http` 链接后（如果您使用的是 `github` 也有类似的链接，可以找一找），打开一个空文件夹（您找得到位置的文件夹...）在内部右键选择 `Open Git Bach here`，也就是在该文件夹处打开一个命令行窗口（这个窗口可以执行的指令和 `Linux` 的指令几乎相同）。
->
->   ![image-20240315145855794](./assets/image-20240315145855794.png)
->
->   在 `bash` 中执行以下的命令：
->
->   ```cmd
->   # 克隆仓库文件到本地电脑
->   
->   $ git clone https://gitee.com/limou3434/limou-learn-note.git
->   
->   # 如果出现类似下面的错误
->   # Cloning into 'limou-learn-note'...
->   # fatal: unable to access 'https://gitee.com/limou3434/limou-learn-note.git/': SSL # certificate problem: unable to get local issuer certificate
->   # 则可以尝试使用命令 git config --global http.sslVerify false 后再次执行 git clone https://gitee.com/limou3434/limou-learn-note.git 指令
->   
->   # 可能需要等待一会...
->   ```
->
->   完成克隆后，
+>   补充：其他协议的使用可能需要一些网络基础知识和额外配置操作，因此我们推荐直接使用 `http` 协议，其他您以后再来了解。
+
+这里演示一个 `gitee` 如何使用 `git clone` 和 `http` 来克隆仓库的例子，您可以尝试按照这个例子，把我的笔记仓库给克隆下来，方便您本地阅读。
+
+首先打开 [这个链接](https://gitee.com/limou3434/limou-learn-note)，找到我的仓库地址，然后复制一串 `http` 链接。
+
+![image-20240315145157673](./assets/image-20240315145157673.png)
+
+![image-20240315145027205](./assets/image-20240315145027205.png)
+
+得到这个仓库的 `http` 链接后（如果您使用的是 `github` 也有类似的链接，可以找一找），打开一个空文件夹（您找得到位置的文件夹...）在内部右键选择 `Open Git Bach here`，也就是在该文件夹处打开一个命令行窗口（这个窗口可以执行的指令和 `Linux` 的指令几乎相同）。
+
+![image-20240315145855794](./assets/image-20240315145855794.png)
+
+在 `bash` 中执行以下的命令：
+
+```cmd
+# 克隆仓库文件到本地电脑
+
+$ git clone https://gitee.com/limou3434/limou-learn-note.git
+
+# 如果出现类似下面的错误
+# Cloning into 'limou-learn-note'...
+# fatal: unable to access 'https://gitee.com/limou3434/limou-learn-note.git/': SSL # certificate problem: unable to get local issuer certificate
+# 则可以尝试使用命令 git config --global http.sslVerify false 后再次执行 git clone https://gitee.com/limou3434/limou-learn-note.git 指令
+
+# 可能需要等待一会...
+```
+
+完成克隆后，就会出现一个 `.git` 文件夹，这里面就是 `Git` 的管理仓库和管理配置的文件，默认是被隐藏的（可能需要您设置资源管理器才能查看到隐藏文件）。
 
 # 2.Git 仓库配置
 
