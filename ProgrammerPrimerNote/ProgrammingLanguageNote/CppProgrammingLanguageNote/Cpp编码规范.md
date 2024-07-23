@@ -3,6 +3,7 @@
 > 如果您实在懒得看这些规则类，可以看下面这份简易的代码以了解风格。
 >
 > ```shell
+> # 项目目录
 > project/
 > ├── .git # git 存储仓库有管理
 > ├── .gitignore # git 忽略文件管理
@@ -37,40 +38,40 @@
 > #define PROJECT_MODULE_1_HEADER_1_H_
 > 
 > namespace { // 匿名命名空间(类型声明, 全局变量, 静态函数)
->     using Integer = int;
->     void GlobalFunction();
+>  using Integer = int;
+>  void GlobalFunction();
 > } // namespace end
 > 
 > namespace project::module_1 { // 命名空间与子命名空间做分离而不做嵌套, 还不用显示定义 project 命名空间
 > // 声明枚举
 > enum Color {
->     LIGHT_RED,    // 默认值为 0
->     LIGHT_GREEN,  // 默认值为 1
->     LIGHT_BLUE    // 默认值为 2
+>  LIGHT_RED,    // 默认值为 0
+>  LIGHT_GREEN,  // 默认值为 1
+>  LIGHT_BLUE    // 默认值为 2
 > };
 > 
 > // 声明结构体
 > struct DataInfo {
->     int a_data_1; // 声明结构体内成员变量
->     float a_data_2;
+>  int a_data_1; // 声明结构体内成员变量
+>  float a_data_2;
 > 
->     DataInfo() { 
->         // ...
->     }
+>  DataInfo() { 
+>      // ...
+>  }
 > };
 > 
 > // 声明类
 > class DataManger {
 > public:
->     DataManger(); // 构造函数
->     DataInfo getDataInfo(DataInfo data_info_1, DataInfo data_info_2); // 声明类内成员方法
+>  DataManger(); // 构造函数
+>  DataInfo getDataInfo(DataInfo data_info_1, DataInfo data_info_2); // 声明类内成员方法
 > 
 > protected:
->     // ...
+>  // ...
 > 
 > private:
->     DataInfo data_info_1_; // 声明类内成员变量
->     DataInfo data_info_2_; // 声明类内成员变量
+>  DataInfo data_info_1_; // 声明类内成员变量
+>  DataInfo data_info_2_; // 声明类内成员变量
 > };
 > 
 > // 声明常量
@@ -91,29 +92,29 @@
 > // source_1.cc
 > #include "header_1.h"
 > project::module_1::DataManger::DataManger(
->     	DataInfo data_info_1,
->     	DataInfo data_info_2)
->     : data_info_1_(data_info_1)
->     , data_info_2_(data_info_2) {
->     // ...  
+>  	DataInfo data_info_1,
+>  	DataInfo data_info_2)
+>  : data_info_1_(data_info_1)
+>  , data_info_2_(data_info_2) {
+>  // ...  
 > }
 > 
 > project::module_1::DataManger::getDataInfo(
->     	int x, int y, int z, // 这里假设 x y z 是具有某种结构的参数
->     	int i) {
->     // TODO(名字-邮件-定制时间->解决时间)
->     if (...) { return 0; }
->     while (...) { continue; }
->     for (...) {
->         // ...
->     }
->     
->     if (
->         	statement1 &&
->         	statement2 &&
->         	statement3) {
->     	// ...
->     }
+>  	int x, int y, int z, // 这里假设 x y z 是具有某种结构的参数
+>  	int i) {
+>  // TODO(名字-邮件-定制时间->解决时间)
+>  if (...) { return 0; }
+>  while (...) { continue; }
+>  for (...) {
+>      // ...
+>  }
+> 
+>  if (
+>      	statement1 &&
+>      	statement2 &&
+>      	statement3) {
+>  	// ...
+>  }
 > }
 > ```
 
