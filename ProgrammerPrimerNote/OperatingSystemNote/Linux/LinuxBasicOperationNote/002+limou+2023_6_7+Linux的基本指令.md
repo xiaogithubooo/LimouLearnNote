@@ -117,6 +117,8 @@ A("用户") --> B("使用操作系统") --> C("操作各种硬件对应的驱动
 >
 >   当然，不同操作系统乃至不同版本的操作系统，上述文件目录都会有所差别。
 
+>   补充：`ll -a --group-directories-first` 这个指令挺好用。
+
 #### 3.1.1.2.tree 指令
 
 `tree` 指令可以以多叉树的形式显示出目录下的子目录和文件。
@@ -661,7 +663,7 @@ $ wc big.txt text.txt
 
 2. `passwd`：设置或更改用户账户的密码。`passwd username` 会提示你输入新的密码来更改 `username` 用户账户的密码。
 
-3. `usermod`：修改用户账户的属性。`usermod -aG groupname username` 会将用户 `username` 添加到 `groupname` 用户组中，用户组的概念我们之后会详细讲解。
+3. `usermod`：修改用户账户的属性。
 
 4. `userdel`：删除用户账户。`userdel username` 会删除名为 `username` 的用户账户（请小心使用此指令，删除用户账户也会删除用户的文件和目录）。
 
@@ -691,7 +693,7 @@ $ wc big.txt text.txt
 - `-r`：创建一个系统用户组（也称为系统保留组），其 `GID` 通常在低范围内。系统用户组主要用于系统进程、服务以及系统级任务。
 
 - `-f`：如果用户组已存在，则强制创建。如果不使用此选项且用户组已经存在，则会返回错误。强制创建用户组时，如果指定的用户组名称已经存在，系统将会先删除原先已存在的用户组，然后再创建一个同名的新用户组（注意这个操作还是很危险的）。
-2. `usermod`：修改用户账户的属性。`usermod -aG groupname username` 会将用户 `username` 添加到 `groupname` 用户组中
+2. `usermod`：修改用户账户的属性。`usermod -aG groupname username` 会将用户 `username` 添加到 `groupname` 用户组中（`-a` 代表添加而不是覆盖，`-G` 指示后面的字符串是用户组），用户组的概念我们之后会详细讲解。
 
 3. 使用 `groups 用户名` 指令可以查看当前用户所在的用户组
 
@@ -1335,3 +1337,7 @@ done
 在不同的系统里 `shell` 程序可能不一样，在 `Centos 7` 里默认的 `shell` 程序是 `bash`。也就是说 `shell` 是一种概念，`bash` 是对 `shell` 的具体实现。
 
 > 注意：`Windows` 最典型的外壳程序就是的图形化界面。
+
+
+
+sudo yum install man-pages 可以增加 man 页...

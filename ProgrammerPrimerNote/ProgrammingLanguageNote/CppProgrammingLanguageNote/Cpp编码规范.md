@@ -4,7 +4,9 @@
 >
 > ```shell
 > # 项目目录
-> project/
+> Project/
+> ├── .
+> ├── ..
 > ├── .git # git 存储仓库有管理
 > ├── .gitignore # git 忽略文件管理
 > ├── include/ # 存放头文件的目录
@@ -14,7 +16,8 @@
 > │   ├── module_2/    # 模块 2 的头文件目录
 > │   │   ├── header_1.h
 > │   │   └── header_2.h
-> │   └── common.hpp  # 公共头文件，如宏定义、常量等
+> │   └── common
+> │       └── common.hpp# 公共头文件，如宏定义、常量等
 > ├── src/ # 存放源文件的目录
 > │   ├── module_1/    # 模块 1 的源文件目录
 > │   │   ├── source1.cpp
@@ -23,8 +26,10 @@
 > │   │   ├── source_1.cpp
 > │   │   └── source_2.cpp
 > │   └── main.cpp    # 主程序入口源文件
+> ├── 3rdparty/ # 第三方软件的目录
+> │   ├── dynamic/    # 第三方库的动态库
+> │   └── static/     # 第三方库的静态库
 > ├── tests/ # 单元测试代码
-> ├── bin/ # 可以直接使用的可执行文件
 > ├── build/ # 构建过程中的临时文件
 > ├── doc/ # 帮助文档
 > ├── README.md # 项目手册
@@ -36,42 +41,42 @@
 > // header_1.h
 > #ifndef PROJECT_MODULE_1_HEADER_1_H_ // 使用头文件防护符的宏
 > #define PROJECT_MODULE_1_HEADER_1_H_
-> 
-> namespace { // 匿名命名空间(类型声明, 全局变量, 静态函数)
->  using Integer = int;
->  void GlobalFunction();
-> } // namespace end
-> 
 > namespace project::module_1 { // 命名空间与子命名空间做分离而不做嵌套, 还不用显示定义 project 命名空间
+> 
+> // 匿名命名空间(类型声明, 全局变量, 静态函数)
+> namespace {
+> using Integer = int;
+> void GlobalFunction();
 > // 声明枚举
 > enum Color {
->  LIGHT_RED,    // 默认值为 0
->  LIGHT_GREEN,  // 默认值为 1
->  LIGHT_BLUE    // 默认值为 2
+>        LIGHT_RED,    // 默认值为 0
+>        LIGHT_GREEN,  // 默认值为 1
+>        LIGHT_BLUE    // 默认值为 2
 > };
 > 
 > // 声明结构体
 > struct DataInfo {
->  int a_data_1; // 声明结构体内成员变量
->  float a_data_2;
+>        int a_data_1; // 声明结构体内成员变量
+>        float a_data_2;
 > 
->  DataInfo() { 
->      // ...
->  }
+>        DataInfo() { 
+>        // ...
+>        }
 > };
+> } // namespace end
 > 
 > // 声明类
 > class DataManger {
 > public:
->  DataManger(); // 构造函数
->  DataInfo getDataInfo(DataInfo data_info_1, DataInfo data_info_2); // 声明类内成员方法
+>     DataManger(); // 构造函数
+>     DataInfo getDataInfo(DataInfo data_info_1, DataInfo data_info_2); // 声明类内成员方法
 > 
 > protected:
->  // ...
+> // ...
 > 
 > private:
->  DataInfo data_info_1_; // 声明类内成员变量
->  DataInfo data_info_2_; // 声明类内成员变量
+>     DataInfo data_info_1_; // 声明类内成员变量
+>     DataInfo data_info_2_; // 声明类内成员变量
 > };
 > 
 > // 声明常量
@@ -83,8 +88,8 @@
 > // using 别名
 > using PropertiesMap = hash_map<UrlTableProperties *, string>;
 > 
-> } // namespace project end
 > 
+> } // namespace project::module_1 end
 > # endif // PROJECT_MODULE_1_HEADER_1_H_
 > ```
 >
@@ -92,29 +97,29 @@
 > // source_1.cc
 > #include "header_1.h"
 > project::module_1::DataManger::DataManger(
->  	DataInfo data_info_1,
->  	DataInfo data_info_2)
->  : data_info_1_(data_info_1)
->  , data_info_2_(data_info_2) {
->  // ...  
+> 	DataInfo data_info_1,
+> 	DataInfo data_info_2)
+> : data_info_1_(data_info_1)
+> , data_info_2_(data_info_2) {
+> // ...  
 > }
 > 
 > project::module_1::DataManger::getDataInfo(
->  	int x, int y, int z, // 这里假设 x y z 是具有某种结构的参数
->  	int i) {
->  // TODO(名字-邮件-定制时间->解决时间)
->  if (...) { return 0; }
->  while (...) { continue; }
->  for (...) {
->      // ...
->  }
+> 	int x, int y, int z, // 这里假设 x y z 是具有某种结构的参数
+> 	int i) {
+> // TODO(名字-邮件-定制时间->解决时间)
+> if (...) { return 0; }
+> while (...) { continue; }
+> for (...) {
+> // ...
+> }
 > 
->  if (
->      	statement1 &&
->      	statement2 &&
->      	statement3) {
->  	// ...
->  }
+> if (
+> 	statement1 &&
+> 	statement2 &&
+> 	statement3) {
+> 	// ...
+> }
 > }
 > ```
 

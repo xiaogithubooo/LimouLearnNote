@@ -2,11 +2,11 @@
 
 ## 1.仓库作者
 
-[limou-learn-note](https://gitee.com/limou3434/limou-learn-note/) 的作者为 limou3434，一名普通的技术爱好者...
+[limou-learn-note](https://gitee.com/limou3434/limou-learn-note/) 的作者为 `limou3434`，一名普通的技术爱好者...
 
 ## 2.联系方式
 
-`limou3434` 的 `qq` 邮箱：898738804@qq.com，有任何问题都可以和我联系。
+`limou3434` 的 `qq` 邮箱：898738804@qq.com，有任何问题都可以和我邮箱联系。
 
 ## 3.主要内容
 
