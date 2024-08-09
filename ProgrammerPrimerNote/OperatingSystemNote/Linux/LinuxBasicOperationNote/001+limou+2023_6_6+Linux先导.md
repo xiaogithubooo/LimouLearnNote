@@ -1,28 +1,26 @@
-
-
 <style>
 .heimu {
-    position: relative; /* 使伪元素相对于其父元素定位 */
-    display: inline-block; /* 使元素内容包裹 */
-    color: transparent; /* 隐藏文字颜色 */
-    text-decoration: none; /* 去掉链接下划线 */
+    position: relative;
+    display: inline-block;
+    color: transparent;
+    text-decoration: none;
 }
-.heimu:: before {
-    content: ''; /* 生成一个空内容伪元素 */
-    position: absolute; /* 绝对定位 */
+.heimu::before {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #F5F5F5; /* 白色遮盖 */
-    z-index: 1; /* 确保覆盖文字 */
+    background-color: #333; /* 深色遮盖 */
+    z-index: 1;
 }
-.heimu: hover:: before {
-    background-color: transparent; /* 鼠标悬浮时移除黑色遮盖 */
+.heimu:hover::before {
+    background-color: transparent; /* 鼠标悬浮时移除深色遮盖 */
 }
-.heimu: hover {
-    color: white ! important; /* 鼠标悬浮时显示白色文字 */
-    text-shadow: none; /* 去掉文本阴影 */
+.heimu:hover {
+    color: white !important; /* 鼠标悬浮时显示白色文字 */
+    text-shadow: none;
 }
 </style>
 
@@ -40,7 +38,7 @@
 >
 >   我还参考了 [王道考研操作系统的视频](https://www.bilibili.com/video/BV1YE411D7nH?p=2&vd_source=c92c89dbfcf9cc30c48086469621f35b)，您也可以前去一看。旨在补充一些理论知识，但是最多当作理论知识的梳理，不能作为学习的主要依据（因为内容太少了，很多值得一提的部分没有讲出来，并且基准点不是纯粹的 `Linux` 系统，而是理论上的系统），王道一开始在讲线程进程的时候的描述就不能让我满意...不过补一下概念是可以的，您可以看完我的系列内容再来补充这些抽象的概念。
 >
->   另外，如果您的基础足够扎实，不妨也看一下 [鸟叔的网站](https://linux.vbird.org/linux_basic/)，这里面有关于 `Centos7` 的基础教程，还有关于伺服器关于伺服器 [^关于伺服器] 的一些知识，有很多很多，不过确实不容易啃...
+>   另外，如果您的基础足够扎实，不妨也看一下 [鸟叔的网站](https://linux.vbird.org/linux_basic/)，这里面有关于 `Centos7` 的基础教程，还有关于伺服器关于伺服器（服务器的一种台湾叫法）的一些知识，有很多很多，不过确实不容易啃...
 
 ---
 
@@ -355,5 +353,3 @@ linux-6.0.10.tar.sign                              26-Nov-2022 08:36     989
 >   结语：这里只是带您简单了解一些历史，并且概览一下我们需要学习的知识和重点分布，祝您学习顺利。
 
 **如果本系列文章对您有帮助，可以 [star 一下我的 limou-learn-note](https://github.com/xiaogithubooo/LimouLearnNote)，求求惹(๑＞ ＜)☆♡~**
-
-[^关于伺服器]: 服务器的一种台湾叫法

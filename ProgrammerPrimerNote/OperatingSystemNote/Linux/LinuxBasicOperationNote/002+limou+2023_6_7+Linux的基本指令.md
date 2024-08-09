@@ -880,7 +880,7 @@ $ unzip 压缩包名.zip -d 解压路径
 
 如果需要指定解压后的路径，就需要在最后带上 `-d` 选项，然后带上对应的解压路径就可以。
 
-## 3.7.系统管理指令
+## 3.7.系统操作指令
 
 ### 3.7.1.hostname 指令
 
@@ -920,60 +920,7 @@ $ unzip 压缩包名.zip -d 解压路径
 
 完成这些步骤后，您的 `Linux` 系统的主机名就会永久更改为新值了。
 
-### 3.7.2.df 指令
-
-显示文件系统的磁盘空间使用情况，包括文件系统的总容量、已使用空间、可用空间和使用百分比，以及文件系统的挂载点（关于下面什么挂载点以及什么文件系统的概念，您暂时不用深入了解，只需要对这个 `df` 指令有印象即可）。
-
-这里举一个例子：
-
-```bash
-$ df
-Filesystem     1K-blocks    Used Available Use% Mounted on
-devtmpfs         1011588       0   1011588   0% /dev
-tmpfs            1023252      24   1023228   1% /dev/shm
-tmpfs            1023252     620   1022632   1% /run
-tmpfs            1023252       0   1023252   0% /sys/fs/cgroup
-/dev/vda1       51473868 4270944  45005680   9% /
-tmpfs             204652       0    204652   0% /run/user/1001
-```
-
-输出中的每一行表示一个文件系统。每行的字段/表头含义如下：
-
-1. `Filesystem`：文件系统的名称或设备。
-2. `1K-blocks`：以 `1KB` 为单位的总块数。
-3. `Used`：已使用的块数。
-4. `Available`：可用的块数。
-5. `Use%`：使用百分比。
-6. `Mounted on`：文件系统的挂载点。
-
-根据上述例子的输出，您的系统有以下挂载的文件系统：
-
-1. `/dev`：`devtmpfs` 文件系统，用于设备节点。
-2. `/dev/shm`：`tmpfs` 文件系统，用于共享内存。
-3. `/run`：`tmpfs` 文件系统，用于运行时数据。
-4. `/sys/fs/cgroup`：`tmpfs` 文件系统，用于控制组信息。
-5. `/`：根文件系统，挂载在 `/dev/vda1` 上。
-6. 此外，还有一个使用者级别的 `tmpfs` 文件系统 `/run/user/1001`，这是用户 `ID 1001` 的临时文件系统。
-
-通过执行 `df` 命令，您可以更详细地了解系统中不同文件系统的磁盘空间使用情况。
-
-> 补充 `1`：`Linux` 的用户是有一个数字 `ID` 的，可以通过命令 `id 用户名` 来查询。
->
-> 补充 `2`：文件系统的概念
->
-> 文件系统是计算机中用于组织和管理文件和目录的一种方式。它提供了一种结构化的方法来在存储设备上存储和检索数据。文件系统定义了文件的命名规则、存储方式、目录结构以及对文件的访问和管理操作。
->
-> 常见的文件系统包括：
->
-> 1. `FAT32`（`File Allocation Table 32`）：一种常见的文件系统，支持较大容量的存储设备，如闪存驱动器和移动硬盘。但它有一些限制，例如单个文件大小不能超过 `4GB`。
-> 2. `NTFS`（`New Technology File System`）：`Windows` 操作系统中常用的文件系统，支持大容量存储设备和较大文件。它具有更好的安全性、可靠性和性能。
-> 3. `ext4`（`Fourth Extended File System`）、`ext3`、`ext2`：`Linux` 操作系统中最常用的文件系统（`Linux` 扩展文件系统），支持大容量存储设备和较大文件，提供了更高的性能和可靠性。
-> 4. `APFS`（`Apple File System`）：苹果公司开发的新一代文件系统，用于 `macOS` 和 `iOS` 系统。它支持快照、加密、优化的存储空间管理等功能。
-> 5. `HFS+`（`Hierarchical File System Plus`）：旧版的苹果文件系统，在 `macOS` 和 `OS X` 中使用。已被 APFS 取代，但仍然可以与旧系统兼容。
-> 6. `XFS`：`XFS` 一种高性能的日志文件系统，`2000` 年 `5` 月，`Silicon Graphics` 以 `GNU` 通用公共许可证发布这套系统的源代码，之后被移植到 `Linux` 内核上。`XFS` 特别擅长处理大文件，同时提供平滑的数据传输
-> 7. `UFS`：`UFS` 是 `UNIX` 文件系统的简称，它来源于 `4.3Tahoe` 发行版中提供的 `BSD Fat Fast File System(FFS)` 系统，属于 `FFS` 的演化版本
-
-### 3.7.3.top 指令
+### 3.7.2.top 指令
 
 `top` 是一个常用的命令行工具，用于实时监视系统的运行状态和进程信息。通过 `top` 命令，您可以查看 `CPU` 使用率、内存占用、进程列表以及其他关键性能指标。以下是一些常见的用法：
 
@@ -987,7 +934,7 @@ tmpfs             204652       0    204652   0% /run/user/1001
 
 5. 按下数字键 `[1]`，可以切换到单核模式，显示每个 `CPU` 核心的使用情况
 
-### 3.7.4.free 指令
+### 3.7.3.free 指令
 
 `free` 指令可以显示系统内存使用情况，包括空闲、已使用和缓存的内存。
 
@@ -1014,7 +961,7 @@ Swap:             0           0           0
 > * `kill`：用于终止运行中的进程。
 > * `crontab`：用于管理定时执行任务的命令，例如设置定时脚本执行。
 
-### 3.7.5.dmesg 指令
+### 3.7.4.dmesg 指令
 
 `dmesg` 是一个用于显示系统启动信息和内核消息的命令。它可以帮助用户查看系统在启动过程中发生的事件、设备检测信息、驱动程序加载情况、硬件错误等。
 
@@ -1025,7 +972,7 @@ Swap:             0           0           0
 3.  **调试设备驱动程序**：开发或调试设备驱动程序时，可以使用 `dmesg` 查看驱动程序输出的调试信息。
 4.  **跟踪内核日志**：`dmesg` 可以帮助用户查看最新的内核日志消息，以便了解系统的运行状况。
 
-### 3.7.6.uname 指令
+### 3.7.5.uname 指令
 
 `uname -r` 指令票可以用来获取电脑和操作系统的相关信息，例如：`Linux` 的操作系统版本、硬件的名称等
 
@@ -1052,7 +999,208 @@ CentOS Linux release 7.6.1810 (Core)
 
 但是不同机器的文件名字（或者文件位置）可能不太一样，您可以在网上查询您的机器具体的情况。
 
-## 3.8.其他操作指令
+## 3.8.磁盘操作指令
+
+### 3.8.1.dd 指令
+
+主要用于转换和复制文件，基本用法格式为 `dd if=<input_file> of=<output_file> [options]`。
+
+- `if` 指定输入文件。默认是标准输入
+- `of` 指定输出文件。默认是标准输出
+- `bs` 指定块大小（如 `bs=4M` 表示块大小为 `4` 兆字节）
+- `count` 指定要复制的块数
+- `conv`指定转换选项，如 `ucase`（转换为大写），`lcase`（转换为小写），`noerror`（忽略错误），`sync`（将每个输入块填充到指定大小）
+
+```shell
+# 备份和恢复硬盘或分区
+dd if=/dev/sda of=/path/to/backup.img bs=4M # 备份整个硬盘到一个文件
+dd if=/path/to/backup.img of=/dev/sda bs=4M # 从备份文件恢复硬盘
+```
+
+```bash
+# 创建一个磁盘镜像文件
+dd if=/dev/sda of=/path/to/image.img bs=4M
+```
+
+```bash
+# 创建引导盘, 将 ISO 文件写入 U 盘(注意这会删除U盘上的所有数据)
+dd if=/path/to/image.iso of=/dev/sdX bs=4M
+```
+
+```bash
+# 测试磁盘性能
+dd if=/dev/zero of=/path/to/output.file bs=1G count=1 oflag=direct # 测试磁盘写入性能
+dd if=/path/to/output.file of=/dev/null bs=1G count=1 iflag=direct # 测试磁盘读取性能
+# oflag=direct 可以使用直接 I/O 写数据, 绕过缓存
+```
+
+```bash
+# 用作数据擦除
+# 使用零填充整个磁盘
+dd if=/dev/zero of=/dev/sdX bs=4M
+# 使用随机数据填充整个磁盘
+dd if=/dev/urandom of=/dev/sdX bs=4M
+```
+
+```bash
+# 将文本文件中的小写字母转换为大写
+dd if=input.txt of=output.txt conv=ucase
+```
+
+### 3.7.2.df 指令
+
+可以显示文件系统的磁盘空间使用情况，包括文件系统的总容量、已使用空间、可用空间和使用百分比，以及文件系统的挂载点。
+
+```bash
+# 使用 df 指令
+$ df
+Filesystem     1K-blocks    Used Available Use% Mounted on
+devtmpfs         1011588       0   1011588   0% /dev
+tmpfs            1023252      24   1023228   1% /dev/shm
+tmpfs            1023252     620   1022632   1% /run
+tmpfs            1023252       0   1023252   0% /sys/fs/cgroup
+/dev/vda1       51473868 4270944  45005680   9% /
+tmpfs             204652       0    204652   0% /run/user/1001
+```
+
+输出中的每一行表示一个文件系统。每行的字段/表头含义如下：
+
+1. `Filesystem` 文件系统的名称或设备
+2. `1K-blocks` 以 `1KB` 为单位的总块数
+3. `Used` 已使用的块数
+4. `Available` 可用的块数
+5. `Use%` 使用百分比
+6. `Mounted on` 文件系统的挂载点
+
+根据上述例子的输出，您的系统有以下挂载的文件系统：
+
+1. `/dev`：`devtmpfs` 文件系统，用于设备节点
+2. `/dev/shm`：`tmpfs` 文件系统，用于共享内存
+3. `/run`：`tmpfs` 文件系统，用于运行时数据
+4. `/sys/fs/cgroup`：`tmpfs` 文件系统，用于控制组信息
+5. `/`：根文件系统，挂载在 `/dev/vda1` 上
+6. 此外，还有一个使用者级别的 `tmpfs` 文件系统 `/run/user/1001`，这是用户 `ID 1001` 的临时文件系统。
+
+通过执行 `df` 命令，您可以更详细地了解系统中不同文件系统的磁盘空间使用情况。
+
+> 补充：文件系统的概念
+>
+> 文件系统是计算机中用于组织和管理文件和目录的一种方式。它提供了一种结构化的方法来在存储设备上存储和检索数据。文件系统定义了文件的命名规则、存储方式、目录结构以及对文件的访问和管理操作。
+>
+> 常见的文件系统包括：
+>
+> 1. `FAT32`（`File Allocation Table 32`）：一种常见的文件系统，支持较大容量的存储设备，如闪存驱动器和移动硬盘。但它有一些限制，例如单个文件大小不能超过 `4GB`。
+> 2. `NTFS`（`New Technology File System`）：`Windows` 操作系统中常用的文件系统，支持大容量存储设备和较大文件。它具有更好的安全性、可靠性和性能。
+> 3. `ext4`（`Fourth Extended File System`）、`ext3`、`ext2`：`Linux` 操作系统中最常用的文件系统（`Linux` 扩展文件系统），支持大容量存储设备和较大文件，提供了更高的性能和可靠性。
+> 4. `APFS`（`Apple File System`）：苹果公司开发的新一代文件系统，用于 `macOS` 和 `iOS` 系统。它支持快照、加密、优化的存储空间管理等功能。
+> 5. `HFS+`（`Hierarchical File System Plus`）：旧版的苹果文件系统，在 `macOS` 和 `OS X` 中使用。已被 APFS 取代，但仍然可以与旧系统兼容。
+> 6. `XFS`：`XFS` 一种高性能的日志文件系统，`2000` 年 `5` 月，`Silicon Graphics` 以 `GNU` 通用公共许可证发布这套系统的源代码，之后被移植到 `Linux` 内核上。`XFS` 特别擅长处理大文件，同时提供平滑的数据传输
+> 7. `UFS`：`UFS` 是 `UNIX` 文件系统的简称，它来源于 `4.3Tahoe` 发行版中提供的 `BSD Fat Fast File System(FFS)` 系统，属于 `FFS` 的演化版本
+
+### 3.8.2.mkfs 指令
+
+可以创建 `Linux` 文件系统，也就是文件格式化，基本用法格式为 `mkfs [-V] [-t fstype] [fs-options] filesys [blocks]`
+
+-   `[-V]` 显示文件系统的创建详情
+-   `[-t fstype]` 指定对应的文件系统，如 `etc3` 和 `etc4`
+-   `[fs-options]` 传递给文件系统的一些参数
+-   `filesys` 指定要创建的文件系统对应的设备文件名
+-   `[blocks]` 指定文件系统的磁盘块数
+
+```shell
+# 格式化空文件
+$ dd if=/dev/zero of=test bs=1M count=100
+
+$ ll
+total 101M
+-rw-rw-r-- 1 root root 100M Aug  7 23:39 test
+
+$ mkfs -t ext4 ./test
+mke2fs 1.46.5 (30-Dec-2021)
+Discarding device blocks: done                            
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+```
+
+这里我们拿空文件演示，正常来说应该是为某个存储设备进行格式化的（`Linux` 下一切皆文件，包括存储设备）。
+
+而 `df` 命令可以用来显示 `Linux` 系统上文件系统磁盘的使用统计情况，基本的用法就是 `df [OPTION]... [FILE]...`
+
+-   `-a` 包含所有具有 `0 Blocks` 的文件系统
+-   `-h` 使用人类可读的格式，还有一个 `-H` 单位使用 `1000` 而不是 `1024`
+-   `-t=TYPE` 限制列出文件系统的 `TYPE`
+-   `-T` 显示文件系统的形式
+-   而 `[FILE]` 则可以指定特定的文件，统计对应的文件系统信息
+
+### 3.8.3.		指令
+
+`mount` 可以把文件系统加载到指定的加载点目录，语法格式为 `mount [-l] [-t <vfstype>] [-o options] <device> <dir>`。经常拿来挂载光盘，光盘插到光驱中时，`Linux` 不会自动挂载，必须手动挂载。我们使用之前 `dd` 命令来尝试一下。
+
+-   `-l` 显示文件系统加载列表
+-   `-t <vfstype>` 加载文件系统的类型，大部分情况下可以不用指定，会自动识别
+-   `-o options` 描述设备或档案的挂接方式
+    -   `loop` 把一个实际文件当成硬盘分区挂接上系统
+    -   `ro` 采用只读方式挂接设备
+    -   `rw` 采用读写方式挂载设备
+-   `device` 要挂接的设备
+
+```shell
+# 使用 mount 指令
+# 格式化空文件
+$ dd if=/dev/zero of=test bs=1M count=100
+
+$ ll
+total 101M
+-rw-rw-r-- 1 root root 100M Aug  7 23:39 test
+
+$ mkfs -t ext4 ./test
+mke2fs 1.46.5 (30-Dec-2021)
+Discarding device blocks: done                            
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+$ sudo mount test ~/data/test_my_mount
+
+$ df -h                                             ─╯
+Filesystem      Size  Used Avail Use% Mounted on
+# ...
+/dev/loop10      90M   24K   83M   1% /home/root/data/test_my_mount # 此时可以看到新的挂载点了
+
+$ cd ~/data/test_my_mount
+
+$ echo "hello" > limou.txt && ls
+limou.txt
+```
+
+此时我们就完成了把一个文件挂载为一个磁盘的目的，因此由于 `Linux` 把一切外部的接入设备视为文件，所以可以在设备文件接入后进行格式化，使用 `mount` 进行挂载（不过格式化会导致外部设备被清空，因此如果不希望这种行为出现，就可以直接根据不同外部设备的文件系统进行对应类型的挂载）。
+
+### 3.8.4.unshare 指令
+
+`unshare` 指令主要就是为了不共享命名空间而服务的，语法格式为 `unshare [options] program [arguments]`，其底层有配套的系统接口。
+
+-   `-i， --ipc` 不共享 `IPC` 空间
+-   `-m, --mount` 不共享 `MOUNT` 空间
+-   `-n. --net` 不共享 `NET` 空间
+-   `-p, --pid` 不共享 `PID` 空间
+-   `-u, --uts` 不共享 `UTS` 空间
+-   `-U, --user` 不共享用户
+-   `--fork` 执行 `unshare` 的进程会 `fork()` 一个新子进程，在子进程中执行 `unshare` 传入的参数
+-   `--mount-proc` 执行子进程前，将 `pros` 优先挂载过去
+
+```shell
+# 使用 unshare
+
+```
+
+## 3.9.其他操作指令
 
 ### 3.8.1.man 指令
 
