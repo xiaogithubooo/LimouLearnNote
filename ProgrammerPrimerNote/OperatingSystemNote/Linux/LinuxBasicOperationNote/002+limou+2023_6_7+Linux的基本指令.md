@@ -1009,7 +1009,7 @@ CentOS Linux release 7.6.1810 (Core)
 - `of` 指定输出文件。默认是标准输出
 - `bs` 指定块大小（如 `bs=4M` 表示块大小为 `4` 兆字节）
 - `count` 指定要复制的块数
-- `conv`指定转换选项，如 `ucase`（转换为大写），`lcase`（转换为小写），`noerror`（忽略错误），`sync`（将每个输入块填充到指定大小）
+- `conv` 指定转换选项，如 `ucase`（转换为大写），`lcase`（转换为小写），`noerror`（忽略错误），`sync`（将每个输入块填充到指定大小）
 
 ```shell
 # 备份和恢复硬盘或分区
@@ -1047,7 +1047,46 @@ dd if=/dev/urandom of=/dev/sdX bs=4M
 dd if=input.txt of=output.txt conv=ucase
 ```
 
-### 3.7.2.df 指令
+### 3.8.2.mkfs 指令
+
+可以创建 `Linux` 文件系统，也就是文件格式化，基本用法格式为 `mkfs [-V] [-t fstype] [fs-options] filesys [blocks]`
+
+-   `[-V]` 显示文件系统的创建详情
+-   `[-t fstype]` 指定对应的文件系统，如 `etc3` 和 `etc4`
+-   `[fs-options]` 传递给文件系统的一些参数
+-   `filesys` 指定要创建的文件系统对应的设备文件名
+-   `[blocks]` 指定文件系统的磁盘块数
+
+```shell
+# 格式化空文件
+$ dd if=/dev/zero of=test bs=1M count=100
+
+$ ll
+total 101M
+-rw-rw-r-- 1 root root 100M Aug  7 23:39 test
+
+$ mkfs -t ext4 ./test
+mke2fs 1.46.5 (30-Dec-2021)
+Discarding device blocks: done                            
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+```
+
+这里我们拿空文件演示，正常来说应该是为某个存储设备进行格式化的（`Linux` 下一切皆文件，包括存储设备）。
+
+而 `df` 命令可以用来显示 `Linux` 系统上文件系统磁盘的使用统计情况，基本的用法就是 `df [OPTION]... [FILE]...`
+
+-   `-a` 包含所有具有 `0 Blocks` 的文件系统
+-   `-h` 使用人类可读的格式，还有一个 `-H` 单位使用 `1000` 而不是 `1024`
+-   `-t=TYPE` 限制列出文件系统的 `TYPE`
+-   `-T` 显示文件系统的形式
+-   而 `[FILE]` 则可以指定特定的文件，统计对应的文件系统信息
+
+### 3.8.3.df 指令
 
 可以显示文件系统的磁盘空间使用情况，包括文件系统的总容量、已使用空间、可用空间和使用百分比，以及文件系统的挂载点。
 
@@ -1097,48 +1136,11 @@ tmpfs             204652       0    204652   0% /run/user/1001
 > 6. `XFS`：`XFS` 一种高性能的日志文件系统，`2000` 年 `5` 月，`Silicon Graphics` 以 `GNU` 通用公共许可证发布这套系统的源代码，之后被移植到 `Linux` 内核上。`XFS` 特别擅长处理大文件，同时提供平滑的数据传输
 > 7. `UFS`：`UFS` 是 `UNIX` 文件系统的简称，它来源于 `4.3Tahoe` 发行版中提供的 `BSD Fat Fast File System(FFS)` 系统，属于 `FFS` 的演化版本
 
-### 3.8.2.mkfs 指令
+### 3.8.4.mount 指令
 
-可以创建 `Linux` 文件系统，也就是文件格式化，基本用法格式为 `mkfs [-V] [-t fstype] [fs-options] filesys [blocks]`
+`mount` 可以把文件系统加载到指定的加载点目录，也就是 **挂载**，语法格式为 `mount [-l] [-t <vfstype>] [-o options] <device> <dir>`。经常拿来挂载存储设备，存储设备被驱动识别后，`Linux` 不会自动挂载，必须手动挂载。我们使用之前 `dd` 命令来尝试一下。
 
--   `[-V]` 显示文件系统的创建详情
--   `[-t fstype]` 指定对应的文件系统，如 `etc3` 和 `etc4`
--   `[fs-options]` 传递给文件系统的一些参数
--   `filesys` 指定要创建的文件系统对应的设备文件名
--   `[blocks]` 指定文件系统的磁盘块数
-
-```shell
-# 格式化空文件
-$ dd if=/dev/zero of=test bs=1M count=100
-
-$ ll
-total 101M
--rw-rw-r-- 1 root root 100M Aug  7 23:39 test
-
-$ mkfs -t ext4 ./test
-mke2fs 1.46.5 (30-Dec-2021)
-Discarding device blocks: done                            
-Creating filesystem with 25600 4k blocks and 25600 inodes
-
-Allocating group tables: done                            
-Writing inode tables: done                            
-Creating journal (1024 blocks): done
-Writing superblocks and filesystem accounting information: done
-```
-
-这里我们拿空文件演示，正常来说应该是为某个存储设备进行格式化的（`Linux` 下一切皆文件，包括存储设备）。
-
-而 `df` 命令可以用来显示 `Linux` 系统上文件系统磁盘的使用统计情况，基本的用法就是 `df [OPTION]... [FILE]...`
-
--   `-a` 包含所有具有 `0 Blocks` 的文件系统
--   `-h` 使用人类可读的格式，还有一个 `-H` 单位使用 `1000` 而不是 `1024`
--   `-t=TYPE` 限制列出文件系统的 `TYPE`
--   `-T` 显示文件系统的形式
--   而 `[FILE]` 则可以指定特定的文件，统计对应的文件系统信息
-
-### 3.8.3.		指令
-
-`mount` 可以把文件系统加载到指定的加载点目录，语法格式为 `mount [-l] [-t <vfstype>] [-o options] <device> <dir>`。经常拿来挂载光盘，光盘插到光驱中时，`Linux` 不会自动挂载，必须手动挂载。我们使用之前 `dd` 命令来尝试一下。
+>   补充：文件系统可以是硬盘、分区、其他存储设备、一个虚拟文件。
 
 -   `-l` 显示文件系统加载列表
 -   `-t <vfstype>` 加载文件系统的类型，大部分情况下可以不用指定，会自动识别
@@ -1182,23 +1184,108 @@ limou.txt
 
 此时我们就完成了把一个文件挂载为一个磁盘的目的，因此由于 `Linux` 把一切外部的接入设备视为文件，所以可以在设备文件接入后进行格式化，使用 `mount` 进行挂载（不过格式化会导致外部设备被清空，因此如果不希望这种行为出现，就可以直接根据不同外部设备的文件系统进行对应类型的挂载）。
 
-### 3.8.4.unshare 指令
+>   补充：使用 `sudo umount 挂载点目录` 就可以取消挂载。
+
+>   补充：当你在不同的命名空间中挂载一个文件系统时，确实可以将同一个设备挂载到不同的目录下。但是，这种挂载行为有两个关键点：
+>
+>   -   当你将同一个设备挂载到多个目录时，这些目录之间的内容是相同的，因为它们引用的是相同的物理设备。例如，假设你将 `/dev/sda1` 设备挂载到 `/mnt/point1` 和 `/mnt/point2`，那么这两个目录将显示相同的文件和目录结构，因为它们引用的是同一个设备。
+>   -   使用 `--mount-proc` 时，你在新的命名空间中挂载 `/proc`，这是一个虚拟文件系统，它的内容反映了该命名空间中的进程和系统状态。这是虚拟文件系统，不是一个物理设备，所以在不同命名空间中的 `/proc` 可以显示不同的信息。`/proc` 文件系统: 这是一个虚拟文件系统，它提供了关于系统和进程的信息。它并不是一个实际存储在硬盘上的文件系统。不同的命名空间可以挂载虚拟的 `/proc` 文件系统，并显示它们各自的进程和系统状态。在新的命名空间中挂载 `/proc`，实际上是在新命名空间中创建了一个新的 `/proc` 视图，这个视图只包含该命名空间中的进程和系统信息。它不会改变主系统中的 `/proc` 视图，因此，主系统中的 `/proc` 目录信息与新命名空间中的 `/proc` 目录信息是独立的。
+
+### 3.8.5.unshare 指令
 
 `unshare` 指令主要就是为了不共享命名空间而服务的，语法格式为 `unshare [options] program [arguments]`，其底层有配套的系统接口。
 
--   `-i， --ipc` 不共享 `IPC` 空间
--   `-m, --mount` 不共享 `MOUNT` 空间
--   `-n. --net` 不共享 `NET` 空间
--   `-p, --pid` 不共享 `PID` 空间
--   `-u, --uts` 不共享 `UTS` 空间
--   `-U, --user` 不共享用户
--   `--fork` 执行 `unshare` 的进程会 `fork()` 一个新子进程，在子进程中执行 `unshare` 传入的参数
--   `--mount-proc` 执行子进程前，将 `pros` 优先挂载过去
+-   `[options]` 如下
+    -   `-i， --ipc` 不共享 `IPC(进程通信空间)`
+    -   `-m, --mount` 不共享 `MOUNT(挂载空间)`
+    -   `-n. --net` 不共享 `NET(网络空间)`
+    -   `-p, --pid` 不共享 `PID(进程空间)`
+    -   `-u, --uts` 不共享 `UTS(UNIX 时间共享空间)`
+    -   `-U, --user` 不共享 `USER(用户空间)`
+    
+-   `program` 可以是任意程序
+
+-   `[arguments]` 如下
+    -   `--fork` 执行 `unshare` 的进程会 `fork()` 一个新子进程，在子进程中执行 `unshare` 传入的参数，这样子进程内部执行的 `unshare` 创建的孙进程在某些情况下（例如创建进程空间不共享的命名空间）就不会因为没有父进程而创建异常
+    -   `--mount-proc` 执行子进程前，将 `/pros` 优先挂载过去，就不会导致命名空间看到同一个 `/pros` 进程目录（例如创建进程空间不共享的命名空间，如果看到同一个进程目录就没有意义了）
+
+
+使用不同的 `[options]` 可以进入不同的命名空间，如果启动的是 `/bin/bash` 程序，则可以使用 `exit` 退出命名空间。
 
 ```shell
 # 使用 unshare
+# UTS 隔离
+$ sudo unshare -u /bin/bash # 此时就会有一个子进程 /bin/bash 被创建, 运行在 UTX 不共享的命名空间中
+root@bash:/$ pwd
+/
+root@bash:/$ exit
+$ exit  
 
+# PID 隔离
+$ sudo unshare -p /bin/bash
+bash: fork: Cannot allocate memory # 原因是这里的 /bin/bash 虽然是 unshare 的子进程, 但是由于此时进程 ID 和原系统进行了分离, 因此需要创建一个全新的进程, 否则 /bin/bash 就没有父进程无法被创建出来, 导致很多指令无法使用
+root@bash:/$ exit # 所以只能退出当前 bash 然后重新想办法创建命名空间
+exit
+
+$ sudo unshare -p --fork /bin/bash # 这种方式就可以避免上述的情况
+root@bash:/$ ps -ef # 但这里有一个新问题, 为什么 ps -ef 的结果和没有获取命名空间之前是一样的呢? 就是因为 /pros 目录没有提前做挂载而被子进程继承了...
+$ exit
+
+$ sudo unshare -p --fork --mount-proc /bin/bash # 此时就可以看到 pid 进行了隔离
+root@bash:/$ ps -ef
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 23:02 pts/2    00:00:00 /bin/bash
+root           7       1  0 23:02 pts/2    00:00:00 ps -ef
+$ exit
+
+# MOUNT 隔离
+sudo unshare --mount --fork /bin/bash
+root@bash:/$ dd if=/dev/zero of=data.img bs=8k count=10240
+10240+0 records in
+10240+0 records out
+83886080 bytes (84 MB, 80 MiB) copied, 0.125023 s, 671 MB/s
+
+root@bash:/$ mkfs -t ext4 ./data.img 
+mke2fs 1.46.5 (30-Dec-2021)
+Discarding device blocks: done                            
+Creating filesystem with 20480 4k blocks and 20480 inodes
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+root@bash:/$ mkdir ./data && mount -t ext4 ./data.img ./data # 这个挂载点在外部是无法被看见的
+root@bash:/$ ls
+data  data.img lost+found
+
+root@bash:/$ cd ./data
+root@bash:/$ vim main.cc
+root@bash:/$
+root@bash:/$ ls
+lost+found  main.cc
+
+root@bash:/$ exit
+exit
+
+root@bash:/$ ls 
+data  data.img  limou.txt  lost+found
+
+root@bash:/$ cd data
+
+root@bash:/$ ll
+total 0
 ```
+
+>   补充：不过其实还挺奇葩的，叫命名空间却没有所谓的命名出现。不过 `unshare` 能得到不共享的命名空间，就说明原本的进程门在某些东西上是共享的，这个共享是偏向系统层次的，因为进程说到底都运行在同一个操作系统上，因此共享某一些东西其实也无可厚非。如果只从进程地址空间空间来看的活，确实是相互独立，因此是共享还是独立要根据视角而定，这里说的共享主要有以下资源。
+>
+>   -   **MOUNT-文件系统挂载共享** 在没有使用 `MOUNT` 命名空间的情况下，系统中的所有进程共享相同的文件系统挂载点和文件系统视图。即所有进程看到的文件系统结构是相同的，都是从根目录开始的目录树。使用 `MOUNT` 命名空间后，每个命名空间可以有自己独立的文件系统挂载点。
+>   -   **NET-网络共享** 在没有网络命名空间时，所有进程共享相同的网络接口、`IP` 地址、路由表。使用 `NET` 命名空间后，网络接口和网络配置可以在不同的命名空间中独立存在。
+>   -   **PID-进程 ID 共享** 没有使用 `PID` 命名空间时，系统中的所有进程都有一个全局唯一的 `PID`。使用 `PID` 命名空间后，每个命名空间内的进程可以有自己的 `PID` 视图，这样同一个 `PID` 在不同的命名空间中可能指代不同的进程。
+>-   **IPC-进程间通信共享** 在没有 `IPC` 命名空间的情况下，所有进程共享同样的 `IPC` 资源，如消息队列、信号量和共享内存。使用 `IPC` 命名空间后，`IPC` 资源被隔离，不同命名空间的进程无法相互访问 `IPC` 资源。
+>   -   **UTS-主机名共享** 在没有 `UTS` 命名空间的情况下，系统中的所有进程共享相同的主机名和域名。使用 `UTS` 命名空间后，每个命名空间可以设置独立的主机名和域名。
+>   -   **USER-用户共享** 在没有 `USER` 命名空间的情况下，用户 `ID` 和组 `ID` 是全局唯一的。使用 `USER` 命名空间后，用户和组 `ID` 可以在不同的命名空间中映射为不同的值，从而实现更细粒度的权限控制。
+>
 
 ## 3.9.其他操作指令
 
