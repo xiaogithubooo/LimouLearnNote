@@ -14,7 +14,7 @@
 
 因此`C++`新增加了`function{};`类，这是一个很特殊的类模板。
 
-# 1.function
+# 1.function<()>
 
 实际上`function{}`包装类是一个适配器，其使用语法和以前的语法有些不一样，甚至可以说怪异的地方。
 
@@ -228,7 +228,7 @@ int main()
 
 >   补充：`functiuon{};`奇特的语法都是`C++`不曾有的，很多在解释语法的解释器上就做了修改，因此我们只需要学会如何使用即可，其内部底层原理我们不必过于探究。
 
-# 2.bind
+# 2.bind()
 
 但是上面成员函数的包装中，每次都需要传递一个`Data`的对象、指针或引用，但这样太麻烦了，我们可以使用`bind()`，这个函数模板也在头文件`functional`内。
 
@@ -282,3 +282,46 @@ int main()
 这个`bind()`还是很有用的，可以让函数的调用由使用者来控制缺省参数，而不是开发者。在调用一些繁琐的系统调用时，这个函数模板就会很有效。
 
 因为有太多系统调用需要传递各种参数了，这些参数又不能直接设置为缺省参数，但是我们又经常需要传递，因此就只能一个一个传，但是有了这个函数模板就可以简化函数调用了。
+
+# 3.invoke()
+
+```cpp
+#include <iostream>
+#include <functional>
+
+void func() {
+    std::cout << "Hello from func" << std::endl;
+}
+
+struct Foo {
+    void member_func() {
+        std::cout << "Hello from class::func" << std::endl;
+    }
+};
+
+int main() {
+    // 函数指针
+    void (*fp)() = func;
+    std::invoke(fp); // std::invoke() 是在 C++17 引入的模板函数, 甚至还支持多态
+
+    // 成员函数指针
+    Foo foo;
+    std::invoke(&Foo::member_func, foo); // std::invoke() 比起 function<()> 对象要更加自动
+
+    // 仿函数
+    struct Bar {
+        void operator()(int x) {
+            std::cout << "Hello from ()" << std::endl;
+        }
+    };
+    Bar bar;
+    std::invoke(bar, 42); // 也类似 function<()> 可以进行统一的调用
+
+    // lambda表达式
+    auto lambda = [](int x, int y) { std::cout << "Hello from lambda" << std::endl; return x + y; };
+    int res = std::invoke(lambda, 3, 4); // 但是只是一次单次的调用, 其返回值是可调用对象的返回值, 这点和 function<()> 非常不一样
+    std::cout << res << std::endl;
+    return 0;
+}
+```
+
