@@ -18,23 +18,11 @@
 
 因此整个项目的从模块上来分，则主要内容如下：
 
--   语言算法基本知识
--   操作系统基本知识
--   网络通信基本知识
--   数据库的基本知识
--   前端技术基本知识
-
-```mermaid
-graph TD;
-zynr["程序员基础"];
-
-yysf["语言算法基本知识"];
-czxt["操作系统基本知识"];
-wltx["系统网络基本知识"];
-sjk["数据库的基本知识"];
-qdjs["前端技术基本知识"];
-zynr --> yysf & czxt & wltx & sjk & qdjs;
-```
+-   [开发基础](SoftwareArchitectNote)：包含 `编程语言、数据结构和算法、操作系统、数据库、客户端开发` 五个基础模块
+-   [软件设计](SoftwareArchitectNote)：包含软件设计、软件架构、软件规范三个板块
+-   [音视频流](ComputerAudioAndVideo)：关于 `C/C++` 的音视频流开发的内容
+-   [安卓开发](AndroidDevelopment)：关于 `Java` 的安卓系统开发的内容
+-   [人工智能](ArtificialIntelligenceNote)：...
 
 ## 5.注意事项
 
