@@ -1,4 +1,37 @@
->   前要：我们本次的学习目标如下：
+<style>
+.heimu {
+    position: relative;
+    display: inline-block;
+    color: transparent;
+    text-decoration: none;
+}
+.heimu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #333; /* 深色遮盖 */
+    z-index: 1;
+}
+.heimu:hover::before {
+    background-color: transparent; /* 鼠标悬浮时移除深色遮盖 */
+}
+.heimu:hover {
+    color: white !important; /* 鼠标悬浮时显示白色文字 */
+    text-shadow: none;
+}
+</style>
+
+
+**如果本系列文章对您有帮助，可以 [star 一下我的 limou-learn-note](https://github.com/xiaogithubooo/LimouLearnNote)，求求惹(๑＞ ＜)☆♡~**
+
+**叠甲：以下文章主要是依靠我的实际编码学习中总结出来的经验之谈，求逻辑自洽，不能百分百保证正确，有错误、未定义、不合适的内容请尽情指出！**
+
+[TOC]
+
+>   概要：前要：我们本次的学习目标如下
 >
 >   *   如何使用 `Android Studio` 创建 `Android` 应用
 >   *   如何在 `Android Studio` 中使用预览工具运行应用
@@ -6,6 +39,10 @@
 >   *   如何使用 `Jetpack Compose` 更新 `UI`
 >   *   如何在 `Jetpack Compose` 中使用预览功能预览应用
 >   *   创建出一个可让您自定义自我介绍的应用
+
+>   资源：[来自 Google 的一份快速教程](https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2?hl=zh-cn#codelab-https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator)。
+
+------
 
 # 1.安装 AS 和 SDK
 
@@ -255,3 +292,16 @@ fun GreetingPreview() {
 
  ![image-20240904102640715](./assets/image-20240904102640715.png)
 
+# 7.在模拟器运行应用
+
+
+
+# 8.应用连接实体设备
+
+
+
+------
+
+>   结语：...
+
+**如果本系列文章对您有帮助，可以 [star 一下我的 limou-learn-note](https://github.com/xiaogithubooo/LimouLearnNote)，求求惹(๑＞ ＜)☆♡~**
