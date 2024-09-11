@@ -1,8 +1,17 @@
 安卓开发的资料还是很充足的，安卓开发主要是偏向移动端的开发，这里简单接受一下安卓开发的路线和资源。首先最重要的就是[前往 Google 自家的 Android 官网](https://developer.android.com/?hl=zh-cn)，里面有非常丰富的文档。
 
+而学习 `Java` 的安卓开发有两个官方教程：
+
+-   [Android 开发者基础知识 (Java)](https://developer.android.com/courses/fundamentals-training/overview-v2?hl=zh-cn)
+-   [高级 Android 开发 (Java)](https://developer.android.com/courses/advanced-training/overview?hl=zh-cn)
+
+并且有一个项目值得您去实现和学习，就是 [由 Google 开发者培训团队创建的电话呼叫和短信课程项目](https://google-developer-training.github.io/android-developer-phone-sms-course/)。
+
 # 1.语言和环境
 
-安卓开发上，首推的编程语言就是 `Java, Kotlin, Dart` 三种语言，可能还需要学习 `UI` 工具包 `Flutter`，以及关于 `AS` 的使用。以及重点是下面的四大组件知识：
+安卓开发上，首推的编程语言就是 `Java, Kotlin, Dart` 三种语言，可能还需要学习 `UI` 工具包 `Flutter`，以及关于 `AS` 的使用。
+
+本教程使用 `Java` 和 `Kotlin` 两种开发语言进行尝试，不过优先使用 `Java`，再来考虑 `Kotlin`。
 
 # 2.Android 四大开发组件
 
@@ -19,4 +28,7 @@
 
 # 3.Intent 机制
 
-以上内容实际上是参考 `Medium` 上 `@MindOrks` 发布的一篇 [2020 年 Android 程序员的学习线路](https://medium.com/mindorks/android-development-learning-path-2020-edition-3f464ac56dbf)，我认为非常具有参考意义，您值得一看。
+待补充...
+
+>   以上内容实际上是参考 `Medium` 上 `@MindOrks` 发布的一篇 [2020 年 Android 程序员的学习线路](https://medium.com/mindorks/android-development-learning-path-2020-edition-3f464ac56dbf)，我认为非常具有参考意义，您值得一看。
+
