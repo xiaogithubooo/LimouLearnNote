@@ -514,3 +514,74 @@ $ git reset [--soft/--mixed/--hard] [HEAD]
 5. 删除标签就是 `git tag -d [标签名]`，不过需要注意再次使用 `git push [远程仓库名] :[标签名字]`
 
 本地 `tag` 也是可以推送到远程仓库里的，使用命令 `git push origin [标签名]` 单独推送，或者使用 `git push origin --tags` 把所有本地标签全部推送到远程仓库中。
+
+# 9.Git 密码管理
+
+要配置 Git 记住密码，你可以通过以下几种方式来实现：
+
+### 方法 1：使用 `git-credential-store`
+使用 Git 的凭证存储功能，可以将用户名和密码保存在本地文件中。
+
+1. **配置全局存储**：
+   执行以下命令，将凭证信息保存在本地配置文件中：
+
+   ```bash
+   git config --global credential.helper store
+   ```
+
+2. **执行操作**：
+   当你下次进行 Git 操作时（如 `git push`），Git 会提示你输入用户名和密码，并将其保存到 `~/.git-credentials` 文件中。
+
+   文件内容示例：
+   ```
+   https://<username>:<password>@github.com
+   ```
+
+### 方法 2：使用 `git-credential-cache`
+如果你希望 Git 临时记住密码（如 15 分钟内），可以使用缓存方式：
+
+1. **启用缓存**：
+   执行以下命令，将 Git 的凭证保存到缓存中，默认缓存时间为 15 分钟：
+
+   ```bash
+   git config --global credential.helper cache
+   ```
+
+2. **设置缓存时间（可选）**：
+   如果你希望 Git 记住密码更长时间（例如 1 小时），可以指定缓存的超时时间（以秒为单位）：
+
+   ```bash
+   git config --global credential.helper 'cache --timeout=3600'
+   ```
+
+### 方法 3：使用 SSH 免密登录（推荐）
+使用 SSH 密钥可以避免每次输入密码，尤其适用于 GitHub、GitLab 等平台。
+
+1. **生成 SSH 密钥**：
+   执行以下命令生成 SSH 密钥：
+
+   ```bash
+   ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+   ```
+
+   然后按照提示完成密钥生成。
+
+2. **添加 SSH 密钥到代理**：
+   使用以下命令启动 SSH 代理并添加私钥：
+
+   ```bash
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_rsa
+   ```
+
+3. **将公钥添加到 Git 平台**：
+   将生成的公钥（`~/.ssh/id_rsa.pub` 文件内容）添加到 GitHub 或 GitLab 的 SSH 密钥设置中。
+
+4. **使用 SSH 克隆仓库**：
+   在克隆或操作仓库时，使用 SSH URL 而非 HTTPS URL，例如：
+
+   ```bash
+   git clone git@github.com:username/repository.git
+   ```
+
+通过 SSH，你就可以免去每次输入密码的麻烦。
