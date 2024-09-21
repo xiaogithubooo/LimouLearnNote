@@ -30,22 +30,37 @@
 
 [TOC]
 
+>   [!NOTE]
+>
 >   概要：...
 
->   资源：...
+>   [!NOTE]
 >
+>   资源：...
 
 ------
 
 # 1.
 
->   警告：...
+> [!CAUTION]
+>
+> 警告
 
->   注意：...
+> [!WARNING]
+>
+> 注意
 
->   区分：...
+> [!IMPORTANT]
+>
+> 补充
 
->   吐槽：...
+> [!TIP]
+>
+> 区分
+
+> [!NOTE]
+>
+> 吐槽
 
 # 2.
 
@@ -55,6 +70,8 @@
 
 ------
 
+>   [!NOTE]
+>
 >   结语：...
 
 **如果本系列文章对您有帮助，可以 [star 一下我的 limou-learn-note](https://github.com/xiaogithubooo/LimouLearnNote)，求求惹(๑＞ ＜)☆♡~**
