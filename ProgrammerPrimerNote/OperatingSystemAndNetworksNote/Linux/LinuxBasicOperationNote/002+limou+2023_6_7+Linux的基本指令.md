@@ -385,6 +385,272 @@ locate filename
 
 请注意，`ln` 命令的参数顺序是源文件（或目录）先，然后是链接文件的路径。在使用 `ln` 命令之前，请确保您具有适当的权限来创建链接，并且目标路径不存在重名文件或目录。通过使用 `ln` 命令，您可以轻松地创建链接或符号链接，以便在文件系统中共享文件或目录，并提供更灵活和方便的访问方式。
 
+### 3.1.12.传输指令
+
+在 Linux 系统中，传输文件的最快方法通常是使用 `rsync` 或 `scp` 命令。以下是这两种常用方法的简要说明：
+
+### 1. 使用 `rsync`
+
+`rsync` 是一个强大的工具，适用于增量文件传输，能够高效地同步文件和目录。基本用法如下：
+
+```
+bash
+
+
+复制代码
+rsync -avz /path/to/source user@remote_host:/path/to/destination
+```
+
+*   `-a`：归档模式，保留文件权限、时间戳等。
+*   `-v`：详细模式，显示传输过程。
+*   `-z`：压缩文件以提高传输速度。
+
+### 2. 使用 `scp`
+
+`scp`（Secure Copy Protocol）是基于 SSH 的安全文件传输命令。基本用法如下：
+
+```
+bash
+
+
+复制代码
+scp /path/to/source user@remote_host:/path/to/destination
+```
+
+### 3. 使用 `tar` 与 `ssh`
+
+如果需要传输整个目录，可以使用 `tar` 压缩目录并通过 SSH 传输，方法如下：
+
+```
+bash
+
+
+复制代码
+tar czf - /path/to/source | ssh user@remote_host "tar xzf - -C /path/to/destination"
+```
+
+*   `tar czf -`：创建一个压缩包并将其输出到标准输出。
+*   `ssh user@remote_host "tar xzf - -C /path/to/destination"`：在远程主机上解压缩。
+
+### 4. 使用 `bbcp`（如果可用）
+
+`bbcp` 是一个针对高带宽、低延迟网络的文件传输工具，适用于大文件传输。如果你有 `bbcp` 安装，可以使用如下命令：
+
+```
+bash
+
+
+复制代码
+bbcp /path/to/source user@remote_host:/path/to/destination
+```
+
+### 选择方法
+
+*   对于小文件传输，`scp` 通常很方便。
+*   对于大文件或多个文件的传输，`rsync` 更加高效。
+*   如果你希望更快的传输并能处理大文件，考虑使用 `bbcp`。
+
+选择适合你需求的方法即可。
+
+
+
+
+
+
+
+##### 您说：
+
+rsync显示进度条
+
+
+
+###### ChatGPT 说：
+
+ChatGPT
+
+要在 `rsync` 中显示进度条，你可以使用 `--progress` 选项。下面是一个示例命令：
+
+```
+bash
+
+
+复制代码
+rsync -avz --progress /path/to/source user@remote_host:/path/to/destination
+```
+
+*   `-a`：归档模式，保留文件属性。
+*   `-v`：详细输出。
+*   `-z`：压缩文件以提高传输速度。
+*   `--progress`：显示每个文件的传输进度。
+
+如果你希望在传输过程中每个文件的进度条都可见，可以结合 `--info=progress2` 来显示总体进度：
+
+```
+bash
+
+
+复制代码
+rsync -avz --info=progress2 /path/to/source user@remote_host:/path/to/destination
+```
+
+这样，`rsync` 会显示每个文件的传输进度以及整个传输的总体进度。
+
+
+
+
+
+
+
+##### 您说：
+
+怎么后台传输，使得终端关闭都不影响传输？
+
+
+
+###### ChatGPT 说：
+
+ChatGPT
+
+要在后台传输文件，使得终端关闭时仍然能够继续传输，你可以使用以下几种方法：
+
+### 1. 使用 `nohup`
+
+`nohup`（no hang up）命令允许你在关闭终端时继续运行程序。使用方法如下：
+
+```
+bash
+
+
+复制代码
+nohup rsync -avz --progress /path/to/source user@remote_host:/path/to/destination &
+```
+
+*   `&`：将命令放入后台运行。
+*   输出会默认重定向到 `nohup.out` 文件，你可以查看该文件以获取运行日志。
+
+### 2. 使用 `screen` 或 `tmux`
+
+这两个工具允许你创建一个虚拟终端会话，可以在其中运行命令，并在需要时重新连接。
+
+#### 使用 `screen`：
+
+1.  启动 `screen`：
+
+    ```
+    bash
+    
+    
+    复制代码
+    screen
+    ```
+
+2.  在 `screen` 会话中运行你的 `rsync` 命令：
+
+    ```
+    bash
+    
+    
+    复制代码
+    rsync -avz --progress /path/to/source user@remote_host:/path/to/destination
+    ```
+
+3.  要分离 `screen` 会话，按 `Ctrl + A` 然后按 `D`。这将把你返回到原始终端，而 `rsync` 仍然在 `screen` 会话中运行。
+
+4.  重新连接到 `screen` 会话：
+
+    ```
+    bash
+    
+    
+    复制代码
+    screen -r
+    ```
+
+#### 使用 `tmux`：
+
+1.  启动 `tmux`：
+
+    ```
+    bash
+    
+    
+    复制代码
+    tmux
+    ```
+
+2.  在 `tmux` 会话中运行你的 `rsync` 命令：
+
+    ```
+    bash
+    
+    
+    复制代码
+    rsync -avz --progress /path/to/source user@remote_host:/path/to/destination
+    ```
+
+3.  要分离 `tmux` 会话，按 `Ctrl + B` 然后按 `D`。
+
+4.  重新连接到 `tmux` 会话：
+
+    ```
+    bash
+    
+    
+    复制代码
+    tmux attach
+    ```
+
+### 3. 使用 `& disown`
+
+你也可以将命令放到后台并使用 `disown`，以便在关闭终端时不受影响：
+
+```
+bash复制代码rsync -avz --progress /path/to/source user@remote_host:/path/to/destination &
+disown
+```
+
+以上方法都可以帮助你在后台传输文件，并确保即使终端关闭，传输仍然继续。选择最适合你的需求的方法即可。
+
+
+
+
+
+
+
+##### 您说：
+
+nohup.out放在哪里？
+
+
+
+###### ChatGPT 说：
+
+ChatGPT
+
+`nohup.out` 文件默认会在你运行 `nohup` 命令的当前工作目录下创建。如果你没有指定其他输出文件，所有的标准输出和标准错误信息都会被写入到这个文件中。
+
+你可以使用以下命令查看 `nohup.out` 文件的内容：
+
+```
+bash
+
+
+复制代码
+cat nohup.out
+```
+
+如果你想将 `nohup` 的输出重定向到特定的文件，可以在命令中指定输出文件，例如：
+
+```
+bash
+
+
+复制代码
+nohup rsync -avz --progress /path/to/source user@remote_host:/path/to/destination > my_output.log 2>&1 &
+```
+
+这里的 `> my_output.log` 将标准输出重定向到 `my_output.log`，而 `2>&1` 将标准错误也重定向到同一个文件中。这样，你可以指定文件名并方便查看。
+
 ## 3.2.文本操作指令
 
 下面的文本操作命令可能需要拿一个大文件来测试，可以提前在您的目录下写好一个脚本创建（您无需理解原理）复制下面的脚本到您的 `bash` 界面即可：
@@ -682,9 +948,9 @@ $ wc big.txt text.txt
 
 ### 3.2.11.lsof 指令
 
-### `lsof`（List Open Files）是一个用于列出系统中打开的文件的命令行工具。在 Unix 和 Linux 系统中，几乎所有的操作（如打开的文件、目录、套接字、管道等）都涉及到文件描述符，因此 `lsof` 是一个非常有用的工具，用于排查系统中打开的文件及其相关信息。
+`lsof`（List Open Files）是一个用于列出系统中打开的文件的命令行工具。在 Unix 和 Linux 系统中，几乎所有的操作（如打开的文件、目录、套接字、管道等）都涉及到文件描述符，因此 `lsof` 是一个非常有用的工具，用于排查系统中打开的文件及其相关信息。
 
-### 基本用法
+基本用法
 
 1. **列出所有打开的文件**：
    ```bash
@@ -750,7 +1016,7 @@ $ wc big.txt text.txt
      lsof -i 6
      ```
 
-### 常用选项
+常用选项
 
 - **`-t`**：仅输出进程 ID，不显示其他信息。例如：
   ```bash
