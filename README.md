@@ -26,6 +26,6 @@
 
 ## 5.注意事项
 
-追求逻辑自洽和技术栈完整，很多部分等待完善，相关内容您信一半即可... 
+追求逻辑自洽和技术栈完整，很多部分等待完善，相关内容您信一半即可...
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xiaogithubooo/LimouLearnNote&type=Date)](https://star-history.com/#xiaogithubooo/LimouLearnNote&Date)
