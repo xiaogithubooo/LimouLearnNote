@@ -179,7 +179,10 @@ https://www.code-nav.cn/course/1789189862986850306/section/1789190581420793858?c
 
 (1)复习 C++ 的旧语言特性
 (2)学习 C++ 的新语言特性（现代化）
-(3)学习 Go 的菜鸟文档
+(3)学习 Go 语言
+菜鸟文档 Go
+官方的 Effective Go https://golang.org/doc/effective_go.html
+Go by Example https://gobyexample.com/
 (4)Java 鱼皮, 直接开发框架入手
 https://www.code-nav.cn/course/1789189862986850306/section/1789190431398928386?contentType=text&tabKey=list&type=#heading-0
 这一套走完就差不多了
