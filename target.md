@@ -9,7 +9,7 @@
     -   [ ] [实践1](http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html)
     -   [ ] [实践2](https://www.git-tower.com/learn/git/ebook/cn/command-line/advanced-topics/git-flow)
 
--   [ ] `git` 单一代码库 [Monorepo](https://www.jianshu.com/p/c10d0b8c5581)
+-   [x] `git` 单一代码库 [Monorepo](https://www.jianshu.com/p/c10d0b8c5581)
 -   [ ] [github 官方文档](https://docs.github.com/cn)
 -   [ ] [github 秘籍](https://snowdream86.gitbooks.io/github-cheat-sheet/content/zh/)
 -   [ ] [github 几个小技巧](https://www.bilibili.com/video/BV1q54y1f7h6/?vd_source=c92c89dbfcf9cc30c48086469621f35b)
