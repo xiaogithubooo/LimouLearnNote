@@ -44,12 +44,12 @@
 
 应用程序组件是一个 `Android` 应用程序的基本构建块，以下是可以在 `Android` 应用程序中使用的四个主要组件。
 
-| 组件                      | 描述                                        |
-| :------------------------ | :------------------------------------------ |
-| Activities(活动)          | 描述 `UI`，并且处理用户与机器屏幕的交互     |
-| Services(后台)            | 处理与应用程序关联的后台操作                |
-| Broadcast Receivers(通信) | 处理 `Android` 操作系统和应用程序之间的通信 |
-| Content Providers(数据)   | 处理数据和数据库管理方面的问题              |
+| 组件                        | 描述                                        |
+| :-------------------------- | :------------------------------------------ |
+| Activities（活动）          | 描述 `UI`，并且处理用户与机器屏幕的交互     |
+| Services（后台）            | 处理与应用程序关联的后台操作                |
+| Broadcast Receivers（通信） | 处理 `Android` 操作系统和应用程序之间的通信 |
+| Content Providers（数据）   | 处理数据和数据库管理方面的问题              |
 
 -   **Activities** 一个活动标识一个具有用户界面的单一屏幕。举个例子，一个邮件应用程序可以包含一个活动用于显示新邮件列表，另一个活动用来编写邮件，再一个活动来阅读邮件。当应用程序拥有多于一个活动，其中的一个会被标记为当应用程序启动的时候显示。一个活动一定是 `Activity` 类的一个子类。
 
@@ -63,7 +63,7 @@
     public class MyService extends Service {}
     ```
 
--   **Broadcast Receivers** 广播接收器简单地响应从其他应用程序或者系统发来的广播消息。举个例子，应用程序可以发起广播来让其他应用程序知道一些数据已经被下载到设备，并且可以供他们使用。因此广播接收器会拦截这些通信并采取适当的行动。广播接收器一定是 `BroadcastReceiver` 类的一个子类，每个消息以 `Intent` 对象的形式来广播。
+-   **Broadcast Receivers** 广播接收器简单地响应从其他应用程序或者系统发来的广播消息。举个例子，应用程序可以发起广播（交给操作系统）来让其他应用程序知道一些数据已经被下载到设备，并且可以供他们使用。因此广播接收器会拦截这些通信并采取适当的行动。广播接收器一定是 `BroadcastReceiver` 类的一个子类，每个消息以 `Intent` 对象的形式来广播。
 
     ```java
     public class MyReceiver  extends  BroadcastReceiver {}
@@ -75,109 +75,56 @@
     public class MyContentProvider extends  ContentProvider {}
     ```
 
-我们的重点就从这个几个类开始，然后我们开始了解项目的文件树、主活动文件、清单文件。
+>   [!IMPORTANT]
+>
+>   补充：附件组件
+>
+>   有一些附件的组件用于以上提到的实体、他们之间逻辑、及他们之间连线的构造。这些组件如下：
+>
+>   | 组件      | 描述                                             |
+>   | :-------- | :----------------------------------------------- |
+>   | Fragments | 代表活动中的一个行为或者一部分用户界面。         |
+>   | Views     | 绘制在屏幕上的 UI 元素，包括按钮，列表等。         |
+>   | Layouts   | 控制屏幕格式，展示视图外观的 View 的继承。         |
+>   | Intents   | 组件间的消息连线。                               |
+>   | Resources | 外部元素，例如字符串资源、常量资源及图片资源等。 |
+>   | Manifest  | 应用程序的配置文件。                             |
+
+我们使用 `AS` 创建一个项目试试，然后重点了解项目的文件树、主活动文件、清单文件等，我们来看看那些事重要的文件。
+
+| 文件夹、文件和说明                                           |
+| :----------------------------------------------------------- |
+| `AndroidManifest.xml:` 这个是应用程序的清单文件，描述了应用程序的基础特性，定义它的各种组件（三元素是活动行为，活动类别，活动数据）。 |
+| `src:` 包含项目中所有的.java 源文件，默认情况下，它包括一个 MainActivity.java 源文件对应的活动类，当应用程序通过应用图标启动时，将运行它。 |
+| `gen:` 这包含由编译器生成的.R 文件，引用了所有项目中的资源。该文件不能被修改。 |
+| `bin:` 这个文件夹包含 Android 由 APT 构建的 .apk 包文件，以及运行 Android 应用程序所需要的其他所有东西。 |
+| `res/drawable-hdpi:` 这个目录下包括所有的为高密度屏幕设计所需的 drawable 对象。 |
+| `res/layout:` 这个目录存放用于定义用户界面的文件。           |
+| `res/values:` 这个目录存放各种各样的包含一系列资源的 XML 文件，比如字符串和颜色的定义。 |
 
 ```shell
-# 查看项目文件夹
-$ tree -L 4
-.
-|-- app
-|   `-- src # 包含项目中所有的.java源文件，默认情况下，它包括一个 MainActivity.java 源文件对应的活动类, 当应用程序通过应用图标启动时，将运行它。
-|       |-- androidTest
-|       |   `-- java
-|       |-- main
-|       |   |-- AndroidManifest.xml # 这个是应用程序的清单文件, 描述了应用程序的基础特性, 定义它的各种组件
-|       |   |-- java
-|       |   `-- res
-|       |       |-- drawable # 包括所有的为高密度屏幕设计所需的 drawable 对象
-|       |       |-- layout # 这个目录存放用于定义用户界面的文件
-|       |       |-- values # 这个目录存放各种各样的包含一系列资源的 XML 文件(字符串和颜色的定义)
-...
-```
-
-```java
-// 查看主活动文件 MainActivity.java
-package com.example.greetingcard; // 定义包名
-
-import android.os.Bundle; // 导入 Bundle 类, 用于传递活动的状态信息
-import androidx.activity.EdgeToEdge; // 导入 EdgeToEdge 类, 用于启用全屏模式
-import androidx.appcompat.app.AppCompatActivity; // 导入 AppCompatActivity 类, 作为活动的基类
-import androidx.core.graphics.Insets; // 导入 Insets 类, 用于处理插图的边距
-import androidx.core.view.ViewCompat; // 导入 ViewCompat 类, 提供对视图的兼容性支持
-import androidx.core.view.WindowInsetsCompat; // 导入 WindowInsetsCompat 类, 用于处理窗口插图
-
-public class MainActivity extends AppCompatActivity { // 定义 MainActivity 类, 继承自 AppCompatActivity
-    @Override
-    protected void onCreate(Bundle savedInstanceState) { // 重写 onCreate 方法, 活动创建时调用
-        super.onCreate(savedInstanceState); // 调用父类的 onCreate 方法, 防止影响原本的行为
-        EdgeToEdge.enable(this); // 启用全屏模式, 使内容延伸到屏幕边缘
-        setContentView(R.layout.activity_main); // 设置活动布局(内容视图)为 activity_main.xml 这是一个配置文件, 在项目生成的时候会自动给出, R.layout.activity_main 代表引用自 res/layout/activity_main.xml
-
-        // 后面这段代码可以以后再来了解...
-        // 设置视图的窗口插图监听器(确保应用的视图在系统栏, 如状态栏和导航栏出现时不会被遮挡)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> { // 当系统栏的插图发生变化时(例如状态栏出现或消失), 就会自动调用这里的 Lambda 表达式
-            // 获取系统栏的插图(边距)
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            // 设置视图的内边距，以适应系统栏的显示
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets; // 返回处理后的插图
-        });
-    }
-}
-
-```
-
-```shell
-# 主活动配置文件 activity_main.xml
 <?xml version="1.0" encoding="utf-8"?>
-# ConstraintLayout 是一种灵活的布局, 可以帮助我们创建复杂的界面
-# xmlns:android, xmlns:app, xmlns:tools 是 XML 命名空间的声明
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main" # android:id="@+id/main" 为该布局指定一个唯一的 ID, 方便在代码中引用
-    android:layout_width="match_parent" # android:layout_width, 设置布局的宽度, match_parent 这意味着该布局将填充其父视图的整个可用空间
-    android:layout_height="match_parent" # android:layout_height, 设置布局的高度, match_parent 这意味着该布局将填充其父视图的整个可用空间
-    tools:context=".MainActivity"> # 指定了该布局的上下文, 通常是与之关联的 Activity 类
-
-    <TextView # TextView 是一个用于显示文本的视图
-        android:layout_width="wrap_content" # 表示 TextView 的宽度将根据其内容自动调整
-        android:layout_height="wrap_content" # 表示 TextView 的高度将根据其内容自动调整
-        android:text="Hello World!" # 设置 TextView 显示的文本内容
-        app:layout_constraintBottom_toBottomOf="parent" # 将 TextView 的底部约束到父布局的底部
-        app:layout_constraintEnd_toEndOf="parent" # 将 TextView 的右边约束到父布局的右边
-        app:layout_constraintStart_toStartOf="parent" # 将 TextView 的左边约束到父布局的左边
-        app:layout_constraintTop_toTopOf="parent" /> # 将 TextView 的顶部约束到父布局的顶部
-        # 通过这些约束 TextView 将被放置在父布局的中心位置
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-```
-
-```shell
-# 清单文件 AndroidManifest.xml
-# 无论您开发什么组件用作应用程序中的一部分, 都需要在应用程序项目根目录下的 manifest.xml 文件中声明所有的组件, 这个文件是 Android 操作系统与您的应用程序之间的接口。因此, 如果没有在这个文件中声明您的组件, 将无法被操作系统所识别
-
-<?xml version="1.0" encoding="utf-8"?> # 定义工具命名空间, 用于提供额外的构建工具信息
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true" # 允许应用程序的数据备份
-        android:dataExtractionRules="@xml/data_extraction_rules" # 指定数据提取规则的 XML 文件
-        android:fullBackupContent="@xml/backup_rules" # 指定完整备份内容的 XML 文件
-        android:icon="@mipmap/ic_launcher" # 指定应用程序图标 res/mipmap-hdpi/ic_launcher.webp
-        android:label="@string/app_name" # 指定应用程序名称 res/values/string.xml 中的 app_name
-        android:roundIcon="@mipmap/ic_launcher_round" # 指定应用程序圆形图标 res/mipmap-hdpi/ic_launcher_round.webp
-        android:supportsRtl="true" # 指定应用程序是否支持从右到左的布局
-        android:theme="@style/Theme.GreetingCard" # 指定应用程序的主题样式 res/values/styles.xml
-        tools:targetApi="31"> # 提供给构建工具的信息, 指明该应用程序的目标 API 级别
-        <activity # 定义一个 Activity 组件
-            android:name=".MainActivity" # 指定该活动的类名
-            android:exported="true"> # 指定该活动是否可以被其他应用程序访问
-            <intent-filter> # 定义该活动可以响应的意图
-                <action android:name="android.intent.action.MAIN" /> # 指定了该活动是应用程序的主入口点, 它表示该活动是用户启动应用程序时首先要显示的界面
-                <category android:name="android.intent.category.LAUNCHER" /> # 这个标签指定了该活动是一个启动器 Activity, 意味着它会出现在设备的应用程序列表中, 用户可以通过点击图标来启动该活动
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.App"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity" #  声明活动类名, 以 . 开头表示此类在当前包下
+            android:exported="true"> # 指示其他应用是否可以启动此活动
+            <intent-filter> # 意图过滤器
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                # android.intent.action.MAIN: 表示这是应用的主入口。
+# android.intent.category.LAUNCHER: 表示此活动会在应用启动器中显示。
             </intent-filter>
         </activity>
     </application>
@@ -185,6 +132,3 @@ public class MainActivity extends AppCompatActivity { // 定义 MainActivity 类
 </manifest>
 ```
 
-不过有个尴尬的问题，我手上没有安卓手机，只能使用模拟器才能运行代码，待补充...
-
-![image-20240910214401731](./assets/image-20240910214401731.png)
