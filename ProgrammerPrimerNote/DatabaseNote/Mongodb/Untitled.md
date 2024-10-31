@@ -1,0 +1,1 @@
+https://www.mongodb.com/zh-cn/docs/manual/tutorial/install-mongodb-on-ubuntu/
