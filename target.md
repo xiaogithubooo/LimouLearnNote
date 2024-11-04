@@ -14,8 +14,7 @@
 -   [ ] [github 秘籍](https://snowdream86.gitbooks.io/github-cheat-sheet/content/zh/)
 -   [ ] [github 几个小技巧](https://www.bilibili.com/video/BV1q54y1f7h6/?vd_source=c92c89dbfcf9cc30c48086469621f35b)
 -   [x] github 门面装饰
-    -   [x] [装饰1](https://mp.weixin.qq.com/s?biz=MzI1NDczNTAwMA==&mid=2247491908&idx=1&sn=568e8c0dcb54a610d886eb992d424273&scene=21#wechat_redirect)
-    -   [x] [装饰2](https://mp.weixin.qq.com/s?biz=MzI1NDczNTAwMA==&mid=2247495440&idx=1&sn=99147cdcb7c881c9d983e7b2373abcdb&scene=21#wechat_redirect)
+    -   [x] 
 -   [ ] [github 快捷键官方文档](https://docs.github.com/cn/get-started/using-github/keyboard-shortcuts)
 -   [ ] [github 命令面板官方文档](https://docs.github.com/zh/get-started/accessibility/github-command-palette)
 
