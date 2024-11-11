@@ -1,3 +1,119 @@
+# 1.网络诞生
+那会人们刚刚整理好关于计算机和计算机之间的传输问题，明确了私网和公网的概念。
+
+# 2.静态网站
+这个阶段，人们知道服务器其实也是一台可以被公开访问的电脑，人们使用类似 `Nginx` 这种后端服务器程序，运行在特定 `IP` 和 `PORT` 上，管理众多的静态 `HTML` 页面，那会的应用就是静态网站，只能用来读取。这个阶段已经普及了浏览器，浏览器用户在 `URL` 中请求了什么页面，后端服务端程序就会根据请求返回服务器上对应路径存储的数据。
+
+# 3.动态网站
+
+人们意识到不一定用户访问什么资源，服务器上就一定需要存在对应资源，页面路由和请求接口可以发生解耦。
+
+## 3.1.前后端不分离的服务端渲染（SSR）
+
+1.   发送 **URL 请求** 用户在浏览器中访问一个页面，例如 `https://example.com/blog/post?id=123`
+2.   **服务器端处理**
+     -   服务器上的 `PHP` 脚本 `post.php` 接收 `id=123` 参数
+     -   `PHP` 读取数据库中的内容（例如 `MySQL`）获取对应的文章数据
+     -   `PHP` 脚本动态生成包含文章内容的 `HTML` 页面，将数据填充进 `HTML` 模板中
+3.   **返回 HTML 页面**
+     -   服务器将生成好的 `HTML` 返回给浏览器
+     -   浏览器直接渲染 `HTML`，不需要额外的客户端渲染逻辑
+
+##  3.2.前后端不分离的客户端渲染（CSR）
+1. **初始页面请求** 用户第一次访问时，请求地址为：`https://example.com/news`服务器返回一个基础的 `HTML` 页面，其中包含页面结构和用于动态加载数据的 `JS` 代码，这些 `JS` 代码是内嵌到页面文件中的。
+
+    ```php+HTML
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>News</title>
+    </head>
+    <body>
+        <h1>Latest News</h1>
+        <div id="news-list">
+            <!-- 新闻内容将通过 JavaScript 动态加载 -->
+        </div>
+        <script>
+            // 页面加载完成后通过 JavaScript 请求新闻内容
+            document.addEventListener("DOMContentLoaded", function() {
+                fetch('/api/get_news.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        const newsList = document.getElementById('news-list');
+                        data.forEach(news => {
+                            const newsItem = document.createElement('div');
+                            newsItem.className = 'news-item';
+                            newsItem.innerHTML = `<h2>${news.title}</h2><p>${news.content}</p>`;
+                            newsList.appendChild(newsItem);
+                        });
+                    });
+            });
+        </script>
+    </body>
+    </html>
+    ```
+
+2. **动态数据获取** 在 `/api/get_news.php` 中，服务器端 `PHP` 脚本返回 `JSON` 格式的数据，但不渲染整个页面（有点想 `CGI` 程序）。
+
+    ```php
+    <?php
+    // 连接数据库并获取新闻数据
+    $mysqli = new mysqli("localhost", "username", "password", "news_db");
+    $query = "SELECT title, content FROM news";
+    $result = $mysqli->query($query);
+    $news = [];
+    while ($row = $result->fetch_assoc()) {
+        $news[] = $row;
+    }
+    $mysqli->close();
+    
+    // 返回 JSON 数据
+    header('Content-Type: application/json');
+    echo json_encode($news);
+    ```
+
+>   补充：由此可见前后端是否分离和在那里渲染时无关的，并且我们这里说的渲染是指渲染为完整的可以交给浏览器的 `HTML` 页面文件，而不是指浏览器把 `HTML` 页面文件“渲染”到浏览器上的渲染...完整来说，前者被称为 `HTML` 渲染，后者被称为界面渲染。
+
+# 4.前后解耦
+
+实际上浏览器的 `URL` 切换时，即便不发送请求，也可以被 `JS` 检测到（此时我们的 `JS` 发展得非常强大，只使用 `JS` 也可以生成 `HTML` 和 `CSS`），因此我们可以根据这一特点，让 `JS` 前端代码和后端代码分离，单独部署到另外一个服务器上，这样就会有两个服务器，前端服务器和后端服务器，分别部署前端服务代码和后端服务代码，根据这一点结合两种渲染方式，就可以得到四种类别的应用：
+
+-   前后端不分离 `SSR`
+-   前后端不分离 `CSR`
+-   前后端分离 `SSR`
+-   前后端分离 `CSR`
+
+前后端是否分离，抉择端的渲染，是权衡开发难度的
+
+# 5.结合渲染
+
+ 
+
+# 6.其他开发
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
 在 C++ 中，计算 `std::vector<int>` 元素的和可以使用现代化的方法，如利用标准库中的算法。下面是一个使用 `std::accumulate` 的示例，它是最常用且简洁的方法。
 
 ### 使用 `std::accumulate`
