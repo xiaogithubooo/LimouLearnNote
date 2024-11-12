@@ -18,56 +18,76 @@
 
 因此整个项目的从模块上来分，则主要内容如下：
 
--   [开发基础](SoftwareArchitectNote)：包含 `编程语言、数据结构和算法、操作系统、数据库、客户端开发` 五个基础模块
--   [软件设计](SoftwareArchitectNote)：包含软件设计、软件架构、软件规范三个板块
--   [音视频流](ComputerAudioAndVideo)：关于 `C/C++` 的音视频流开发的内容
--   [安卓开发](AndroidDevelopment)：关于 `Java` 的安卓系统开发的内容
--   [人工智能](ArtificialIntelligenceNote)：...
+## 4.1.四件基础
 
-## 5.个人项目
+### 4.1.1.编程语言和数构算法
 
--   `the` 开头的项目都是一些模拟项目
--   `easy` 开头的项目都是一些
--   `nfu` 开头的项目都是毕业校级项目
--   `intelligent` 开头的项目都是智能项目
+-   C/Cpp/Rust（底层开发：原理）
+-   Java（工业开发：标准）
+    -   开发路线
+        -   JavaEE/JavaSE
+        -   Java Web
+        -   Spring5
+        -   SpringMVC
+        -   MyBatic/MyBatic Plus
+        -   SpringBoot2
+        -   SpringSecurity
+        -   SpringCloud
+    -   开发原理
+        -   JVM
+-   Go（云端开发：云原）
 
-## 6.整理日志
+### 4.1.2.客户端开发
 
--   四件
-    -   语言
-        -   C/C++
-            -   [ ] `C/C++` 语言初阶笔记
-            -   [ ] `C/C++` 语言进阶笔记
-        -   Java
-            -   [ ] `Java` 语法笔记
-            -   [ ] `Spring Boot` 框架笔记
-    -   数库
-        -   [ ] `MySQL` 笔记
-        -   [ ] `Mongodb` 笔记
-        -   [ ] `Redis` 笔记
-    -   构算
-        -   [ ] 数据结构笔记
-        -   [ ] 基础算法笔记
-        -   [ ] 进阶算法笔记
-    -   操网
-        -   操作系统
-        -   网络协议
-    
--   组件
-    
-    -   [x] `docker` 笔记
-    -   [x] `git` 笔记
-    -   [x] `k8s` 笔记
-    
--   开发
-    -   模拟开发
-    -   实际开发
-    
--   其他
+-   三件基础
+    -   HTML/CSS/JS/TS
+    -   Node.js
+    -   Vue.js/React.js
+-   组件框架
+    -   ElemeUI/ElemeUI pro
+    -   Ant Design/Ant Design pro
+    -   Arco Design/Arco Design Pro
 
-    
+### 4.1.3.服务端开发
 
-## 7.注意事项
+-   操作系统
+    -   操作系统基础
+    -   操作系统原理
+    -   操作系统软件
+        -   现代终端工具
+        -   Git
+        -   Docker/K8s
+-   网络协议
+    -   网络协议过程
+    -   HTTP/HTTPS 开发手册
+
+### 4.1.4.数据库
+
+-   MySQL
+-   Mongodb
+-   Redis
+
+## 4.2.软件工程
+
+-   软件设计
+-   软件架构
+-   提交规范
+-   设计模式
+-   编码规范
+
+## 4.3.项目开发
+
+-   新手项目 `easy`
+-   仿制项目 `my`
+-   校级项目`nfu` 
+-   智能项目`intelligent` 
+-   模拟项目`the` 
+
+## 4.4.其他文章
+
+待补充...
+
+## 5.注意事项
 
 追求逻辑自洽和技术栈完整，很多部分等待完善，相关内容您信一半即可...
 
