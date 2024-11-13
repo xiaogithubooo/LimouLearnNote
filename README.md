@@ -20,52 +20,106 @@
 
 ## 4.1.四件基础
 
-### 4.1.1.编程语言和数构算法
+### 4.1.1.编程语言
 
--   C/Cpp/Rust（底层开发：原理）
--   Java（工业开发：标准）
-    -   开发路线
-        -   JavaEE/JavaSE
-        -   Java Web
-        -   Spring5
-        -   SpringMVC
-        -   MyBatic/MyBatic Plus
-        -   SpringBoot2
-        -   SpringSecurity
-        -   SpringCloud
-    -   开发原理
-        -   JVM
--   Go（云端开发：云原）
+-   `C/Cpp` 底层开发
+    -   基础知识
+        -   语法基础
+        -   编程原理
+        -   第三方库
 
-### 4.1.2.客户端开发
+    -   技术开发
+        -   数据结构
+        -   排序算法
+        -   常用算法
+        -   仿制组件
+
+    -   其他文件
+
+-   `Java` 业务开发
+    -   基础知识
+        -   语法基础
+        -   编程原理
+        -   第三方库
+    -   技术开发
+        -   后端开发
+        -   安卓开发
+    -   其他文件
+-   `Go` 云端开发
+    -   基础知识
+        -   语法基础
+        -   编程原理
+        -   第三方库
+
+    -   技术开发
+        -   容器开发
+        -   集群开发
+
+    -   其他文件
+
+-   `Python` 科学开发
+    -   基础知识
+        -   语法基础
+        -   编程原理
+        -   第三方库
+
+    -   技术开发
+        -   机器学习
+
+    -   其他文件
+
+-   `C#` 游戏开发
+    -   基础知识
+        -   语法基础
+        -   编程原理
+        -   第三方库
+
+    -   技术开发
+        -   游戏开发
+
+    -   其他文件
+
+-   `Kotlin` 安卓开发
+    -   基础知识
+        -   语法基础
+        -   编程原理
+        -   第三方库
+    -   技术开发
+        -   安卓开发
+    -   其他文件
+
+### 4.1.2.前端开发
 
 -   三件基础
-    -   HTML/CSS/JS/TS
-    -   Node.js
-    -   Vue.js/React.js
+    -   `HTML/CSS/JS/TS`
+    -   `Node.js`
+    -   `Vue.js/React.js`
 -   组件框架
-    -   ElemeUI/ElemeUI pro
-    -   Ant Design/Ant Design pro
-    -   Arco Design/Arco Design Pro
+    -   `ElemeUI/ElemeUI pro`
+    -   `Ant Design/Ant Design pro`
+    -   `Arco Design/Arco Design Pro`
 
-### 4.1.3.服务端开发
+### 4.1.3.后端开发
 
--   操作系统
-    -   操作系统基础
-    -   操作系统原理
-    -   操作系统软件
-        -   现代终端工具
-        -   Git
-        -   Docker/K8s
--   网络协议
+-   操作系统基础
+-   操作系统原理
+-   操作系统网络
     -   网络协议过程
-    -   HTTP/HTTPS 开发手册
+    -   网络开发手册
+    -   网络应用演变
+
+-   操作系统软件
+    -   版本管理 `Git`
+    -   终端管理 `Zsh + OhMyZsh + Zellij`
+    -   容器管理 `Docker`
+    -   集群管理 `K8s`
+-   操作系统其他
 
 ### 4.1.4.数据库
 
 -   MySQL
--   Mongodb
 -   Redis
+-   Mongodb
 
 ## 4.2.软件工程
 
@@ -79,9 +133,9 @@
 
 -   新手项目 `easy`
 -   仿制项目 `my`
--   校级项目`nfu` 
--   智能项目`intelligent` 
--   模拟项目`the` 
+-   校级项目 `nfu` 
+-   智能项目 `intelligent` 
+-   模拟项目 `the` 
 
 ## 4.4.其他文章
 
