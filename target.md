@@ -8,19 +8,15 @@
 -   [ ] `git flow` 分支实践
     -   [ ] [实践1](http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html)
     -   [ ] [实践2](https://www.git-tower.com/learn/git/ebook/cn/command-line/advanced-topics/git-flow)
-
--   [x] `git` 单一代码库 [Monorepo](https://www.jianshu.com/p/c10d0b8c5581)
 -   [ ] [github 官方文档](https://docs.github.com/cn)
 -   [ ] [github 秘籍](https://snowdream86.gitbooks.io/github-cheat-sheet/content/zh/)
 -   [ ] [github 几个小技巧](https://www.bilibili.com/video/BV1q54y1f7h6/?vd_source=c92c89dbfcf9cc30c48086469621f35b)
--   [x] github 门面装饰
-    -   [x] 
 -   [ ] [github 快捷键官方文档](https://docs.github.com/cn/get-started/using-github/keyboard-shortcuts)
 -   [ ] [github 命令面板官方文档](https://docs.github.com/zh/get-started/accessibility/github-command-palette)
 
 # 2.操作系统
 
--   [ ] 研究 `Linux` 操作系统的启动过程
+-   [ ] 
 -   [ ] 现代化工具改造和容器的诞生
 -   [ ] `k8s` 和相关工作的学习
 -   [ ] 手敲命令，除了网址和版本号都不允许直接 `ai` 复制
@@ -29,11 +25,7 @@
 
 ## 2.8.《鸟叔 Linux》
 
--   [ ] 《[深入理解 LINUX 内核](https://book.douban.com/subject/1767120/)》
--   [ ] 《[深入 Linux 内核架构](https://book.douban.com/subject/4843567/)》
--   [ ] 《[Linux 内核设计与实现](https://book.douban.com/subject/6097773/)》
 -   [ ] [先辈学习资料](https://github.com/0voice/linux_kernel_wiki)
--   [ ] [Linux 中国所有文章的研究](https://linux.cn/)
 -   [ ] [Shell 在线检查](https://www.shellcheck.net/)+廖雪峰的 Shell 教程
 -   [ ] [网络安全的学习](https://www.code-nav.cn/course/1789189862986850306/section/1789190126624022530?contentType=text&tabKey=list&type=#)（粗略了解即可）
 
