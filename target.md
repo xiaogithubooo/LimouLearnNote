@@ -1,121 +1,170 @@
-# 1.团队协作
+# 1.技术复习
 
--   [ ] 快速阅读《[猴子都能看懂的 git](https://backlog.com/git-tutorial/cn/)》
--   [ ] `git` 分支 [模拟](https://learngitbranching.js.org/?locale=zh_CN)
--   [ ] `github` 协作流程 [官方文档](https://docs.github.com/zh/get-started/start-your-journey/hello-world)
--   [ ] `github` 实战经验，黄峰达《[Github 漫游指南](https://github.phodal.com/#/)》
--   [ ] 阅读 `git` 官方文档，了解 [高级操作](https://git-scm.com/book/zh/v2)
--   [ ] `git flow` 分支实践
-    -   [ ] [实践1](http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html)
-    -   [ ] [实践2](https://www.git-tower.com/learn/git/ebook/cn/command-line/advanced-topics/git-flow)
--   [ ] [github 官方文档](https://docs.github.com/cn)
--   [ ] [github 秘籍](https://snowdream86.gitbooks.io/github-cheat-sheet/content/zh/)
--   [ ] [github 几个小技巧](https://www.bilibili.com/video/BV1q54y1f7h6/?vd_source=c92c89dbfcf9cc30c48086469621f35b)
--   [ ] [github 快捷键官方文档](https://docs.github.com/cn/get-started/using-github/keyboard-shortcuts)
--   [ ] [github 命令面板官方文档](https://docs.github.com/zh/get-started/accessibility/github-command-palette)
+## 1.1.编程语言
 
-# 2.操作系统
+- [ ] 编程语言笔记重构
+  - [ ] C/Cpp 技术栈笔记
+  - [ ] Java 技术栈笔记
+- [ ] 使用面试鸭刷题目
+- [ ] 使用自搭建面试项目，整理自己面试题目
 
--   [ ] 
--   [ ] 现代化工具改造和容器的诞生
--   [ ] `k8s` 和相关工作的学习
--   [ ] 手敲命令，除了网址和版本号都不允许直接 `ai` 复制
--   [ ] [操作系统补充](https://www.code-nav.cn/course/1789189862986850306/section/1789190769740849154?contentType=text&tabKey=list&type=#heading-10)
--   [ ] [阿里云运维学习路线](https://developer.aliyun.com/learning/roadmap/linux)
+## 1.2.数构算法
 
-## 2.8.《鸟叔 Linux》
+- [ ] 数构算法笔记重构
+  - [ ] 数构笔记
+  - [ ] 排序笔记
+  - [ ] 算法笔记
+- [ ] 使用面试鸭刷题目
+- [ ] 使用自搭建面试项目，整理自己面试题目
 
--   [ ] [先辈学习资料](https://github.com/0voice/linux_kernel_wiki)
--   [ ] [Shell 在线检查](https://www.shellcheck.net/)+廖雪峰的 Shell 教程
--   [ ] [网络安全的学习](https://www.code-nav.cn/course/1789189862986850306/section/1789190126624022530?contentType=text&tabKey=list&type=#)（粗略了解即可）
+## 1.3.数据存储
 
-# 3.软件工程
+- [ ] 数据存储笔记重构
+  - [ ] 初级 MySQL 笔记
+  - [ ] 高级 MySQL 笔记
+- [ ] 使用面试鸭刷题目
+- [ ] 使用自搭建面试项目，整理自己面试题目
 
-## 3.1.软件设计基础
+## 1.4.操统网络
 
--   [ ] 《[软件工程：实践者的研究方法](https://book.douban.com/subject/6047742/)》经典大黑书，讲的非常全面，但同样完整读下来还是有些难度的
--   [ ] 《[软件开发的 201 个原则](https://book.douban.com/subject/35628886/)》工具书，看一遍挺好的
--   [ ] 《[Head First 设计模式](https://www.aliyundrive.com/s/GnuQcruh7Us)》9gc7
--   [ ] 《[设计模式：可复用面向对象软件的基础](https://www.aliyundrive.com/s/T9ECaPtxzg4)》9gc
--   [ ] [C++ 图说设计模式](https://design-patterns.readthedocs.io/zh_CN/latest/)
--   [ ] [Go 语言设计模式系列博客](https://lailin.xyz/post/singleton.html)
--   [ ] [项目实践应用](https://www.bilibili.com/video/BV1tK4y1s7Uo/?vd_source=c92c89dbfcf9cc30c48086469621f35b)
--   [ ] Java 框架源代码中的设计模式
-    -   [ ] [设计1](https://www.code-nav.cn/course/1789189862986850306/section/1789190698894860290?contentType=text&tabKey=list&type=#heading-14)
-    -   [ ] [设计2](https://www.bilibili.com/video/BV1kF411e7WR/)
--   [ ] [google 工程师设计之美](https://time.geekbang.org/column/intro/250)
--   [ ] [阿里巴巴 Java 开发手册](https://developer.aliyun.com/graph/java) （搜索《Java 开发手册》）
+- [ ] 操统网络笔记重构
+  - [ ] 基本操作笔记
+  - [ ] 深入原理笔记
+  - [ ] 现代软件笔记
+- [ ] 使用面试鸭刷题目
+- [ ] 使用自搭建面试项目，整理自己面试题目
 
-# 4.数据存储
+## 1.5.客户前端
 
--   [ ] 某特 `MySQL` 加强课程
--   [ ] [SQL 补充](https://www.code-nav.cn/course/1789189862986850306/section/1789190581420793858?contentType=text&tabKey=list&type=#heading-1)
--   [ ] `leedcode` 所有 `SQL` 题目 + [SQL 实战](https://www.code-nav.cn/course/1789189862986850306/section/1789190614522241026?contentType=text&tabKey=list&type=#heading-1)
--   [ ] `Redis` 的快速学习
+- [ ] 客户前端笔记重构
+  - [ ] JS/TS 笔记
+  - [ ] Vue/React 笔记
+  - [ ] Element/Antd/Arco 笔记
 
-# 5.编程语言
+# 2.技术学习
 
--   [ ] 复习 `Cpp` 的旧语言特性
--   [ ] 学习 `Cpp` 的新语言特性
--   [ ] [Cpp 补充](https://www.code-nav.cn/course/1789189862986850306/section/1789190321168424961?contentType=text&tabKey=list&type=#heading-11)
--   [ ] 学习 `Go` 语言
-    -   [ ] 菜鸟文档 `Go`
-    -   [ ] 快速阅读官方的《[Effective Go](https://golang.org/doc/effective_go.html)》
-    -   [ ] 《[Go by Example](https://gobyexample.com/)》
-    -   [ ] [Go 补充](https://www.code-nav.cn/course/1789189862986850306/section/1789190243125010434?contentType=text&tabKey=list&type=)
--   [ ] `Java` 直接 [入手面试题目+企业开发初阶+企业开发进阶+项目实战](https://www.code-nav.cn/course/1789189862986850306/section/1789190431398928386?contentType=text&tabKey=list&type=#heading-0)
--   [ ] [前端基础的重新学习](https://www.code-nav.cn/course/1789189862986850306/section/1789190394078011393?contentType=text&tabKey=list&type=#heading-5)（对点学习即可，不用全部学习）
--   [ ] [小程序开发的学习](https://www.code-nav.cn/course/1789189862986850306/section/1789190355448471554?contentType=text&tabKey=list&type=#)
--   [ ] [Python 的重新学习](https://www.code-nav.cn/course/1789189862986850306/section/1789190283176419330?contentType=text&tabKey=list&type=#heading-0)（对点学习即可，不用全部学习）
--   [ ] [菜鸟安卓开发](https://www.runoob.com/android/android-tutorial.html)
--   [ ] [安卓开发补充](https://www.code-nav.cn/course/1789189862986850306/section/1789190210308775938?contentType=text&tabKey=list&type=)，这个只是应付课程就行，并且预防后期的使用
+- [ ] K8s 组件
+- [ ] ES 组件
+- [ ] MySQL 组件
+- [ ] Redis 组件
+- [ ] Mongodb 组件
+- [ ] OpenCV 组件
+- [ ] Koa 框架
+- [ ] Go 语法
+- [ ] JS/TS 语法
+- [ ] Vue/React 语法
+- [ ] Cpp 现代化语法
+- [ ] 安卓应用开发
+- [ ] 微信小程序
+- [ ] 工作室维护文档
+- [ ] 软件工程 + 设计模式 + 系统架构
+- [ ] 绘制工作室架构图
+- [ ] 部署工作室集群
+- [ ] 安装工作室面板集群
+- [ ] 耗子哥文档
+- [ ] 比特面试资料 + 刘面试资料 + 刘企业培训资料（下星期真理）
+- [ ] Java 开发技术栈
+  - [ ] 《Java 核心卷》 
+  - [ ] Spring 系列（Spring + SpringBoots + SpringClound）
+  - [ ] MyBatis
+  - [ ] Netty
+  - [ ] Zookeeper
+  - [ ] Dubbo
+- [ ] 机器学习技术栈
+  - [ ] 高等数学
+  - [ ] 线型代数
+  - [ ] 概率论
+  - [ ] Youtube 吴恩达《Machine Learning》
+  - [ ] 西瓜书
+- [ ] 分布式
+  - [ ] CAP 理论
+  - [ ] BASE 理论
+  - [ ] Paxos 算法和 Raft 算法
+  - [ ] RPC
+  - [ ] 分布式事务
+  - [ ] 分布式 ID
 
-# 6.数构算法
+- [ ] 高并发
+  - [ ] 消息队列
+  - [ ] 读写分离&分库分表
+  - [ ] 负载均衡
 
--   [ ] 数据结构重新编写，并且每天写，使用 `C` 和 `Cpp` 都写一遍
--   [ ] 优质算法每天刷，至少保证把某特的写完
+- [ ] 高可用
+  - [ ] 限流
+  - [ ] 降级
+  - [ ] 熔断
 
-# 7.机器学习
+- [ ] 技术强化
+  - [ ] 《图解 MySQL》+ 题目练习 + SQL 强化
+  - [ ] 《网络是怎么工作的》 + 鲨鱼强化
+  - [ ] 《鸟书》 + 操作系统强化
+- [ ] 刷题
+  - [ ] [数组和字符串刷题](https://leetcode.cn/leetbook/read/array-and-string/clpgd/)
+- [ ] 其他
+  - [ ] 面试指北
+  - [ ] 
 
--   [ ] 飞桨学习资源先简单看一遍（理解原理即可）
--   [ ] 快速学习高等数学
--   [ ] 快速学习线性代数
--   [ ] 快速学习概率论
--   [ ] 继续查看飞桨，榨干剩余的价值
--   [ ] 囫囵吞枣看完西瓜书+南瓜书
--   [ ] 快速看完 "[油管教程](https://www.youtube.com/watch?v=3oAY1j5-KIg&list=PLULgBZmS3YWRXpqgJTOq9m_nU4oyEVyj4) || [哔哩教程](https://www.bilibili.com/video/BV15t4y1G7kq/?buvid=XU94E54923D47000443FC18A863ED86F3B000&from_spmid=search.search-result.0.0&is_story_h5=false&mid=upsduOBcAIOtxU0zAu5vtQ%3D%3D&p=1&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=bf0bb97a-c9f2-4b2a-9edc-307384bee277&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1728919304&unique_k=KNfOJzn&up_id=1665832462)"（`AOP`）
--   [ ] 快速看完《[强化学习](https://www.zhihu.com/pub/book/120291845?utm_oi=1722567932566241280)》
--   [ ] 快速看完《[深入浅出 pytorch](https://datawhalechina.github.io/thorough-pytorch/index.html)》
--   [ ] 简要探索一下方向
 
-# 8.项目编写
+# 3.技术项目
 
--   [ ] 仿制微信项目
--   [ ] 在线面试项目
--   [ ] 用户中心项目
--   [ ] 代码生成器项目
--   [ ] 工作室博客系统项目
--   [ ] 视频点播项目
--   [ ] 模拟高并发服务项目
--   [ ] 模拟高并发内存池项目
--   [ ] 模拟自主实现 `HTTP` 项目
--   [ ] 模拟消息队列项目
+- [ ] 智能存储项目
+- [ ] 智能毕设项目
+- [ ] 智能综测项目
+- [ ] 智能识别项目
+- [ ] 智能面试项目
+- [x] 南苑从化小镇项目
+- [ ] 工作室接口管理项目
+- [ ] 工作室签到管理项目
+- [ ] 工作室博文管理项目
+- [ ] 工作室代码生成项目
+- [ ] 工作室公共接口项目
+- [ ] 模拟消息队列项目
+- [ ] 模拟微信全栈项目
+- [ ] 模拟搜索引擎项目
+- [ ] 模拟高并线程项目
+- [ ] 模拟网络服务项目
+- [ ] 黑马外卖项目
 
-# 9.参加比赛
+# 4.技术比赛
 
--   [ ] 华为 `ICT` 云计算比赛
--   [ ] 相关的项目开发比赛
--   [ ] 蓝桥杯 `Cpp` 算法比赛
+- [ ] 软著申请
+- [ ] 传智比赛
+- [ ] 大创比赛
+- [ ] 华为 ICT 比赛
+- [ ] 蓝桥杯 Cpp 算法比赛
 
-# 10.面试准备
+# 5.面试就业
 
--   [ ] 某特笔试练习
--   [ ] 八股文试题练习
--   [ ] 编写完整项目文档
--   [ ] 导航中所有面试题目
--   [ ] 时刻参加某特的模拟面试
--   [ ] 参加实际的面试进行学习
+## 5.1.时间节点
 
-# 11.其他
+- 春招 3初-4末
+- 秋招 7初-9末
 
--   [ ] 耗子哥的所有文章都阅读完毕
+## 5.2.招聘信息
+
+- 企业官网
+- 牛客招聘
+- 超级简历
+- 比特校招
+- 鱼皮导航
+- Boss 直聘
+
+## 5.3.自我介绍
+
+待补充...
+
+## 5.4.面试方式
+
+- 提前批
+- 预面试
+- 内推
+
+## 5.5.个人简历
+
+- 技能清单
+- 个人项目
+  - 模拟项目（比特+[javaguide](https://javaguide.cn/open-source-project/practical-project.html)）
+  - 需求题目（工作室+鱼皮）
+- 源码阅读（JDK+Spring+Redis+Netty）
+- 比赛证书
+
