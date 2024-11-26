@@ -9,7 +9,7 @@
 在构建过程中，我们会为 `VuePress` 站点创建一个服务端渲染的版本，然后通过虚拟访问每一条路径来渲染对应的 `HTML`。
 
 ```shell
-配置
+# 配置
 $ npm init vuepress work-blogs
 ? Select a language to display / 选择显示语言 简体中文
 ? 选择包管理器 npm
@@ -48,6 +48,9 @@ added 239 packages in 14s
  # 如果打开网站报错就使用 npm install -D sass-embedded 安装依赖...
  
 ```
+
+- [入门文档](https://vuepress.vuejs.org/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+- [核心文档](https://vuepress.vuejs.org/zh/reference/node-api.html)
 
 # 2.VuePress 的工作目录
 
@@ -169,8 +172,12 @@ description: 页面的描述
 
 ## 5.3.使用组件
 
-由于 `Markdown` 中允许使用 `HTML`，所以
+由于 `Markdown` 中允许使用 `HTML`，所以支持使用 `Vue` 组件，待补充...
 
 > [!IMPORTANT]
 >
 > 补充：注意应该避免使用非标准的标签。
+
+# 6.VuePress 的额外插件
+
+这里介绍一些常用的插件，待补充...
